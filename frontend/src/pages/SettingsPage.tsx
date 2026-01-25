@@ -155,7 +155,7 @@ const SettingsPage = () => {
             <Button danger>Delete Account</Button>
           </Popconfirm>
         </Card>
-      </div>
+      </>
     </Layout>
   );
 };
