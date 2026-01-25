@@ -29,7 +29,7 @@ const RegisterPage = () => {
   return (
     <Layout>
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <Card title="Register" style={{ width: 400 }}>
+        <Card title="Register" style={{ width: '100%', maxWidth: 400 }}>
           {error && <Alert message={error} type="error" style={{ marginBottom: 16 }} />}
 
           <Form name="register" onFinish={onFinish} layout="vertical">

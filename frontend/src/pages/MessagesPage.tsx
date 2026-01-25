@@ -55,7 +55,7 @@ const MessagesPage = () => {
   return (
     <Layout>
       <div style={{ width: '100%', display: 'flex', gap: '24px', height: '70vh' }}>
-        <Card title="Conversations" style={{ width: '300px', overflowY: 'auto' }}>
+        <Card title="Conversations" style={{ width: '100%', maxWidth: '300px', overflowY: 'auto' }}>
           <List
             dataSource={conversations}
             renderItem={(conv) => (
