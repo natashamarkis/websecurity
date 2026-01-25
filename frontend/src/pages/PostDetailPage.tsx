@@ -82,7 +82,7 @@ const PostDetailPage = () => {
 
   return (
     <Layout>
-      <div style={{ width: '100%' }}>
+      <>
         <Card>
           <Card.Meta
             avatar={<Avatar src={post.avatar} icon={<UserOutlined />} />}
@@ -174,7 +174,7 @@ const PostDetailPage = () => {
             }}
           />
         </Card>
-      </div>
+      </>
     </Layout>
   );
 };

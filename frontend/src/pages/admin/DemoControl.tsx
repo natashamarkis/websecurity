@@ -179,7 +179,7 @@ const DemoControl = () => {
 
   return (
     <Layout>
-      <div style={{ width: '100%' }}>
+      <>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
           <h1><BugOutlined /> Security Demo Control Panel</h1>
           <Space>
@@ -292,7 +292,7 @@ const DemoControl = () => {
             pagination={{ pageSize: 20 }}
           />
         </Card>
-      </div>
+      </>
     </Layout>
   );
 };

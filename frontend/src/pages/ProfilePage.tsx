@@ -51,7 +51,7 @@ const ProfilePage = () => {
 
   return (
     <Layout>
-      <div style={{ width: '100%' }}>
+      <>
         <Card>
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginBottom: '24px' }}>
             <Avatar size={100} src={user.avatar} icon={<UserOutlined />} />
@@ -97,7 +97,7 @@ const ProfilePage = () => {
             </Card>
           )}
         />
-      </div>
+      </>
     </Layout>
   );
 };

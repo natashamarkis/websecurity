@@ -67,7 +67,7 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div style={{ width: '100%' }}>
+      <>
         <h1>Admin Dashboard</h1>
 
         <Row gutter={16} style={{ marginBottom: 24 }}>
@@ -122,7 +122,7 @@ const Dashboard = () => {
             pagination={{ pageSize: 10 }}
           />
         </Card>
-      </div>
+      </>
     </Layout>
   );
 };
