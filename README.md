@@ -80,13 +80,13 @@ websecurity/
 ### 1. Reflected XSS (Поиск)
 ```
 Перейдите на главную → Введите в поиск:
-<img src=x onerror=alert('XSS')>
+<img src=x onerror="alert('XSS')">
 ```
 
 ### 2. Stored XSS (Комментарии)
 ```
 Войдите как alice → Откройте любой пост → Добавьте комментарий:
-<script>alert('Stored XSS')</script>
+<img src=x onerror="alert('Stored XSS')">
 ```
 
 ### 3. Open Redirect
@@ -243,18 +243,18 @@ npm run dev
 
 ### 1. Reflected XSS
 1. Откройте Home page
-2. В поиске введите: `<img src=x onerror=alert('XSS')>`
+2. В поиске введите: `<img src=x onerror="alert('XSS')">`
 3. Наблюдайте выполнение JavaScript
 
 ### 2. Stored XSS
 1. Войдите как alice
 2. Откройте любой пост
-3. Добавьте комментарий: `<script>alert('Stored XSS')</script>`
+3. Добавьте комментарий: `<img src=x onerror="alert('Stored XSS')">`
 4. Перезагрузите страницу - XSS сохранился в БД
 
 ### 3. DOM-based XSS
 1. Войдите как alice
-2. Settings → Bio: `<img src=x onerror=alert('DOM XSS')>`
+2. Settings → Bio: `<img src=x onerror="alert('DOM XSS')">`
 3. Перейдите в Profile - bio рендерится через dangerouslySetInnerHTML
 
 ### 4. CSRF

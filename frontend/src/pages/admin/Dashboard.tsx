@@ -4,6 +4,7 @@ import { UserOutlined, FileTextOutlined, MessageOutlined, ClockCircleOutlined } 
 import { Layout } from '@/components/Layout';
 import { adminService } from '@/services/admin';
 import type { User } from '@/services/types';
+import './Dashboard.scss';
 
 const Dashboard = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -52,7 +53,13 @@ const Dashboard = () => {
       dataIndex: 'role',
       key: 'role',
       render: (role: string) => (
-        <span style={{ color: role === 'admin' ? '#ff4d4f' : '#52c41a' }}>
+        <span
+          className={
+            role === 'admin'
+              ? 'admin-dashboard__role admin-dashboard__role--admin'
+              : 'admin-dashboard__role admin-dashboard__role--user'
+          }
+        >
           {role}
         </span>
       ),
@@ -70,14 +77,14 @@ const Dashboard = () => {
       <>
         <h1>Admin Dashboard</h1>
 
-        <Row gutter={16} style={{ marginBottom: 24 }}>
+        <Row gutter={16} className="admin-dashboard__stats">
           <Col span={6}>
             <Card>
               <Statistic
                 title="Total Users"
                 value={stats.users || 0}
                 prefix={<UserOutlined />}
-                valueStyle={{ color: '#3f8600' }}
+                className="admin-dashboard__stat admin-dashboard__stat--users"
               />
             </Card>
           </Col>
@@ -87,7 +94,7 @@ const Dashboard = () => {
                 title="Total Posts"
                 value={stats.posts || 0}
                 prefix={<FileTextOutlined />}
-                valueStyle={{ color: '#1890ff' }}
+                className="admin-dashboard__stat admin-dashboard__stat--posts"
               />
             </Card>
           </Col>
@@ -97,7 +104,7 @@ const Dashboard = () => {
                 title="Total Comments"
                 value={stats.comments || 0}
                 prefix={<MessageOutlined />}
-                valueStyle={{ color: '#faad14' }}
+                className="admin-dashboard__stat admin-dashboard__stat--comments"
               />
             </Card>
           </Col>
@@ -107,7 +114,7 @@ const Dashboard = () => {
                 title="Active Sessions"
                 value={stats.activeSessions || 0}
                 prefix={<ClockCircleOutlined />}
-                valueStyle={{ color: '#722ed1' }}
+                className="admin-dashboard__stat admin-dashboard__stat--sessions"
               />
             </Card>
           </Col>

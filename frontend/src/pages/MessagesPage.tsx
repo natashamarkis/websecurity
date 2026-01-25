@@ -5,6 +5,7 @@ import { Layout } from '@/components/Layout';
 import { messagesService } from '@/services/messages';
 import type { Message } from '@/services/types';
 import { useAuth } from '@/contexts/AuthContext';
+import './MessagesPage.scss';
 
 const MessagesPage = () => {
   const { user } = useAuth();
@@ -54,13 +55,17 @@ const MessagesPage = () => {
 
   return (
     <Layout>
-      <div style={{ display: 'flex', gap: '24px', height: '70vh' }}>
-        <Card title="Conversations" style={{ flex: '0 0 300px', overflowY: 'auto' }}>
+      <div className="messages-page__layout">
+        <Card title="Conversations" className="messages-page__conversations">
           <List
             dataSource={conversations}
             renderItem={(conv) => (
               <List.Item
-                style={{ cursor: 'pointer', background: selectedUser?.user_id === conv.user_id ? '#1890ff22' : 'transparent' }}
+                className={
+                  selectedUser?.user_id === conv.user_id
+                    ? 'messages-page__conversation messages-page__conversation--active'
+                    : 'messages-page__conversation'
+                }
                 onClick={() => {
                   setSelectedUser(conv);
                   loadMessages(conv.user_id);
@@ -76,40 +81,38 @@ const MessagesPage = () => {
           />
         </Card>
 
-        <Card 
-          title={selectedUser ? `Chat with ${selectedUser.username}` : 'Select a conversation'} 
-          style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+        <Card
+          title={selectedUser ? `Chat with ${selectedUser.username}` : 'Select a conversation'}
+          className="messages-page__chat"
         >
           {selectedUser ? (
             <>
-              <div style={{ flex: 1, overflowY: 'auto', marginBottom: '16px', padding: '16px', background: '#f5f5f5', borderRadius: '8px' }}>
+              <div className="messages-page__thread">
                 {messages.map((msg) => (
                   <div
                     key={msg.id}
-                    style={{
-                      marginBottom: '12px',
-                      textAlign: msg.from_user_id === user?.id ? 'right' : 'left',
-                    }}
+                    className={
+                      msg.from_user_id === user?.id
+                        ? 'messages-page__message messages-page__message--outgoing'
+                        : 'messages-page__message'
+                    }
                   >
                     <div
-                      style={{
-                        display: 'inline-block',
-                        padding: '8px 12px',
-                        borderRadius: '8px',
-                        background: msg.from_user_id === user?.id ? '#1890ff' : '#fff',
-                        color: msg.from_user_id === user?.id ? '#fff' : '#000',
-                        maxWidth: '70%',
-                      }}
+                      className={
+                        msg.from_user_id === user?.id
+                          ? 'messages-page__bubble messages-page__bubble--outgoing'
+                          : 'messages-page__bubble'
+                      }
                     >
                       {msg.text}
                     </div>
-                    <div style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>
+                    <div className="messages-page__timestamp">
                       {new Date(msg.created_at).toLocaleTimeString()}
                     </div>
                   </div>
                 ))}
               </div>
-              <div style={{ display: 'flex', gap: '8px' }}>
+              <div className="messages-page__composer">
                 <Input
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
@@ -128,7 +131,7 @@ const MessagesPage = () => {
               </div>
             </>
           ) : (
-            <div style={{ textAlign: 'center', padding: '50px', color: '#888' }}>
+            <div className="messages-page__empty">
               Select a conversation to start messaging
             </div>
           )}

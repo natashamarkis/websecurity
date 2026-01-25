@@ -10,6 +10,7 @@ import {
   DashboardOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import './Layout.scss';
 
 const { Header, Content, Footer } = AntLayout;
 
@@ -58,10 +59,10 @@ export const Layout = ({ children }: LayoutProps) => {
   ];
 
   return (
-    <AntLayout style={{ minHeight: '100vh' }}>
-      <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <Link to="/" style={{ color: 'white', fontSize: '20px', fontWeight: 'bold' }}>
+    <AntLayout className="app-layout">
+      <Header className="app-layout__header">
+        <div className="app-layout__nav">
+          <Link to="/" className="app-layout__brand">
             VulnApp
           </Link>
           <Menu
@@ -90,13 +91,13 @@ export const Layout = ({ children }: LayoutProps) => {
         <div>
           {user ? (
             <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+              <div className="app-layout__user">
                 <Avatar src={user.avatar} icon={<UserOutlined />} />
-                <span style={{ color: 'white' }}>{user.username}</span>
+                <span className="app-layout__user-name">{user.username}</span>
               </div>
             </Dropdown>
           ) : (
-            <div style={{ display: 'flex', gap: '10px' }}>
+            <div className="app-layout__auth">
               <Button type="link" onClick={() => navigate('/login')}>
                 Login
               </Button>
@@ -108,9 +109,9 @@ export const Layout = ({ children }: LayoutProps) => {
         </div>
       </Header>
 
-      <Content style={{ padding: '24px' }}>{children}</Content>
+      <Content className="app-layout__content">{children}</Content>
 
-      <Footer style={{ textAlign: 'center' }}>
+      <Footer className="app-layout__footer">
         VulnApp ©2026 - Educational Security Demo
       </Footer>
     </AntLayout>

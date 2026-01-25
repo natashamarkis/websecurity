@@ -3,6 +3,7 @@ import { Form, Input, Button, Card, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { postsService } from '@/services/posts';
+import './CreatePostPage.scss';
 
 const { TextArea } = Input;
 
@@ -49,7 +50,7 @@ const CreatePostPage = () => {
               <Button type="primary" htmlType="submit" loading={loading} size="large">
                 Create Post
               </Button>
-              <Button style={{ marginLeft: 8 }} onClick={() => navigate('/')}>
+              <Button className="create-post__cancel" onClick={() => navigate('/')}>
                 Cancel
               </Button>
             </Form.Item>

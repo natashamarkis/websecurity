@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { postsService } from '@/services/posts';
 import type { Post } from '@/services/types';
+import './HomePage.scss';
 
 const { Search } = Input;
 
@@ -49,11 +50,11 @@ const HomePage = () => {
           enterButton={<SearchOutlined />}
           size="large"
           onSearch={handleSearch}
-          style={{ marginBottom: 24 }}
+          className="home-page__search"
         />
 
         {searchQuery && (
-          <div style={{ marginBottom: 16 }}>
+          <div className="home-page__search-results">
             {/* VULNERABILITY: Reflected XSS through dangerouslySetInnerHTML */}
             <Tag>
               Search results for: <span dangerouslySetInnerHTML={{ __html: searchQuery }} />
@@ -66,24 +67,24 @@ const HomePage = () => {
           itemLayout="vertical"
           dataSource={posts}
           renderItem={(post) => (
-            <Card style={{ marginBottom: 16 }}>
+            <Card className="home-page__post-card">
               <Card.Meta
                 avatar={<Avatar src={post.avatar} icon={<UserOutlined />} />}
                 title={<Link to={`/post/${post.id}`}>{post.title}</Link>}
                 description={
                   <div>
                     <div>By {post.username}</div>
-                    <div style={{ marginTop: 8, color: '#888' }}>
+                    <div className="home-page__post-date">
                       {new Date(post.created_at).toLocaleString()}
                     </div>
                   </div>
                 }
               />
-              <div style={{ marginTop: 16 }}>
+              <div className="home-page__excerpt">
                 {post.content.substring(0, 200)}
                 {post.content.length > 200 && '...'}
               </div>
-              <div style={{ marginTop: 16 }}>
+              <div className="home-page__actions">
                 <Link to={`/post/${post.id}`}>
                   <Button type="link">Read more →</Button>
                 </Link>

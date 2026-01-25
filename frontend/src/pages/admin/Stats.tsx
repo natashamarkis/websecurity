@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, Table, message, Tag } from 'antd';
 import { Layout } from '@/components/Layout';
 import { adminService } from '@/services/admin';
+import './Stats.scss';
 
 const Stats = () => {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -40,7 +41,7 @@ const Stats = () => {
       dataIndex: 'token',
       key: 'token',
       render: (token: string) => (
-        <code style={{ fontSize: '11px' }}>{token.substring(0, 20)}...</code>
+        <code className="admin-stats__token">{token.substring(0, 20)}...</code>
       ),
     },
     {

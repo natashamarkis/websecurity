@@ -52,13 +52,13 @@ export const seedData = async (db) => {
     insertComment.run(1, 3, 'Great post! Welcome aboard!');
     insertComment.run(1, 4, 'Nice to meet you!');
     insertComment.run(2, 3, 'Very informative, thanks for sharing!');
-    insertComment.run(2, 4, '<img src=x onerror=alert("XSS")>');
+    insertComment.run(2, 4, '<img src=x onerror="alert(\'XSS\')">');
     insertComment.run(3, 2, 'Love these trends!');
     insertComment.run(4, 3, 'I use React and Vue mostly');
     insertComment.run(5, 2, 'Typography is underrated!');
     insertComment.run(6, 3, 'Great tips!');
     insertComment.run(1, 2, 'Thanks everyone!');
-    insertComment.run(3, 4, '<script>console.log("Stored XSS")</script>');
+    insertComment.run(3, 4, '<img src=x onerror="alert(\'Stored XSS\')">');
     insertComment.finalize();
 
     // Insert messages

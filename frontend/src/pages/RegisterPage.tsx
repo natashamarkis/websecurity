@@ -4,6 +4,7 @@ import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Layout } from '@/components/Layout';
+import './RegisterPage.scss';
 
 const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
@@ -28,9 +29,9 @@ const RegisterPage = () => {
 
   return (
     <Layout>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-        <Card title="Register" style={{ width: '100%', maxWidth: 400 }}>
-          {error && <Alert message={error} type="error" style={{ marginBottom: 16 }} />}
+      <div className="register-page__container">
+        <Card title="Register" className="register-page__card">
+          {error && <Alert message={error} type="error" className="register-page__alert" />}
 
           <Form name="register" onFinish={onFinish} layout="vertical">
             <Form.Item
@@ -66,7 +67,7 @@ const RegisterPage = () => {
               </Button>
             </Form.Item>
 
-            <div style={{ textAlign: 'center' }}>
+            <div className="register-page__footer">
               Already have an account? <Link to="/login">Login now</Link>
             </div>
           </Form>

@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Spin } from 'antd';
+import './ProtectedRoute.scss';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -12,7 +13,7 @@ export const ProtectedRoute = ({ children, requireAdmin = false }: ProtectedRout
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div className="protected-route__spinner">
         <Spin size="large" />
       </div>
     );

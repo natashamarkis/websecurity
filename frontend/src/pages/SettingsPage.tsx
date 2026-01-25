@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { useAuth } from '@/contexts/AuthContext';
 import { usersService } from '@/services/users';
+import './SettingsPage.scss';
 
 const SettingsPage = () => {
   const { user, logout, refreshUser } = useAuth();
@@ -71,15 +72,15 @@ const SettingsPage = () => {
       <>
         <h1>Settings</h1>
 
-        <Card title="Profile Information" style={{ marginBottom: 24 }}>
-          <div style={{ marginBottom: 24 }}>
+        <Card title="Profile Information" className="settings-page__card">
+          <div className="settings-page__profile-header">
             <Avatar size={80} src={user.avatar} icon={<UserOutlined />} />
             <Upload
               beforeUpload={handleAvatarUpload}
               showUploadList={false}
               accept="image/*"
             >
-              <Button icon={<UploadOutlined />} style={{ marginLeft: 16 }}>
+              <Button icon={<UploadOutlined />} className="settings-page__upload-button">
                 Upload Avatar
               </Button>
             </Upload>
@@ -114,7 +115,7 @@ const SettingsPage = () => {
           </Form>
         </Card>
 
-        <Card title="Change Password" style={{ marginBottom: 24 }}>
+        <Card title="Change Password" className="settings-page__card">
           <Form name="changePassword" onFinish={onChangePassword} layout="vertical">
             <Form.Item
               name="currentPassword"
@@ -143,7 +144,7 @@ const SettingsPage = () => {
           </Form>
         </Card>
 
-        <Card title="Danger Zone" style={{ marginBottom: 24 }}>
+        <Card title="Danger Zone" className="settings-page__card">
           <Popconfirm
             title="Are you sure you want to delete your account?"
             description="This action cannot be undone!"

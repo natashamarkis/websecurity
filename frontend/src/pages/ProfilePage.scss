@@ -1,0 +1,36 @@
+.profile-page__loading {
+  text-align: center;
+  padding: 50px;
+}
+
+.profile-page__header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.profile-page__meta {
+  flex: 1;
+}
+
+.profile-page__username {
+  margin: 0;
+}
+
+.profile-page__since {
+  color: #888;
+  margin-top: 8px;
+}
+
+.profile-page__posts-title {
+  margin-top: 24px;
+}
+
+.profile-page__post-card {
+  margin-bottom: 16px;
+}
+
+.profile-page__post-excerpt {
+  margin-top: 16px;
+}

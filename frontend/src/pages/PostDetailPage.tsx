@@ -6,6 +6,7 @@ import { Layout } from '@/components/Layout';
 import { postsService } from '@/services/posts';
 import type { Post, Comment } from '@/services/types';
 import { useAuth } from '@/contexts/AuthContext';
+import './PostDetailPage.scss';
 
 const { TextArea } = Input;
 
@@ -88,21 +89,21 @@ const PostDetailPage = () => {
             avatar={<Avatar src={post.avatar} icon={<UserOutlined />} />}
             title={<h2>{post.title}</h2>}
             description={
-              <div>
-                <div>By {post.username}</div>
-                <div style={{ color: '#888' }}>
-                  {new Date(post.created_at).toLocaleString()}
+                <div>
+                  <div>By {post.username}</div>
+                  <div className="post-detail__meta-date">
+                    {new Date(post.created_at).toLocaleString()}
+                  </div>
                 </div>
-              </div>
-            }
-          />
+              }
+            />
 
-          <div style={{ marginTop: 24, whiteSpace: 'pre-wrap' }}>
+          <div className="post-detail__content">
             {post.content}
           </div>
 
           {canDeletePost && (
-            <div style={{ marginTop: 16 }}>
+            <div className="post-detail__actions">
               <Popconfirm
                 title="Delete this post?"
                 onConfirm={handleDeletePost}
@@ -117,9 +118,9 @@ const PostDetailPage = () => {
           )}
         </Card>
 
-        <Card title={`Comments (${comments.length})`} style={{ marginTop: 24 }}>
+        <Card title={`Comments (${comments.length})`} className="post-detail__comments-card">
           {user && (
-            <div style={{ marginBottom: 24 }}>
+            <div className="post-detail__comment-form">
               <TextArea
                 rows={4}
                 value={commentText}
@@ -130,7 +131,7 @@ const PostDetailPage = () => {
                 type="primary"
                 onClick={handleAddComment}
                 loading={submitting}
-                style={{ marginTop: 8 }}
+                className="post-detail__comment-button"
               >
                 Add Comment
               </Button>
@@ -162,7 +163,7 @@ const PostDetailPage = () => {
                     avatar={<Avatar src={comment.avatar} icon={<UserOutlined />} />}
                     title={comment.username}
                     description={
-                      <div style={{ color: '#888', fontSize: '12px' }}>
+                      <div className="post-detail__comment-date">
                         {new Date(comment.created_at).toLocaleString()}
                       </div>
                     }

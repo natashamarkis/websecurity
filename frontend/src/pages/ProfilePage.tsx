@@ -8,6 +8,7 @@ import { usersService } from '@/services/users';
 import { postsService } from '@/services/posts';
 import type { User, Post } from '@/services/types';
 import { useAuth } from '@/contexts/AuthContext';
+import './ProfilePage.scss';
 
 const ProfilePage = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -36,7 +37,7 @@ const ProfilePage = () => {
   if (loading) {
     return (
       <Layout>
-        <div style={{ textAlign: 'center', padding: '50px' }}>
+        <div className="profile-page__loading">
           <Spin size="large" />
         </div>
       </Layout>
@@ -53,11 +54,11 @@ const ProfilePage = () => {
     <Layout>
       <>
         <Card>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px', marginBottom: '24px' }}>
+          <div className="profile-page__header">
             <Avatar size={100} src={user.avatar} icon={<UserOutlined />} />
-            <div style={{ flex: 1 }}>
-              <h1 style={{ margin: 0 }}>{user.username}</h1>
-              <div style={{ color: '#888', marginTop: '8px' }}>
+            <div className="profile-page__meta">
+              <h1 className="profile-page__username">{user.username}</h1>
+              <div className="profile-page__since">
                 Member since {new Date(user.created_at || '').toLocaleDateString()}
               </div>
             </div>
@@ -81,16 +82,16 @@ const ProfilePage = () => {
           </Descriptions>
         </Card>
 
-        <h2 style={{ marginTop: '24px' }}>Posts by {user.username}</h2>
+        <h2 className="profile-page__posts-title">Posts by {user.username}</h2>
         <List
           dataSource={posts}
           renderItem={(post) => (
-            <Card style={{ marginBottom: 16 }}>
+            <Card className="profile-page__post-card">
               <Card.Meta
                 title={<Link to={`/post/${post.id}`}>{post.title}</Link>}
                 description={new Date(post.created_at).toLocaleString()}
               />
-              <div style={{ marginTop: 16 }}>
+              <div className="profile-page__post-excerpt">
                 {post.content.substring(0, 150)}
                 {post.content.length > 150 && '...'}
               </div>
