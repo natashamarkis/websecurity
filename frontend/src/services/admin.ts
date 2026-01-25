@@ -1,5 +1,5 @@
 import api from './api';
-import { User, DemoLog } from './types';
+import type { User, DemoLog } from './types';
 
 export const adminService = {
   async getUsers(): Promise<{ users: User[] }> {

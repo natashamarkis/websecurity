@@ -4,7 +4,7 @@ import { Card, Avatar, Button, Input, List, message, Popconfirm } from 'antd';
 import { UserOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Layout } from '@/components/Layout';
 import { postsService } from '@/services/posts';
-import { Post, Comment } from '@/services/types';
+import type { Post, Comment } from '@/services/types';
 import { useAuth } from '@/contexts/AuthContext';
 
 const { TextArea } = Input;

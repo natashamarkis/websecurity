@@ -1,5 +1,5 @@
 import api from './api';
-import { Message } from './types';
+import type { Message } from './types';
 
 export const messagesService = {
   async getConversations() {

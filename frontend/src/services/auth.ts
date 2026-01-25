@@ -1,5 +1,5 @@
 import api from './api';
-import { User } from './types';
+import type { User } from './types';
 
 export const authService = {
   async login(username: string, password: string) {

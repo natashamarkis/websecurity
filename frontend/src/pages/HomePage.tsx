@@ -4,7 +4,7 @@ import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { postsService } from '@/services/posts';
-import { Post } from '@/services/types';
+import type { Post } from '@/services/types';
 
 const { Search } = Input;
 

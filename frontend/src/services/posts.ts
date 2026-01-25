@@ -1,5 +1,5 @@
 import api from './api';
-import { Post, Comment } from './types';
+import type { Post, Comment } from './types';
 
 export const postsService = {
   async getAllPosts(searchQuery?: string): Promise<{ posts: Post[]; searchQuery?: string }> {
