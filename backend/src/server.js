@@ -8,6 +8,7 @@ import commentsRoutes from './routes/comments.js';
 import usersRoutes from './routes/users.js';
 import messagesRoutes from './routes/messages.js';
 import vulnerableRoutes from './routes/vulnerable.js';
+import adminRoutes from './routes/admin.js';
 
 const app = express();
 const PORT = 3000;
@@ -32,7 +33,8 @@ app.use('/api/posts', postsRoutes);
 app.use('/api/comments', commentsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/messages', messagesRoutes);
-app.use('/api', vulnerableRoutes); // Vulnerable endpoints
+app.use('/api/admin', adminRoutes);
+app.use('/api', vulnerableRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Server is running' });
