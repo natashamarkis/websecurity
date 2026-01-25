@@ -194,3 +194,103 @@ curl -X POST http://localhost:3000/api/settings/merge \
 ---
 
 **Разработано для образовательных целей** 🎯
+
+## 🎨 Реализованные страницы
+
+### Public Pages
+- **Login/Register** - Аутентификация с тестовыми аккаунтами
+- **Home** - Лента постов с поиском (Reflected XSS)
+- **Post Detail** - Просмотр поста с комментариями (Stored XSS)
+
+### User Pages (требует авторизации)
+- **Create Post** - Создание новых постов
+- **Profile** - Профиль пользователя с постами (DOM-based XSS в bio)
+- **Settings** - Редактирование профиля, смена пароля, удаление аккаунта
+- **Messages** - Приватные сообщения между пользователями
+
+### Admin Pages (требует роль admin)
+- **Dashboard** - Статистика и управление пользователями
+- **Stats** - Мониторинг активных сессий
+- **Demo Control Panel** ⭐ - Интерактивный каталог уязвимостей с payloads
+
+## ⚡ Быстрый старт
+
+```bash
+# 1. Запустите backend (терминал 1)
+cd backend
+npm install
+npm run dev
+# Backend: http://localhost:3000
+
+# 2. Запустите frontend (терминал 2)
+cd frontend
+npm install
+npm run dev
+# Frontend: http://localhost:5173
+
+# 3. Откройте браузер
+# http://localhost:5173
+
+# 4. Войдите как admin
+# username: admin
+# password: admin123
+
+# 5. Перейдите в Admin Demo Control Panel
+# http://localhost:5173/admin/demo
+```
+
+## 🎯 Демонстрация для Tech Talk
+
+### 1. Reflected XSS
+1. Откройте Home page
+2. В поиске введите: `<img src=x onerror=alert('XSS')>`
+3. Наблюдайте выполнение JavaScript
+
+### 2. Stored XSS
+1. Войдите как alice
+2. Откройте любой пост
+3. Добавьте комментарий: `<script>alert('Stored XSS')</script>`
+4. Перезагрузите страницу - XSS сохранился в БД
+
+### 3. DOM-based XSS
+1. Войдите как alice
+2. Settings → Bio: `<img src=x onerror=alert('DOM XSS')>`
+3. Перейдите в Profile - bio рендерится через dangerouslySetInnerHTML
+
+### 4. CSRF
+1. Войдите как alice
+2. Попробуйте удалить пост - нет CSRF защиты
+
+### 5. Data Exposure
+1. Откройте: `http://localhost:3000/api/debug/config`
+2. Видны все секреты и конфигурация
+
+### 6. Open Redirect
+1. Откройте: `http://localhost:3000/api/redirect?url=http://evil.com`
+2. Редирект на любой URL
+
+### 7. SSRF
+```bash
+curl -X POST http://localhost:3000/api/preview \
+  -H "Content-Type: application/json" \
+  -d '{"url":"http://localhost:3000/api/debug/config"}'
+```
+
+### 8. Admin Demo Panel
+1. Войдите как admin
+2. Перейдите в `/admin/demo`
+3. Все уязвимости с ready-to-use payloads
+4. Копирование в clipboard одним кликом
+
+## 📊 Статистика проекта
+
+- **Коммитов:** 22+
+- **Backend модулей:** 8
+- **Frontend страниц:** 11
+- **API Endpoints:** 35+
+- **Уязвимостей:** 8 типов
+- **Строк кода:** ~5000+
+
+---
+
+**Готово к презентации! 🎉**
