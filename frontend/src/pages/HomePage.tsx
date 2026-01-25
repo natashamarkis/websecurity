@@ -40,7 +40,7 @@ const HomePage = () => {
 
   return (
     <Layout>
-      <div style={{ maxWidth: 800, margin: '0 auto' }}>
+      <div style={{ width: '100%' }}>
         <h1>Latest Posts</h1>
 
         <Search
