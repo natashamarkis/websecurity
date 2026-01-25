@@ -68,7 +68,7 @@ const SettingsPage = () => {
 
   return (
     <Layout>
-      <div style={{ width: '100%' }}>
+      <>
         <h1>Settings</h1>
 
         <Card title="Profile Information" style={{ marginBottom: 24 }}>
@@ -155,7 +155,7 @@ const SettingsPage = () => {
             <Button danger>Delete Account</Button>
           </Popconfirm>
         </Card>
-      </div>
+      </>
     </Layout>
   );
 };

@@ -108,7 +108,7 @@ export const Layout = ({ children }: LayoutProps) => {
         </div>
       </Header>
 
-      <Content style={{ padding: '24px 50px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>{children}</Content>
+      <Content style={{ padding: '24px' }}>{children}</Content>
 
       <Footer style={{ textAlign: 'center' }}>
         VulnApp ©2026 - Educational Security Demo

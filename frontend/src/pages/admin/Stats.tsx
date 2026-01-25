@@ -73,7 +73,7 @@ const Stats = () => {
 
   return (
     <Layout>
-      <div style={{ width: '100%' }}>
+      <>
         <h1>Session Statistics</h1>
 
         <Card title="Active Sessions">
@@ -85,7 +85,7 @@ const Stats = () => {
             pagination={{ pageSize: 20 }}
           />
         </Card>
-      </div>
+      </>
     </Layout>
   );
 };

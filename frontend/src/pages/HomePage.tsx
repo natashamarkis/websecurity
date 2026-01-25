@@ -40,7 +40,7 @@ const HomePage = () => {
 
   return (
     <Layout>
-      <div style={{ width: '100%' }}>
+      <>
         <h1>Latest Posts</h1>
 
         <Search
@@ -91,7 +91,7 @@ const HomePage = () => {
             </Card>
           )}
         />
-      </div>
+      </>
     </Layout>
   );
 };

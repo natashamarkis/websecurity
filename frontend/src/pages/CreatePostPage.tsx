@@ -25,7 +25,7 @@ const CreatePostPage = () => {
 
   return (
     <Layout>
-      <div style={{ width: '100%' }}>
+      <>
         <h1>Create New Post</h1>
         <Card>
           <Form name="createPost" onFinish={onFinish} layout="vertical">
@@ -55,7 +55,7 @@ const CreatePostPage = () => {
             </Form.Item>
           </Form>
         </Card>
-      </div>
+      </>
     </Layout>
   );
 };
