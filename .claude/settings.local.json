@@ -16,7 +16,10 @@
       "Bash(git commit:*)",
       "Bash(mkdir:*)",
       "Bash(npm create:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(git reset:*)"
     ]
   }
 }
