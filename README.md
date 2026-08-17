@@ -72,8 +72,21 @@ websecurity/
 │   └── package.json
 │
 └── docs/                  # Документация
-    └── plans/             # Implementation планы
+    ├── security-guide/    # Подробное руководство по уязвимостям (теория, кейсы, защита)
+    ├── demo/              # Демо-сценарии для tech talk (XSS, CSRF PoC)
+    └── plans/             # Design/implementation планы
 ```
+
+## 📖 Материалы для Tech Talk
+
+Основная информация для подготовки доклада собрана в `docs/`:
+
+- **[docs/security-guide/index.md](docs/security-guide/index.md)** — углубленное руководство по 9 уязвимостям: механизм атаки, реальные кейсы с финансовым impact, методы защиты, чеклисты. Точка входа со ссылками на все модули.
+- **[docs/security-guide/vulnerability-story.md](docs/security-guide/vulnerability-story.md)** — связный сюжет-нарратив по уязвимостям.
+- **[docs/demo/xss-and-csrf-demos.md](docs/demo/xss-and-csrf-demos.md)** — пошаговые сценарии живой демонстрации.
+- **[docs/plans/](docs/plans/)** — исходные design/implementation планы приложения.
+
+> Код приложения (`backend/`, `frontend/`) будет переписан заново — при подготовке доклада опирайтесь в первую очередь на материалы `docs/`.
 
 ## 🔐 Демонстрация уязвимостей
 
@@ -258,8 +271,8 @@ npm run dev
 3. Перейдите в Profile - bio рендерится через dangerouslySetInnerHTML
 
 ### 4. CSRF
-1. Войдите как alice
-2. Попробуйте удалить пост - нет CSRF защиты
+1. Login as alice
+2. Try to delete a post - there is no CSRF protection
 
 ### 5. Data Exposure
 1. Откройте: `http://localhost:3000/api/debug/config`
@@ -294,3 +307,4 @@ curl -X POST http://localhost:3000/api/preview \
 ---
 
 **Готово к презентации! 🎉**
+
