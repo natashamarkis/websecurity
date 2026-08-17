@@ -11,6 +11,8 @@ import { Layout, Menu, type MenuProps } from 'antd';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { ETM } from '@/lib/theme';
+
 const items: MenuProps['items'] = [
   {
     key: 'grp-products',
@@ -71,18 +73,20 @@ export function AppSider() {
       collapsible
       collapsed={collapsed}
       onCollapse={setCollapsed}
-      theme="light"
-      width={240}
+      theme="dark"
+      width={256}
+      style={{ background: ETM.dark }}
     >
       <Menu
         mode="inline"
+        theme="dark"
         selectedKeys={selectedKey ? [selectedKey] : []}
         defaultOpenKeys={openKey ? [openKey] : []}
         items={items}
         onClick={({ key }) => {
           if (key.startsWith('/')) router.push(key);
         }}
-        style={{ height: '100%', borderInlineEnd: 'none' }}
+        style={{ height: '100%', borderInlineEnd: 'none', background: ETM.dark }}
       />
     </Layout.Sider>
   );

@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 import { Logo } from '@/components/Logo';
 import { PayloadCopy } from '@/components/PayloadCopy';
+import { ETM } from '@/lib/theme';
 import { WIKI, type WikiEntry } from '@/lib/wiki';
 
 const { Title, Paragraph, Text } = Typography;
@@ -32,16 +33,22 @@ export default function WikiHomePage() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderBottom: '1px solid #f0f0f0',
+          background: ETM.dark,
         }}
       >
-        <Logo />
+        <Logo light />
         <Link href="/login">
           <Button type="primary">Войти в приложение</Button>
         </Link>
       </Layout.Header>
 
-      <Layout.Content style={{ padding: '24px', maxWidth: 1040, margin: '0 auto', width: '100%' }}>
+      <Layout.Content
+        style={{
+          padding: '24px',
+          background: '#eff2f6',
+        }}
+      >
+        <div style={{ maxWidth: 1040, margin: '0 auto', width: '100%' }}>
         <Title level={2} style={{ marginBottom: 4 }}>
           Каталог веб-уязвимостей
         </Title>
@@ -122,6 +129,7 @@ export default function WikiHomePage() {
           Подробная теория по каждой уязвимости — в{' '}
           <Text code>docs/security-guide/</Text>.
         </Paragraph>
+        </div>
       </Layout.Content>
     </Layout>
   );
