@@ -1,0 +1,49 @@
+.demo-control__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.demo-control__alert {
+  margin-bottom: 24px;
+}
+
+.demo-control__card {
+  margin-bottom: 24px;
+}
+
+.demo-control__panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.demo-control__panel-section {
+  margin-bottom: 12px;
+}
+
+.demo-control__payload {
+  font-size: 11px;
+  background: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.demo-control__payload-textarea {
+  margin-top: 8px;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.demo-control__copy-button {
+  margin-top: 8px;
+}
+
+.demo-control__form {
+  width: 100%;
+}
+
+.demo-control__full-width {
+  width: 100%;
+}
