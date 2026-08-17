@@ -1,7 +1,7 @@
 'use client';
 
 import { BookOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Dropdown, Layout, Menu, Space, type MenuProps } from 'antd';
+import { Avatar, Dropdown, Layout, Space, type MenuProps } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -9,14 +9,6 @@ import { ETM } from '@/lib/theme';
 
 import { Logo } from './Logo';
 import { apiLogout, type SessionUser } from '@/lib/api';
-
-const topItems: MenuProps['items'] = [
-  { key: 'products', label: 'Товары' },
-  { key: 'pricing', label: 'Ценообразование' },
-  { key: 'supplies', label: 'Поставки' },
-  { key: 'finance', label: 'Финансы' },
-  { key: 'integration', label: 'Интеграции' },
-];
 
 export function AppHeader({ user }: { user: SessionUser }) {
   const router = useRouter();
@@ -48,7 +40,7 @@ export function AppHeader({ user }: { user: SessionUser }) {
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 24,
+        justifyContent: 'space-between',
         height: ETM.headerHeight,
         background: ETM.dark,
         position: 'sticky',
@@ -57,18 +49,6 @@ export function AppHeader({ user }: { user: SessionUser }) {
       }}
     >
       <Logo light />
-      <Menu
-        mode="horizontal"
-        theme="dark"
-        selectable={false}
-        items={topItems}
-        style={{
-          flex: 1,
-          minWidth: 0,
-          borderBottom: 'none',
-          background: 'transparent',
-        }}
-      />
       <Dropdown menu={userMenu} trigger={['click']}>
         <Space style={{ cursor: 'pointer', color: '#fff' }}>
           <Avatar

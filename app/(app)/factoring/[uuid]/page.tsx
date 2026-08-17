@@ -145,7 +145,7 @@ export default function FactoringDetailPage() {
           type="info"
           showIcon
           style={{ marginTop: 12 }}
-          message="CSRF-PoC откроет страницу, которая сама отправит POST на этот эндпоинт с вашей кукой. Для «настоящего» кросс-сайта откройте csrf-poc.html с диска (file://)."
+          message="CSRF-PoC откроет страницу, которая сама отправит POST на этот эндпоинт с вашей кукой сессии. CSRF-токена нет — запрос проходит. Затем обновите эту страницу: статус изменится."
         />
       </Card>
     </div>

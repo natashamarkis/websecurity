@@ -22,15 +22,14 @@ export async function POST(req: Request) {
 
   const res = NextResponse.json({ user: publicUser(user) });
 
-  // ⚠️ УЯЗВИМОСТЬ (по паттерну оригинала):
-  //  - httpOnly: false  => куку session-id видно из document.cookie => крадёт любой XSS
-  //  - sameSite: 'none' => кука уходит на кросс-сайтовые запросы => возможен CSRF
-  //    (secure: true нужен для SameSite=None; на http://localhost Chrome/Firefox
-  //     считают localhost «secure context» и принимают такую куку)
+  // ⚠️ УЯЗВИМОСТЬ (по паттерну оригинала): httpOnly:false => куку session-id
+  // видно из document.cookie => её крадёт любой XSS.
+  // sameSite:'lax' и без secure — чтобы сессия НАДЁЖНО работала на http://localhost,
+  // http://127.0.0.1 и по локальной сети (Secure-куку по http часть браузеров
+  // отвергает). CSRF-демо остаётся рабочим same-origin (см. csrf-poc.html).
   res.cookies.set(SESSION_COOKIE, sid, {
     httpOnly: false,
-    sameSite: 'none',
-    secure: true,
+    sameSite: 'lax',
     path: '/',
   });
 
