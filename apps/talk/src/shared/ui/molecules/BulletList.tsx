@@ -1,22 +1,20 @@
 'use client'
 
-import { List, Typography } from 'antd'
+import { Flex, Typography } from 'antd'
 
 interface BulletListProps {
   items: string[]
 }
 
-/** Обёртка над List для тезисов слайда. Крупный текст, без рамок. */
+/** Тезисы слайда: крупный текст, без рамок. (antd List в 6.6 помечен deprecated, поэтому Flex.) */
 export function BulletList({ items }: BulletListProps) {
   return (
-    <List
-      dataSource={items}
-      split={false}
-      renderItem={(item) => (
-        <List.Item style={{ padding: '8px 0', border: 'none' }}>
+    <Flex vertical gap={12} component="ul" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+      {items.map((item) => (
+        <li key={item}>
           <Typography.Text style={{ fontSize: 24 }}>• {item}</Typography.Text>
-        </List.Item>
-      )}
-    />
+        </li>
+      ))}
+    </Flex>
   )
 }
