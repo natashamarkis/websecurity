@@ -9,6 +9,8 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.resolve(here, '../../..')
 const slidesDir = path.join(repoRoot, 'content', 'slides')
 const indexPath = path.join(slidesDir, 'index.json')
+/** Откуда слайды типа `code` берут файлы. Переопределяется через TALK_SRC_DIR. */
+const talkSrcDir = path.resolve(process.env.TALK_SRC_DIR ?? path.join(repoRoot, 'apps', 'talk', 'src'))
 
 async function main(): Promise<void> {
   if (!existsSync(indexPath)) {
@@ -34,7 +36,9 @@ async function main(): Promise<void> {
     modules.push({ file, data: JSON.parse(await readFile(full, 'utf8')) })
   }
 
-  const result = validateModules(modules)
+  const result = validateModules(modules, {
+    fileExists: (rel) => existsSync(path.join(talkSrcDir, rel)),
+  })
   if (result.ok) {
     console.log(`ok: ${modules.length} module(s) valid`)
     return

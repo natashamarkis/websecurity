@@ -44,4 +44,26 @@ describe('validateModules', () => {
   it('returns ok for an empty set', () => {
     expect(validateModules([]).ok).toBe(true)
   })
+
+  it('reports code.file paths that do not exist when a checker is given', () => {
+    const mod = {
+      id: 'xss',
+      title: 'XSS',
+      slides: [
+        {
+          type: 'code',
+          lang: 'tsx',
+          vulnerable: { file: 'features/vuln-xss/render.vulnerable.tsx' },
+          fixed: { file: 'features/vuln-xss/missing.tsx' },
+        },
+      ],
+    }
+    const exists = (file: string) => file.endsWith('render.vulnerable.tsx')
+    const res = validateModules([{ file: '01-xss.json', data: mod }], { fileExists: exists })
+    expect(res.ok).toBe(false)
+    if (!res.ok) {
+      expect(res.errors.join('\n')).toContain('missing.tsx')
+      expect(res.errors.join('\n')).not.toContain('render.vulnerable.tsx')
+    }
+  })
 })
