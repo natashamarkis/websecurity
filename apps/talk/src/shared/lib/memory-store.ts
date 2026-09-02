@@ -7,12 +7,14 @@ export interface Comment {
 
 interface State {
   comments: Comment[]
+  counter: number
 }
 
 /** Стартовое состояние: с ним демо всегда начинается одинаково. */
 function seed(): State {
   const now = Date.now()
   return {
+    counter: 100,
     comments: [
       { id: 'c-1', author: 'Мария', text: 'Отличный продукт, пользуюсь каждый день!', createdAt: new Date(now - 3_600_000).toISOString() },
       { id: 'c-2', author: 'Иван', text: 'Есть вопрос по тарифам — куда писать?', createdAt: new Date(now - 1_800_000).toISOString() },
@@ -20,30 +22,36 @@ function seed(): State {
   }
 }
 
-let state: State = seed()
-let counter = 100
-
 /**
- * In-memory стор демо-сайта. Живёт в процессе Next: без БД, без миграций,
- * «Сбросить» в тулбаре возвращает seed. Модульный синглтон — один на процесс.
+ * Состояние держим на globalThis: в dev Next/Turbopack собирает route handlers
+ * и страницы в разные модульные графы, и обычный модульный синглтон у них разный.
  */
+const g = globalThis as unknown as { __wsDemoStore?: State }
+g.__wsDemoStore ??= seed()
+
+function state(): State {
+  return g.__wsDemoStore!
+}
+
+/** In-memory стор демо-сайта. Без БД; «Сбросить» в тулбаре возвращает seed. */
 export const store = {
   listComments(): Comment[] {
-    return state.comments
+    return state().comments
   },
   addComment(input: { author: string; text: string }): Comment {
-    counter += 1
+    const s = state()
+    s.counter += 1
     const comment: Comment = {
-      id: `c-${counter}`,
+      id: `c-${s.counter}`,
       author: input.author,
       text: input.text,
       createdAt: new Date().toISOString(),
     }
-    state.comments = [...state.comments, comment]
+    s.comments = [...s.comments, comment]
     return comment
   },
-  reset(): State {
-    state = seed()
-    return state
+  reset(): { comments: Comment[] } {
+    g.__wsDemoStore = seed()
+    return { comments: g.__wsDemoStore.comments }
   },
 }
