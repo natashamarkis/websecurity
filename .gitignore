@@ -49,3 +49,13 @@ nul
 
 # ─── Local Claude Code settings (per-developer) ─────────────
 .claude/settings.local.json
+
+# ─── Next.js / monorepo build ───────────────────────────────
+.next/
+*.tsbuildinfo
+.turbo/
+next-env.d.ts
+
+# ─── Test artifacts ─────────────────────────────────────────
+test-results/
+playwright-report/

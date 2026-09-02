@@ -1,0 +1,16 @@
+{
+  "name": "websecurity",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "engines": { "node": ">=20.9.0" },
+  "scripts": {
+    "dev": "pnpm --filter @ws/talk dev",
+    "dev:evil": "pnpm --filter @ws/evil dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "validate:slides": "pnpm --filter @ws/slides-schema validate",
+    "e2e": "pnpm --filter @ws/talk e2e"
+  }
+}
