@@ -2,7 +2,9 @@
   "name": "websecurity",
   "private": true,
   "packageManager": "pnpm@9.15.0",
-  "engines": { "node": ">=20.9.0" },
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "pnpm --filter @ws/talk dev",
     "dev:evil": "pnpm --filter @ws/evil dev",
@@ -12,5 +14,11 @@
     "test": "pnpm -r test",
     "validate:slides": "pnpm --filter @ws/slides-schema validate",
     "e2e": "pnpm --filter @ws/talk e2e"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "eslint": "9",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.69.0"
   }
 }
