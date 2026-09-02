@@ -1,0 +1,37 @@
+{
+  "name": "@ws/talk",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "e2e": "playwright test"
+  },
+  "dependencies": {
+    "next": "^16.3.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "antd": "^6.6.2",
+    "@ant-design/nextjs-registry": "^1.3.0",
+    "@ws/slides-schema": "workspace:*",
+    "shiki": "^4.4.3",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "5.9.3",
+    "vitest": "^4.1.11",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "jsdom": "^25.0.0",
+    "@playwright/test": "^1.62.1"
+  }
+}
