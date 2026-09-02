@@ -16,5 +16,6 @@ export default async function SlideRoute({ params }: SlideRouteProps) {
     notFound()
   }
 
-  return <TalkSlidePage module={module} index={index} />
+  const outline = modules.map((m) => ({ id: m.id, slideCount: m.slides.length }))
+  return <TalkSlidePage module={module} index={index} outline={outline} />
 }
