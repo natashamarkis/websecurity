@@ -13,25 +13,25 @@
     "e2e": "playwright test"
   },
   "dependencies": {
+    "@ant-design/nextjs-registry": "^1.3.0",
+    "@ws/slides-schema": "workspace:*",
+    "antd": "^6.6.2",
     "next": "^16.3.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "antd": "^6.6.2",
-    "@ant-design/nextjs-registry": "^1.3.0",
-    "@ws/slides-schema": "workspace:*",
     "shiki": "^4.4.3",
     "zod": "^4.5.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.1.0",
     "@types/node": "22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "typescript": "5.9.3",
-    "vitest": "^4.1.11",
-    "@vitejs/plugin-react": "^4.3.0",
-    "@testing-library/react": "^16.1.0",
-    "@testing-library/jest-dom": "^6.6.0",
+    "@vitejs/plugin-react": "6",
     "jsdom": "^25.0.0",
-    "@playwright/test": "^1.62.1"
+    "typescript": "5.9.3",
+    "vitest": "^4.1.11"
   }
 }
