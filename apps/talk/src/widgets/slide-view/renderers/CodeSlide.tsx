@@ -1,24 +1,44 @@
-'use client'
-
-import { Flex, Typography } from 'antd'
+import { Tabs } from 'antd'
 import type { z } from 'zod'
 import type { CodeSlideSchema } from '@ws/slides-schema'
 import { SlideTitle } from '@/shared/ui/atoms/SlideTitle'
+import { CodeBlock } from '@/shared/ui/molecules/CodeBlock'
+import { readCode } from '@/features/code-view/read-code'
+import { highlight } from '@/shared/lib/highlight'
 
 type CodeSlideData = z.infer<typeof CodeSlideSchema>
 
 /**
- * Заглушка: показывает, какие файлы будут подсвечены.
- * Чтение файлов и подсветка через shiki подключаются в Task 3.5.
+ * Серверный рендерер: читает реальные файлы фичи из src/ и подсвечивает их.
+ * Слайд всегда показывает тот код, который на самом деле исполняется в демо.
  */
-export function CodeSlide({ slide }: { slide: CodeSlideData }) {
+export async function CodeSlide({ slide }: { slide: CodeSlideData }) {
+  const vulnerableHtml = await highlight(await readCode(slide.vulnerable.file), slide.lang)
+  const fixedHtml = slide.fixed
+    ? await highlight(await readCode(slide.fixed.file), slide.lang)
+    : undefined
+
+  const items = [
+    {
+      key: 'vulnerable',
+      label: `Уязвимо · ${slide.vulnerable.file}`,
+      children: <CodeBlock html={vulnerableHtml} />,
+    },
+    ...(fixedHtml && slide.fixed
+      ? [
+          {
+            key: 'fixed',
+            label: `Исправлено · ${slide.fixed.file}`,
+            children: <CodeBlock html={fixedHtml} />,
+          },
+        ]
+      : []),
+  ]
+
   return (
     <>
       {slide.title && <SlideTitle level={2}>{slide.title}</SlideTitle>}
-      <Flex vertical gap={8}>
-        <Typography.Text code>{slide.vulnerable.file}</Typography.Text>
-        {slide.fixed && <Typography.Text code>{slide.fixed.file}</Typography.Text>}
-      </Flex>
+      <Tabs items={items} size="large" />
     </>
   )
 }
