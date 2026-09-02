@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { ConfigProvider, type ThemeConfig } from 'antd'
+import { ConfigProvider, App, type ThemeConfig } from 'antd'
 import ruRU from 'antd/locale/ru_RU'
 
 interface ThemeProviderProps {
@@ -9,10 +9,11 @@ interface ThemeProviderProps {
   children: ReactNode
 }
 
+/** ConfigProvider + App: App нужен, чтобы message/notification брали цвета из темы. */
 export function ThemeProvider({ theme, children }: ThemeProviderProps) {
   return (
     <ConfigProvider theme={theme} locale={ruRU}>
-      {children}
+      <App>{children}</App>
     </ConfigProvider>
   )
 }
