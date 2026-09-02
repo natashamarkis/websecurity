@@ -1,7 +1,12 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import type { Slide } from '@ws/slides-schema'
 import { SlideView } from './SlideView'
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn(), refresh: vi.fn(), prefetch: vi.fn() }),
+  usePathname: () => '/talk/xss/1',
+}))
 
 describe('SlideView', () => {
   it('renders a title slide', () => {

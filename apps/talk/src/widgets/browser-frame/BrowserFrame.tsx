@@ -54,11 +54,11 @@ export function BrowserFrame({ url, mode, payload, evilUrl, children }: BrowserF
     <Card
       styles={{ header: { padding: '8px 16px' }, body: { padding: 0 } }}
       title={
-        <Flex align="center" gap={12}>
+        <Flex align="center" gap={12} wrap>
           <Tag color="blue" style={{ margin: 0 }}>
             {hostOf(url)}
           </Tag>
-          <Input value={url} readOnly style={{ flex: 1 }} />
+          <Input value={url} readOnly style={{ flex: 1, minWidth: 220 }} />
           <DemoModeToggle mode={mode} />
           {payload && (
             <Tooltip title={payload}>

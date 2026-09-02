@@ -1,0 +1,38 @@
+/* Переход слайд → сайт. React ViewTransition вешает view-transition-name на обёртки. */
+
+::view-transition-old(root) {
+  animation: 420ms ease-in both talk-dim-out;
+}
+::view-transition-new(root) {
+  animation: 420ms ease-out both talk-fade-in;
+}
+
+::view-transition-group(demo-frame) {
+  animation-duration: 520ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+::view-transition-old(demo-frame),
+::view-transition-new(demo-frame) {
+  mix-blend-mode: normal;
+  overflow: clip;
+}
+
+@keyframes talk-dim-out {
+  to {
+    opacity: 0;
+    filter: blur(12px) brightness(0.6);
+  }
+}
+@keyframes talk-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

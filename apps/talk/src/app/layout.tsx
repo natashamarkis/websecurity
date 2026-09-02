@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { AntdRegistry } from '@ant-design/nextjs-registry'
+import './globals.css'
 
 export const metadata = {
   title: 'Web Security Tech Talk',
