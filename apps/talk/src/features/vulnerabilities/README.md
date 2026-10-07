@@ -8,7 +8,7 @@
 | [xss](xss) | Stored XSS | Демо и исправление |
 | [csrf](csrf) | CSRF | Демо и серверная защита токеном |
 | [dependencies](dependencies) | Уязвимые npm-зависимости | Две версии учебной библиотеки и демо товара |
-| [third-party-scripts](third-party-scripts) | Сторонние скрипты / Magecart | Подмена аналитики, локальный получатель и SRI |
+| [third-party-scripts](third-party-scripts) | Сторонние скрипты / Magecart | Подмена чата поддержки, локальный получатель и отключение виджета на checkout |
 | [open-redirects](open-redirects) | Open Redirects | Только теория |
 | [clickjacking](clickjacking) | Clickjacking | Только теория |
 | [prototype-pollution](prototype-pollution) | Prototype Pollution | Только теория |

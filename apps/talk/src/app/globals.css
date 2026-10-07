@@ -124,6 +124,15 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .checkout-catalog { display: block; width: 100%; max-width: 320px; height: auto; margin: 20px 0; }
 .checkout-form form { display: grid; gap: 10px; }
 .checkout-form .ant-btn { justify-self: start; margin-top: 8px; }
+.checkout-form .ant-alert { margin-top: 20px; }
+.support-chat { border: 1px solid #dce3ed; border-radius: 6px; overflow: hidden; }
+.support-chat header { display: flex; flex-direction: column; gap: 6px; background: #05358c; color: white; padding: 16px; }
+.support-chat header span { font-size: 12px; }
+.support-chat-messages { padding: 16px; font-size: 14px; line-height: 1.6; }
+.support-chat-messages p { margin: 0 0 16px; }
+.support-chat-messages button { max-width: 100%; white-space: normal; border: 1px solid #0097a7; border-radius: 4px; background: white; color: #006c78; padding: 8px 12px; font: inherit; cursor: pointer; }
+.support-chat-messages .support-chat-reply { margin: 16px 0 0; padding-left: 12px; border-left: 3px solid #0097a7; }
+.checkout-contact { display: flex; flex-direction: column; gap: 12px; padding: 20px 0; border-block: 1px solid #e8edf5; }
 .checkout-monitor { border-left: 1px solid #e8edf5; padding-left: 32px; }
 .checkout-monitor .ant-radio-group { display: flex; flex-wrap: wrap; margin: 20px 0; }
 .checkout-details { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px; font-size: 14px; line-height: 1.5; }

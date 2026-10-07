@@ -15,9 +15,9 @@ describe('buildSecurityHeaders', () => {
     expect(h['Referrer-Policy']).toBeTruthy()
   })
 
-  it('allows only the configured local CDN for the SRI demonstration', () => {
+  it('allows the local capture monitor but not the supplier script', () => {
     const csp = buildSecurityHeaders('fixed', 3001)['Content-Security-Policy']!
-    expect(csp).toContain("script-src 'self' 'unsafe-inline' 'unsafe-eval' http://127.0.0.1:3001 http://localhost:3001")
+    expect(csp.split('; ').find((item) => item.startsWith('script-src'))).toBe("script-src 'self' 'unsafe-inline' 'unsafe-eval'")
     expect(csp).toContain("connect-src 'self' http://127.0.0.1:3001 http://localhost:3001")
     expect(buildSecurityHeaders('fixed')['Content-Security-Policy']).not.toContain('3001')
     expect(buildSecurityHeaders('fixed', -1)['Content-Security-Policy']).not.toContain('127.0.0.1')

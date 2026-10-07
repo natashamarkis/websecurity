@@ -8,13 +8,13 @@ import { DEMO_SESSION_COOKIE, DEMO_SESSION_VALUE } from '@/entities/demo-user/mo
 export function buildSecurityHeaders(mode: DemoMode, thirdPartyPort?: number): Record<string, string> {
   if (mode !== 'fixed') return {}
 
-  // Только checkout-демо: разрешаем CDN в CSP, чтобы показать именно проверку SRI.
+  // Только checkout-демо: разрешаем запросы монитора к локальному получателю.
   const localOrigins = thirdPartyPort && Number.isInteger(thirdPartyPort) && thirdPartyPort > 0 && thirdPartyPort <= 65535
     ? ` http://127.0.0.1:${thirdPartyPort} http://localhost:${thirdPartyPort}` : ''
 
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'" + localOrigins,
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self' data:",
