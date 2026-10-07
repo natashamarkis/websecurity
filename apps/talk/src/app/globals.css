@@ -94,8 +94,14 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .delivery-profile form { display: grid; gap: 12px; margin-bottom: 20px; }
 .delivery-profile form .ant-btn { justify-self: start; }
 .delivery-attempt { display: flex; align-items: flex-start; flex-direction: column; gap: 8px; margin-top: 24px; overflow-wrap: anywhere; }
-.delivery-offer { border-left: 1px solid #e8edf5; padding-left: 32px; }
-.delivery-offer img { display: block; width: 100%; max-width: 420px; height: 240px; object-fit: contain; }
+.delivery-offer { min-width: 0; border-left: 1px solid #e8edf5; padding-left: 32px; overflow-wrap: anywhere; }
+.delivery-mail-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; color: #647084; padding-bottom: 16px; border-bottom: 1px solid #e8edf5; }
+.delivery-mail-heading .anticon { color: #05358c; font-size: 20px; }
+.delivery-offer h4.ant-typography { margin: 20px 0 16px; font-size: 20px; }
+.delivery-mail-meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 12px; margin: 0 0 20px; font-size: 13px; line-height: 1.5; }
+.delivery-mail-meta dt { color: #647084; }
+.delivery-mail-meta dd { margin: 0; }
+.delivery-offer img { display: block; width: 100%; max-width: 420px; height: auto; margin: 16px 0 20px; }
 @media (max-width: 900px) {
   .delivery-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .delivery-offer { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
