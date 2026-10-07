@@ -15,8 +15,10 @@ interface StepTimelineProps {
 export function StepTimeline({ steps }: StepTimelineProps) {
   return (
     <Timeline
-      items={steps.map((step) => ({
-        children: (
+      className="talk-timeline"
+      items={steps.map((step, index) => ({
+        icon: <span className="timeline-number">{index + 1}</span>,
+        content: (
           <>
             <Typography.Text strong style={{ fontSize: 22 }}>
               {step.title}
