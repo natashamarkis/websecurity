@@ -10,7 +10,7 @@ type CodeSlideData = z.infer<typeof CodeSlideSchema>
 
 /**
  * Серверный рендерер: читает реальные файлы фичи из src/ и подсвечивает их.
- * Основной блок показывает исполняемый код демо; примеры запросов берутся из слайда.
+ * Основной блок показывает код или конфигурацию демо; примеры запросов берутся из слайда.
  */
 export async function CodeSlide({ slide }: { slide: CodeSlideData }) {
   const vulnerableHtml = await highlight(await readCode(slide.vulnerable.file), slide.lang)
@@ -59,6 +59,7 @@ export async function CodeSlide({ slide }: { slide: CodeSlideData }) {
   return (
     <div className={slide.requestExamples ? 'code-slide-with-requests' : undefined}>
       {slide.title && <SlideTitle level={2}>{slide.title}</SlideTitle>}
+      {slide.caption && <p className="code-caption">{slide.caption}</p>}
       <Tabs items={items} size="large" />
     </div>
   )

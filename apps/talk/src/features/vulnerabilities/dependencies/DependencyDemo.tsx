@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { BugOutlined, SaveOutlined } from '@ant-design/icons'
 import { Button, Input, Tag, Tooltip, Typography } from 'antd'
 import type { DemoMode } from '@/shared/lib/demoMode'
-import { version as vulnerableVersion } from './library/ProductDescription'
-import { version as fixedVersion } from './library/FixedProductDescription'
+import vulnerablePackage from './manifests/vulnerable.package.json'
+import fixedPackage from './manifests/fixed.package.json'
 import { DEFAULT_DESCRIPTION, DEPENDENCY_PAYLOAD } from './fixtures'
 import { ProductPreview } from './ProductPreview'
 
@@ -14,6 +14,7 @@ export function DependencyDemo({ mode }: { mode: DemoMode }) {
   const [description, setDescription] = useState(DEFAULT_DESCRIPTION)
   const [revision, setRevision] = useState(0)
   const vulnerable = mode === 'vulnerable'
+  const manifest = vulnerable ? vulnerablePackage : fixedPackage
 
   useEffect(() => {
     const reset = () => {
@@ -42,7 +43,7 @@ export function DependencyDemo({ mode }: { mode: DemoMode }) {
       </form>
       <div className="dependency-package">
         <Tag>Учебная библиотека</Tag>
-        <Typography.Text code data-testid="dependency-version">demo-description@{vulnerable ? vulnerableVersion : fixedVersion}</Typography.Text>
+        <Typography.Text code data-testid="dependency-version">demo-description@{manifest.dependencies['demo-description']}</Typography.Text>
       </div>
       <pre className="dependency-consumer"><code>{'<ProductDescription text={product.description} />'}</code></pre>
     </section>

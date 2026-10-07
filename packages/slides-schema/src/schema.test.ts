@@ -57,6 +57,11 @@ describe('SlideSchema', () => {
     ).not.toThrow()
   })
 
+  it('preserves a code slide caption', () => {
+    const slide = SlideSchema.parse({ type: 'code', lang: 'json', vulnerable: { file: 'package.json' }, caption: 'Update the dependency in our application.' })
+    expect(slide).toHaveProperty('caption', 'Update the dependency in our application.')
+  })
+
   it('preserves a pair of frontend request examples on a code slide', () => {
     const requestExamples = {
       title: 'Frontend requests', lang: 'ts', caption: 'Compare the request bodies',

@@ -70,6 +70,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .slide-content .ant-tabs { min-width: 0; width: 100%; }
 .slide-content .shiki { margin: 0; padding: 24px; overflow: auto; max-height: 440px; }
 .code-slide-with-requests { min-width: 0; width: 100%; }
+.code-caption { font-size: 18px; line-height: 1.5; margin: 0 0 20px; white-space: pre-line; overflow-wrap: anywhere; }
 .code-slide-with-requests .backend-code .shiki { max-height: 280px; padding: 16px; font-size: 14px; }
 .request-examples { margin-top: 16px; padding-top: 16px; border-top: 1px solid #dce3ed; }
 .request-examples h3.ant-typography { font-size: 18px; margin: 0 0 12px; }

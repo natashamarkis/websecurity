@@ -10,7 +10,7 @@ PPTX хранится у автора, его исходный файл в ра�
 | --- | --- | --- | --- |
 | 4 | Frontend | XSS | Модуль `/talk/xss/0`: теория, stored XSS в комментариях, код и исправленный рендер |
 | 5 | Frontend | CSRF | `/talk/csrf/0`: суть, другие защиты, код и демо доставки |
-| 6 | Frontend | Уязвимые npm-зависимости | `/talk/dependencies/0`: суть, audit, код и демо двух версий учебной библиотеки |
+| 6 | Frontend | Уязвимые npm-зависимости | `/talk/dependencies/0`: суть, действия потребителя, package.json и демо двух версий |
 | 7 | Frontend | Сторонние скрипты / Magecart | Отдельного демо и раздела гайда нет |
 | 8 | Frontend | Open Redirects | Демо нет; материалы в `security-guide/module/06-open-redirects.md` |
 | 9 | Frontend | Clickjacking | Есть заголовки в fixed; сценария с внешним iframe нет |

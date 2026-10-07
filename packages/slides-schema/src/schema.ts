@@ -45,6 +45,7 @@ export const CodeSlideSchema = z.object({
   ...base,
   type: z.literal('code'),
   title: z.string().optional(),
+  caption: z.string().min(1).optional(),
   lang: z.string().min(1),
   vulnerable: codeRef,
   fixed: codeRef.optional(),
