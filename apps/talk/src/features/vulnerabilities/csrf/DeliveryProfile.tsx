@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Alert, Button, Flex, Input, Spin, Tag, Tooltip, Typography } from 'antd'
-import { ExportOutlined, ReloadOutlined, SaveOutlined } from '@ant-design/icons'
+import { ExportOutlined, MailOutlined, ReloadOutlined, SaveOutlined } from '@ant-design/icons'
 
 interface Profile {
   address: string
@@ -110,9 +110,15 @@ export function DeliveryProfile({ attackerPort }: { attackerPort: number }) {
           </div>}
         </>}
       </section>
-      <aside className="delivery-offer">
+      <aside className="delivery-offer" aria-label="Письмо с акцией">
+        <div className="delivery-mail-heading"><MailOutlined /> <span>Почта</span><Tag color="blue">Входящие</Tag></div>
+        <Typography.Title level={4}>Вам скидка 20% на доставку</Typography.Title>
+        <dl className="delivery-mail-meta">
+          <dt>От кого</dt><dd>Служба акций &lt;promo@delivery-bonus.example&gt;</dd>
+          <dt>Кому</dt><dd>Мне</dd>
+        </dl>
+        <Typography.Paragraph>Здравствуйте! Для вас доступна персональная скидка на доставку. Перейдите по ссылке, чтобы получить её.</Typography.Paragraph>
         <img src="/presentation/catalog.png" alt="Каталог электротехнической продукции" width={420} height={300} />
-        <Typography.Title level={4}>Скидка 20% на доставку</Typography.Title>
         <Button href={offerUrl || undefined} target="_blank" rel="noopener noreferrer" icon={<ExportOutlined />} disabled={!profile || !offerUrl}>Открыть акцию</Button>
       </aside>
     </div>

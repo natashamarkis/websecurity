@@ -13,7 +13,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     })
     const titles = [
       'CSRF: действие без согласия пользователя',
-      'Что ещё защищает от CSRF',
+      'Что защищает от CSRF',
     ]
     await page.goto('/talk/csrf/0')
     for (const [index, title] of titles.entries()) {
@@ -69,9 +69,12 @@ test('demonstrates a real cross-origin form and blocks it after switching to fix
   await expect(page).toHaveURL(/\/site\/delivery$/)
   await expect(page.getByTestId('delivery-address')).toContainText('Лесная')
   await expect(page.getByRole('button', { name: 'Скопировать payload' })).toHaveCount(0)
+  const email = page.getByRole('complementary', { name: 'Письмо с акцией' })
+  await expect(email.getByText('Входящие', { exact: true })).toBeVisible()
+  await expect(email.getByText(/promo@delivery-bonus\.example/)).toBeVisible()
 
   const offerPromise = context.waitForEvent('page')
-  await page.getByRole('link', { name: 'Открыть акцию' }).click()
+  await email.getByRole('link', { name: 'Открыть акцию' }).click()
   const offer = await offerPromise
   offer.on('pageerror', (error) => errors.push(error.message))
   await expect(offer.getByRole('button', { name: 'Получить скидку' })).toBeVisible()
