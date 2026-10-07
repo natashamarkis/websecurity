@@ -132,7 +132,6 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .support-chat-messages p { margin: 0 0 16px; }
 .support-chat-messages button { max-width: 100%; white-space: normal; border: 1px solid #0097a7; border-radius: 4px; background: white; color: #006c78; padding: 8px 12px; font: inherit; cursor: pointer; }
 .support-chat-messages .support-chat-reply { margin: 16px 0 0; padding-left: 12px; border-left: 3px solid #0097a7; }
-.checkout-contact { display: flex; flex-direction: column; gap: 12px; padding: 20px 0; border-block: 1px solid #e8edf5; }
 .checkout-monitor { border-left: 1px solid #e8edf5; padding-left: 32px; }
 .checkout-monitor .ant-radio-group { display: flex; flex-wrap: wrap; margin: 20px 0; }
 .checkout-details { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px; font-size: 14px; line-height: 1.5; }

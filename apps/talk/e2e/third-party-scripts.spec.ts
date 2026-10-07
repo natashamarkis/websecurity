@@ -1,20 +1,22 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Request } from '@playwright/test'
 import demoData from '../src/features/vulnerabilities/third-party-scripts/demo-data.json' with { type: 'json' }
+import { TRUSTED_CHAT_INTEGRITY } from '../src/features/vulnerabilities/third-party-scripts/integrity'
 
 for (const width of [1440, 390]) {
-  test(`isolates checkout from the compromised support chat at ${width}px`, async ({ page }) => {
+  test(`checks script integrity on home and checkout at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
     await page.emulateMedia({ reducedMotion: 'reduce' })
     const errors: string[] = []
-    const leaks: string[] = []
-    const scripts: string[] = []
+    const integrityErrors: string[] = []
+    const leaks: Request[] = []
     page.on('pageerror', (error) => errors.push(error.message))
     page.on('console', (message) => {
-      if (message.type() === 'error' && !message.location().url.endsWith('/favicon.ico')) errors.push(message.text())
+      if (message.type() !== 'error' || message.location().url.endsWith('/favicon.ico')) return
+      if (/integrity|valid digest/i.test(message.text())) integrityErrors.push(message.text())
+      else errors.push(message.text())
     })
     page.on('request', (request) => {
-      if (request.url().endsWith('/third-party/collect')) leaks.push(request.postData() ?? '')
-      if (request.url().includes('/third-party/support-chat.js')) scripts.push(request.url())
+      if (request.url().endsWith('/third-party/collect')) leaks.push(request)
     })
     await page.goto('/talk/third-party-scripts/0')
     await expect(page.getByRole('heading', { name: 'Сторонние скрипты', exact: true })).toBeVisible()
@@ -24,73 +26,87 @@ for (const width of [1440, 390]) {
     await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
     await expect(page.getByRole('heading', { name: 'Сторонние скрипты: границы защиты' })).toBeVisible()
     await expect(page.getByText('Отключить скрипт только на checkout недостаточно:', { exact: false })).toBeVisible()
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width)
-    await page.screenshot({ path: `test-results/third-party-defenses-${width}.png`, fullPage: true, animations: 'disabled' })
     await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
     const ourCode = page.getByRole('tabpanel').locator('.backend-code')
-    const vendorCode = page.getByRole('region', { name: 'В файле поставщика: чтение и отправка полей заказа' })
+    const vendorCode = page.getByRole('region', { name: 'В файле поставщика: чтение и отправка данных покупателя' })
     await expect(ourCode).toContainText('createSupportChatScript')
-    await expect(ourCode).not.toContainText('return null')
-    await expect(vendorCode).toContainText("form.elements.namedItem('email').value")
+    await expect(ourCode).not.toContainText('script.integrity')
     const unchangedVendor = await vendorCode.textContent()
     await page.getByRole('tab', { name: 'Исправлено', exact: true }).click()
-    await expect(ourCode).toContainText("if (pathname === '/site/checkout') return null")
+    await expect(ourCode).toContainText('script.integrity = TRUSTED_CHAT_INTEGRITY')
+    await expect(ourCode).not.toContainText('pathname')
     await expect(vendorCode).toHaveText(unchangedVendor!)
     await page.screenshot({ path: `test-results/third-party-code-${width}.png`, fullPage: true, animations: 'disabled' })
     await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
-    const capturedRequest = page.waitForResponse((response) => response.url().endsWith('/third-party/collect'))
     await page.getByRole('button', { name: 'Открыть демонстрацию' }).click()
-    await expect(page).toHaveURL(/\/site\/checkout$/)
-    const capturedResponse = await capturedRequest
-    expect(capturedResponse.status()).toBe(204)
-    expect(capturedResponse.request().postDataJSON().data).toEqual(demoData)
-    expect(new URL(capturedResponse.url()).origin).not.toBe(new URL(page.url()).origin)
-    expect((await capturedResponse.request().allHeaders()).cookie).toBeUndefined()
-    await expect(page.getByTestId('captured-data')).toContainText(demoData.email)
-    await expect(page.getByTestId('script-status')).toHaveText('Чат загружен')
-    await expect(page.getByText('Учебный заказ оформлен', { exact: true })).toHaveCount(0)
-    await expect(page.getByLabel('Email покупателя')).toHaveAttribute('readonly', '')
-    await page.getByRole('button', { name: 'Когда доставят заказ?' }).click()
-    await expect(page.getByText('Доставка займёт 1–2 рабочих дня.', { exact: false })).toBeVisible()
-    const submit = page.getByRole('button', { name: 'Оформить заказ' })
-    await submit.click()
-    await expect(page.getByText('Учебный заказ оформлен', { exact: true })).toBeVisible()
-    await expect.poll(() => page.getByRole('img', { name: 'Каталог электротехнической продукции' }).evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0)
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width)
-    await page.screenshot({ path: `test-results/third-party-vulnerable-${width}.png`, fullPage: true, animations: 'disabled' })
+    await expect(page).toHaveURL(/\/site$/)
 
-    await page.getByText('Исходный', { exact: true }).click()
-    await expect(page.getByRole('radio', { name: 'Исходный', exact: true })).toBeChecked()
-    await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
-    await expect(page.getByTestId('script-status')).toHaveText('Чат загружен')
-    await page.getByRole('button', { name: 'Когда доставят заказ?' }).click()
-    await expect(page.getByText('Доставка займёт 1–2 рабочих дня.', { exact: false })).toBeVisible()
-    expect(leaks).toHaveLength(1)
-    const loadedScripts = scripts.length
+    for (const location of ['home', 'checkout']) {
+      if (location === 'checkout') {
+        // Полная навигация сохраняет fixed и проверяет файл на следующей странице.
+        const navigation = page.waitForResponse((response) => response.request().isNavigationRequest() && response.url().endsWith('/site/checkout'))
+        await page.getByRole('link', { name: 'К оформлению заказа' }).click()
+        expect((await navigation).headers()['content-security-policy']).toContain("script-src 'self' 'unsafe-inline' 'unsafe-eval' http://127.0.0.1:")
+        await expect(page.getByTestId('script-status')).toHaveText('Скрипт не выполнен')
+        await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
+        const previousLeaks = leaks.length
+        await page.getByText('Уязвимо', { exact: true }).click()
+        await expect.poll(() => leaks.length).toBe(previousLeaks + 1)
+      }
+      await expect(page.getByTestId('captured-data')).toContainText(demoData.email)
+      await expect(page.getByTestId('script-status')).toHaveText('Чат загружен')
+      const lastLeak = leaks.at(-1)!
+      expect(lastLeak.postDataJSON().data).toEqual(demoData)
+      expect(new URL(lastLeak.url()).origin).not.toBe(new URL(page.url()).origin)
+      expect((await lastLeak.allHeaders()).cookie).toBeUndefined()
+      await expect(page.getByLabel('Email покупателя')).toHaveAttribute('readonly', '')
+      await expect(page.getByText('Учебный заказ оформлен', { exact: true })).toHaveCount(0)
+      await page.getByRole('button', { name: 'Когда доставят заказ?' }).click()
+      await expect(page.getByText('Доставка займёт 1–2 рабочих дня.', { exact: false })).toBeVisible()
+      if (location === 'checkout') {
+        await page.getByRole('button', { name: 'Оформить заказ' }).click()
+        await expect(page.getByText('Учебный заказ оформлен', { exact: true })).toBeVisible()
+      }
+      await expect.poll(() => page.getByRole('img', { name: 'Каталог электротехнической продукции' }).evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0)
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width)
+      await page.screenshot({ path: `test-results/third-party-${location}-vulnerable-${width}.png`, fullPage: true, animations: 'disabled' })
 
-    await page.getByText('Исправлено', { exact: true }).click()
-    await expect(page.getByTestId('script-status')).toHaveText('Не подключён на checkout')
-    await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
-    await expect(page.getByRole('region', { name: 'Чат поддержки', exact: true })).toHaveCount(0)
-    await expect(page.getByRole('link', { name: 'support@example.test' })).toBeVisible()
-    await submit.click()
-    await expect(page.getByText('Учебный заказ оформлен', { exact: true })).toBeVisible()
-    expect(scripts).toHaveLength(loadedScripts)
-    expect(leaks).toHaveLength(1)
-    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width)
-    await page.screenshot({ path: `test-results/third-party-fixed-${width}.png`, fullPage: true, animations: 'disabled' })
+      const previousLeaks = leaks.length
+      await page.getByText('Исходный', { exact: true }).click()
+      await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
+      await expect(page.getByTestId('script-status')).toHaveText('Чат загружен')
+      expect(leaks).toHaveLength(previousLeaks)
 
-    const response = await page.reload()
-    const csp = response?.headers()['content-security-policy'] ?? ''
-    expect(csp.split('; ').find((directive) => directive.startsWith('script-src'))).not.toContain('http://127.0.0.1:')
-    expect(csp).toContain(`connect-src 'self' http://127.0.0.1:${process.env.CSRF_ATTACKER_PORT ?? 3001}`)
-    await expect(page.getByTestId('script-status')).toHaveText('Не подключён на checkout')
-    await page.getByText('Исходный', { exact: true }).click()
-    await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
-    await page.getByRole('button', { name: 'Сбросить', exact: true }).click()
-    await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
-    expect(scripts).toHaveLength(loadedScripts)
-    expect(leaks).toHaveLength(1)
+      const previousIntegrityErrors = integrityErrors.length
+      await page.getByText('Исправлено', { exact: true }).click()
+      await expect(page.getByTestId('script-status')).toHaveText('Скрипт не выполнен')
+      await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
+      await expect(page.getByRole('region', { name: 'Чат поддержки', exact: true })).toHaveCount(0)
+      await expect(page.locator('script[src*="/third-party/support-chat.js"]')).toHaveAttribute('integrity', TRUSTED_CHAT_INTEGRITY)
+      await expect.poll(() => integrityErrors.length).toBeGreaterThan(previousIntegrityErrors)
+      expect(leaks).toHaveLength(previousLeaks)
+      if (location === 'checkout') {
+        await page.getByRole('button', { name: 'Оформить заказ' }).click()
+        await expect(page.getByText('Учебный заказ оформлен', { exact: true })).toBeVisible()
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width)
+      await page.screenshot({ path: `test-results/third-party-${location}-fixed-${width}.png`, fullPage: true, animations: 'disabled' })
+
+      const response = await page.reload()
+      const csp = response?.headers()['content-security-policy'] ?? ''
+      expect(csp).toContain(`script-src 'self' 'unsafe-inline' 'unsafe-eval' http://127.0.0.1:${process.env.CSRF_ATTACKER_PORT ?? 3001}`)
+      await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
+      await expect(page.getByTestId('script-status')).toHaveText('Скрипт не выполнен')
+      await page.getByText('Исходный', { exact: true }).click()
+      await expect(page.getByTestId('script-status')).toHaveText('Чат загружен')
+      await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
+      await page.getByRole('button', { name: 'Когда доставят заказ?' }).click()
+      await expect(page.getByText('Доставка займёт 1–2 рабочих дня.', { exact: false })).toBeVisible()
+      await page.getByRole('button', { name: 'Сбросить', exact: true }).click()
+      await expect(page.getByTestId('capture-empty')).toHaveText('Данных этого запуска нет')
+      await expect(page.getByTestId('script-status')).toHaveText('Чат загружен')
+      expect(leaks).toHaveLength(previousLeaks)
+    }
     await page.keyboard.press('Escape')
     await expect(page).toHaveURL(/\/talk\/third-party-scripts\/3$/)
     await page.goto('/site/delivery')

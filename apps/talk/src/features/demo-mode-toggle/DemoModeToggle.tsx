@@ -7,6 +7,7 @@ import type { DemoMode } from '@/shared/lib/demoMode'
 
 interface DemoModeToggleProps {
   mode: DemoMode
+  reloadOnChange?: boolean
 }
 
 export async function setDemoMode(mode: DemoMode): Promise<void> {
@@ -18,7 +19,7 @@ export async function setDemoMode(mode: DemoMode): Promise<void> {
 }
 
 /** Тумблер «Уязвимо / Исправлено»: ставит cookie и перерисовывает серверные компоненты. */
-export function DemoModeToggle({ mode }: DemoModeToggleProps) {
+export function DemoModeToggle({ mode, reloadOnChange = false }: DemoModeToggleProps) {
   const router = useRouter()
   const [value, setValue] = useState<DemoMode>(mode)
   const [pending, startTransition] = useTransition()
@@ -27,7 +28,9 @@ export function DemoModeToggle({ mode }: DemoModeToggleProps) {
     setValue(next)
     startTransition(async () => {
       await setDemoMode(next)
-      router.refresh()
+      // Новый документ не наследует уже выполненные сторонние скрипты.
+      if (reloadOnChange) window.location.reload()
+      else router.refresh()
     })
   }
 

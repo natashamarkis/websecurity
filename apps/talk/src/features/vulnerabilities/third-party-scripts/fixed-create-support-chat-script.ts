@@ -1,8 +1,10 @@
-import { createSupportChatScript } from './create-support-chat-script'
+import { TRUSTED_CHAT_INTEGRITY } from './integrity'
 
-export function fixedCreateSupportChatScript(src: string, pathname: string) {
-  // На оформлении заказа чужой JavaScript вообще не загружаем.
-  if (pathname === '/site/checkout') return null
-
-  return createSupportChatScript(src)
+export function fixedCreateSupportChatScript(src: string) {
+  const script = document.createElement('script')
+  script.src = src
+  script.crossOrigin = 'anonymous'
+  // На любой странице: браузер проверяет файл ДО выполнения.
+  script.integrity = TRUSTED_CHAT_INTEGRITY
+  return script
 }

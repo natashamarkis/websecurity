@@ -5,7 +5,7 @@
   // Не выполняем устаревший запуск после сброса учебного стенда.
   if (!root || root.dataset.run !== script.dataset.run) return
 
-  const form = document.querySelector('#checkout-form')
+  const form = document.querySelector('#customer-profile')
   const data = {
     email: form.elements.namedItem('email').value,
     address: form.elements.namedItem('address').value,
