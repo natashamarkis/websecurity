@@ -13,18 +13,12 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     })
     const titles = [
       'CSRF: действие без согласия пользователя',
-      'Как «скидка» меняет адрес',
-      'Откуда берётся CSRF-токен',
       'Что ещё защищает от CSRF',
     ]
     await page.goto('/talk/csrf/0')
     for (const [index, title] of titles.entries()) {
       await expect(page).toHaveURL(new RegExp(`/talk/csrf/${index}$`))
       await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible()
-      if (index === 2) {
-        await expect(page.getByText(/randomBytes\(32\)/)).toBeVisible()
-        await expect(page.getByText(/HTTP 403, адрес прежний/)).toBeVisible()
-      }
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(viewport.width)
       if (viewport.width > 600) {
         expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBeLessThanOrEqual(viewport.height)
@@ -53,12 +47,12 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await page.screenshot({ path: `test-results/csrf-requests-${mode === 'Уязвимо' ? 'vulnerable' : 'fixed'}-${viewport.width}.png`, fullPage: true, animations: 'disabled' })
     }
     await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
-    await expect(page).toHaveURL(/\/talk\/csrf\/5$/)
+    await expect(page).toHaveURL(/\/talk\/csrf\/3$/)
     await expect(page.getByRole('button', { name: 'Открыть демонстрацию' })).toBeVisible()
 
     await page.goto('/site/delivery')
     await page.getByRole('button', { name: 'К слайду' }).click()
-    await expect(page).toHaveURL(/\/talk\/csrf\/5$/)
+    await expect(page).toHaveURL(/\/talk\/csrf\/3$/)
     expect(errors).toEqual([])
   })
 }
@@ -66,7 +60,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
 test('demonstrates a real cross-origin form and blocks it after switching to fixed', async ({ page, context }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
-  await page.goto('/talk/csrf/4')
+  await page.goto('/talk/csrf/2')
   await expect(page.getByRole('heading', { name: 'CSRF: бэкенд-код (Node.js)' })).toBeVisible()
   await page.getByRole('tab', { name: 'Исправлено', exact: true }).click()
   await expect(page.getByRole('tabpanel')).toContainText('fixedChangeDelivery')
@@ -134,6 +128,6 @@ test('demonstrates a real cross-origin form and blocks it after switching to fix
   await page.getByRole('button', { name: 'Сбросить', exact: true }).click()
   await expect(page.getByTestId('delivery-address')).toContainText('Лесная')
   await page.keyboard.press('Escape')
-  await expect(page).toHaveURL(/\/talk\/csrf\/5$/)
+  await expect(page).toHaveURL(/\/talk\/csrf\/3$/)
   expect(errors).toEqual([])
 })

@@ -13,7 +13,7 @@ Next.js-маршрут `/api/site/delivery` выбирает обработчи�
 vulnerable ? changeDelivery(session, input) : fixedChangeDelivery(session, input)
 ```
 
-Страница `/site/delivery`; объяснение `/talk/csrf/0`–`/talk/csrf/3`,
-код `/talk/csrf/4`, демо `/talk/csrf/5`.
+Страница `/site/delivery`; объяснение `/talk/csrf/0`–`/talk/csrf/1`,
+код `/talk/csrf/2`, демо `/talk/csrf/3`.
 `pnpm dev` из корня запускает основной сайт и отдельный сервер акции.
 Подробности: [сценарий CSRF](../../../../../../docs/demo/csrf.md).
