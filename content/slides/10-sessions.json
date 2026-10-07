@@ -1,0 +1,25 @@
+{
+  "id": "sessions",
+  "title": "Session Management",
+  "section": "backend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 13,
+      "title": "Session Management Issues",
+      "section": "backend",
+      "attack": [
+        "Токены сессии в localStorage — доступны через XSS",
+        "Нет timeout и regeneration сессии после логина",
+        "Session fixation — атакующий навязывает свой session ID"
+      ],
+      "defense": [
+        "HttpOnly + Secure cookies вместо localStorage",
+        "Regeneration session ID после аутентификации",
+        "Авто-timeout и re-auth для чувствительных действий"
+      ],
+      "caseStudy": "T-Mobile (2020) — компрометация аккаунтов из-за session management flaw",
+      "notes": "Источник: Cybersecurity.pptx, слайд 13. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

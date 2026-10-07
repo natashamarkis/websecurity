@@ -4,6 +4,7 @@ import { z } from 'zod'
 const base = {
   /** Заметки докладчика. Видны только в режиме докладчика. */
   notes: z.string().optional(),
+  sourceSlide: z.number().int().min(1).optional(),
 }
 
 const codeRef = z.object({
@@ -28,6 +29,8 @@ export const TitleSlideSchema = z.object({
   title: z.string().min(1),
   subtitle: z.string().optional(),
   moduleNo: z.number().int().optional(),
+  variant: z.enum(['cover', 'section', 'closing']).optional(),
+  image: z.string().optional(),
 })
 
 export const BulletsSlideSchema = z.object({
@@ -85,6 +88,28 @@ export const TimelineSlideSchema = z.object({
   steps: z.array(timelineStep).min(1),
 })
 
+export const VulnerabilitySlideSchema = z.object({
+  ...base,
+  type: z.literal('vulnerability'),
+  title: z.string().min(1),
+  section: z.enum(['frontend', 'backend']),
+  attack: z.array(z.string().min(1)).min(1),
+  defense: z.array(z.string().min(1)).min(1),
+  caseStudy: z.string().optional(),
+  sourceUrl: z.url().optional(),
+})
+
+export const AgendaSlideSchema = z.object({
+  ...base,
+  type: z.literal('agenda'),
+  title: z.string().min(1),
+  groups: z.array(z.object({
+    title: z.string().min(1),
+    section: z.enum(['frontend', 'backend']),
+    items: z.array(z.object({ title: z.string().min(1), moduleId: z.string().min(1) })).min(1),
+  })).min(1),
+})
+
 export const SlideSchema = z.discriminatedUnion('type', [
   TitleSlideSchema,
   BulletsSlideSchema,
@@ -94,6 +119,8 @@ export const SlideSchema = z.discriminatedUnion('type', [
   ChecklistSlideSchema,
   TwoColumnsSlideSchema,
   TimelineSlideSchema,
+  VulnerabilitySlideSchema,
+  AgendaSlideSchema,
 ])
 
 export const ModuleMetaSchema = z.object({
@@ -105,6 +132,7 @@ export const ModuleMetaSchema = z.object({
 export const ModuleSchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),
+  section: z.enum(['frontend', 'backend']).optional(),
   meta: ModuleMetaSchema.optional(),
   slides: z.array(SlideSchema).min(1),
 })

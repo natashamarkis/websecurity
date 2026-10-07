@@ -1,0 +1,25 @@
+{
+  "id": "dependencies",
+  "title": "Уязвимые npm-зависимости",
+  "section": "frontend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 6,
+      "title": "Уязвимые npm-зависимости",
+      "section": "frontend",
+      "attack": [
+        "Typosquatting и захват (hijacking) популярных пакетов",
+        "Postinstall-скрипты выполняют код прямо при npm install",
+        "Скомпрометированный аккаунт мейнтейнера публикует вредоносный патч"
+      ],
+      "defense": [
+        "npm audit / Snyk в CI, lock-файлы для pinning версий",
+        "Subresource Integrity для библиотек с CDN",
+        "Code review диффов перед обновлением критичных пакетов"
+      ],
+      "caseStudy": "event-stream (2018) — внедрён код для кражи Bitcoin-кошельков",
+      "notes": "Источник: Cybersecurity.pptx, слайд 6. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

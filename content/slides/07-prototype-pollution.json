@@ -1,0 +1,25 @@
+{
+  "id": "prototype-pollution",
+  "title": "Prototype Pollution",
+  "section": "frontend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 10,
+      "title": "Prototype Pollution",
+      "section": "frontend",
+      "attack": [
+        "Ключи __proto__ / constructor.prototype внедряются через merge",
+        "Загрязняется Object.prototype — затронуты все объекты приложения",
+        "Приводит к XSS, обходу security-проверок или DoS"
+      ],
+      "defense": [
+        "Object.create(null) для «чистых» объектов без прототипа",
+        "Безопасный deep-merge с явным блоком опасных ключей",
+        "JSON Schema валидация входных данных"
+      ],
+      "caseStudy": "Lodash CVE-2019-10744 — CVSS 9.1, затронуты тысячи проектов",
+      "notes": "Источник: Cybersecurity.pptx, слайд 10. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

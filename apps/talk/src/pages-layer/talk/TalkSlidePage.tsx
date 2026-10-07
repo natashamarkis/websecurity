@@ -1,7 +1,6 @@
 import type { Module } from '@ws/slides-schema'
 import { SlideDeck } from '@/widgets/slide-deck/SlideDeck'
 import { SlideView } from '@/widgets/slide-view/SlideView'
-import { NavigationController } from '@/features/slide-navigation/NavigationController'
 import type { DeckOutline } from '@/features/slide-navigation/navigation'
 
 interface TalkSlidePageProps {
@@ -16,8 +15,7 @@ export function TalkSlidePage({ module, index, outline }: TalkSlidePageProps) {
   if (!slide) return null
   return (
     <>
-      <NavigationController outline={outline} moduleId={module.id} index={index} />
-      <SlideDeck moduleTitle={module.title} index={index} total={module.slides.length}>
+      <SlideDeck module={module} index={index} outline={outline} notes={slide.notes}>
         <SlideView slide={slide} />
       </SlideDeck>
     </>

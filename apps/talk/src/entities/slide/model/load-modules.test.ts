@@ -51,4 +51,26 @@ describe('loadModules', () => {
     expect(modules.length).toBeGreaterThan(0)
     expect(modules[0]?.id).toBe('intro')
   })
+
+  it('covers all source slides and exposes live demos only for XSS', async () => {
+    const modules = await loadModules(resolveSlidesDir())
+    const slides = modules.flatMap((module) => module.slides)
+    expect(slides.flatMap((slide) => slide.sourceSlide ? [slide.sourceSlide] : [])).toEqual(
+      Array.from({ length: 17 }, (_, index) => index + 1),
+    )
+    const demos = modules.flatMap((module) => module.slides
+      .filter((slide) => slide.type === 'demo')
+      .map((slide) => ({ moduleId: module.id, route: slide.route, mode: slide.mode })))
+    expect(demos).toEqual([
+      { moduleId: 'xss', route: '/site/comments', mode: 'vulnerable' },
+      { moduleId: 'xss', route: '/site/comments', mode: 'fixed' },
+    ])
+    const topics = slides.filter((slide) => slide.type === 'vulnerability')
+    expect(topics.filter((slide) => slide.section === 'frontend')).toHaveLength(7)
+    expect(topics.filter((slide) => slide.section === 'backend')).toHaveLength(5)
+    const agenda = slides.find((slide) => slide.type === 'agenda')!
+    expect(agenda.groups.flatMap((group) => group.items.map((item) => item.moduleId))).toEqual(
+      modules.filter((module) => module.slides.some((slide) => slide.type === 'vulnerability')).map((module) => module.id),
+    )
+  })
 })

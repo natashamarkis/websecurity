@@ -1,0 +1,25 @@
+{
+  "id": "sql-injection",
+  "title": "SQL Injection",
+  "section": "backend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 14,
+      "title": "SQL Injection",
+      "section": "backend",
+      "attack": [
+        "Конкатенация пользовательского ввода в SQL-запрос",
+        "Обход логина (' OR '1'='1), UNION-эксфильтрация данных",
+        "Blind / time-based варианты без видимого вывода"
+      ],
+      "defense": [
+        "Parameterized queries / prepared statements",
+        "ORM без raw-конкатенации пользовательского ввода",
+        "Least privilege для DB-аккаунта приложения"
+      ],
+      "caseStudy": "Heartland Payment Systems (2008) — $140+ млн, 130 млн номеров карт",
+      "notes": "Источник: Cybersecurity.pptx, слайд 14. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

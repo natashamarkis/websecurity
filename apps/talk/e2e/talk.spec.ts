@@ -2,17 +2,18 @@ import { expect, test } from '@playwright/test'
 
 test('opens the demo from the deck and returns to the same slide', async ({ page }) => {
   await page.goto('/talk')
-  await page.getByRole('link', { name: /Введение/ }).click()
   await expect(page).toHaveURL(/\/talk\/intro\/0$/)
   await page.keyboard.press('ArrowRight')
   await expect(page).toHaveURL(/\/talk\/intro\/1$/)
+  await page.getByRole('link', { name: /XSS/ }).click()
+  await expect(page).toHaveURL(/\/talk\/xss\/0$/)
   await page.keyboard.press('ArrowRight')
-  await expect(page).toHaveURL(/\/talk\/intro\/2$/)
-  await page.getByRole('button', { name: /Показать/ }).click()
+  await expect(page).toHaveURL(/\/talk\/xss\/1$/)
+  await page.getByRole('button', { name: 'Открыть демонстрацию' }).click()
   await expect(page).toHaveURL(/\/site\/comments$/)
   await expect(page.getByTestId('comment-input')).toBeVisible()
   await page.keyboard.press('Escape')
-  await expect(page).toHaveURL(/\/talk\/intro\/2$/)
+  await expect(page).toHaveURL(/\/talk\/xss\/1$/)
 })
 
 test('executes stored XSS only in vulnerable mode and resets comments', async ({ page }) => {
@@ -44,4 +45,29 @@ test('executes stored XSS only in vulnerable mode and resets comments', async ({
   } finally {
     await page.request.post('/api/site/reset')
   }
+})
+
+test('shows backend topics, notes and the real XSS fix on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/talk/xss/1')
+  await page.getByRole('button', { name: 'Содержание', exact: true }).focus()
+  await page.keyboard.press('Enter')
+  await expect(page.getByRole('dialog')).toBeVisible()
+  await page.keyboard.press('ArrowRight')
+  await expect(page).toHaveURL(/\/talk\/xss\/1$/)
+  await page.getByRole('navigation', { name: 'Темы доклада' }).getByRole('link', { name: 'SQL Injection' }).click()
+  await expect(page.getByRole('heading', { name: 'SQL Injection', exact: true })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Открыть демонстрацию' })).toHaveCount(0)
+  await page.getByRole('button', { name: 'Заметки докладчика', exact: true }).click()
+  await expect(page.getByRole('dialog')).toContainText('Cybersecurity.pptx, слайд 14')
+  await page.keyboard.press('Escape')
+  await page.goto('/talk/xss/2')
+  await page.getByRole('tab', { name: 'Исправлено', exact: true }).click()
+  await expect(page.getByRole('tabpanel')).toContainText('CommentBodyFixed')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390)
+  await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
+  await expect(page).toHaveURL(/\/talk\/xss\/3$/)
+  await page.getByRole('button', { name: 'Открыть демонстрацию' }).click()
+  await expect(page).toHaveURL(/\/site\/comments$/)
+  await expect(page.getByRole('radio', { name: 'Исправлено', exact: true })).toBeChecked()
 })

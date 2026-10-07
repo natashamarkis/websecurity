@@ -1,0 +1,25 @@
+{
+  "id": "clickjacking",
+  "title": "Clickjacking",
+  "section": "frontend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 9,
+      "title": "Clickjacking (UI Redressing)",
+      "section": "frontend",
+      "attack": [
+        "Прозрачный iframe с целевым сайтом поверх приманки",
+        "Клик жертвы попадает на скрытую кнопку целевого сайта",
+        "Эффективно против критичных single-click действий"
+      ],
+      "defense": [
+        "Заголовок X-Frame-Options: DENY/SAMEORIGIN",
+        "CSP frame-ancestors",
+        "JS frame-busting как дополнительный слой защиты"
+      ],
+      "caseStudy": "Facebook Likejacking (2010-2011) — массовое распространение через скрытые лайки",
+      "notes": "Источник: Cybersecurity.pptx, слайд 9. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "csrf",
+  "title": "CSRF",
+  "section": "frontend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 5,
+      "title": "CSRF: Cross-Site Request Forgery",
+      "section": "frontend",
+      "attack": [
+        "Браузер жертвы сам отправляет запрос вместе с её cookie",
+        "Жертве достаточно открыть вредоносную страницу",
+        "Цель — state-changing запросы: POST, PUT, DELETE"
+      ],
+      "defense": [
+        "CSRF-токены (Synchronizer Token Pattern)",
+        "Cookie с атрибутом SameSite=Lax/Strict",
+        "Проверка Origin/Referer на backend"
+      ],
+      "caseStudy": "ING Direct (2008) — несанкционированные переводы средств клиентов",
+      "notes": "Источник: Cybersecurity.pptx, слайд 5. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

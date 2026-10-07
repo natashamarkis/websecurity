@@ -23,6 +23,9 @@ importers:
 
   apps/talk:
     dependencies:
+      '@ant-design/icons':
+        specifier: 6.3.4
+        version: 6.3.4(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@ant-design/nextjs-registry':
         specifier: ^1.3.0
         version: 1.3.0(@ant-design/cssinjs@2.1.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(antd@6.6.2(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(next@16.3.4(@playwright/test@1.62.1)(@types/node@22.20.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react-dom@19.2.8(react@19.2.8))(react@19.2.8)

@@ -1,0 +1,25 @@
+{
+  "id": "third-party-scripts",
+  "title": "Сторонние скрипты",
+  "section": "frontend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 7,
+      "title": "Сторонние скрипты (Magecart)",
+      "section": "frontend",
+      "attack": [
+        "Скомпрометированный виджет/аналитика выполняется в origin сайта",
+        "Скимминг данных форм оплаты в реальном времени",
+        "Dangling CNAME на поддомене — subdomain takeover"
+      ],
+      "defense": [
+        "SRI (атрибут integrity) на все статичные сторонние скрипты",
+        "CSP script-src с явным whitelist доменов",
+        "Изоляция виджетов через sandboxed iframe + postMessage"
+      ],
+      "caseStudy": "British Airways / Ticketmaster — скимминг через модифицированный JS на checkout",
+      "notes": "Источник: Cybersecurity.pptx, слайд 7. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

@@ -30,19 +30,19 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return
-      router.push(sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk')
+      router.push(sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk/xss/1')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [router])
 
   return (
-    <div style={{ minHeight: '100vh', padding: 16, background: '#0b0b12' }}>
+    <div className="site-frame">
       <ViewTransition name={DEMO_FRAME_TRANSITION}>
         <BrowserFrame
           url={`${origin}${pathname}`}
           mode={mode}
-          payload={ctx.payload}
+          payload={ctx.payload ?? '<img src=x onerror=alert(document.cookie)>'}
         >
           {children}
         </BrowserFrame>

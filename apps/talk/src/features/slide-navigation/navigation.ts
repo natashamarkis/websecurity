@@ -1,6 +1,8 @@
 export interface DeckOutlineItem {
   id: string
   slideCount: number
+  title?: string
+  section?: 'frontend' | 'backend'
 }
 
 /** Порядок модулей и число слайдов в каждом — всё, что нужно для навигации. */

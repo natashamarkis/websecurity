@@ -1,7 +1,7 @@
 import { createHighlighter, bundledLanguages, type Highlighter } from 'shiki'
 
-/** Тема кода совпадает по настроению с тёмной темой презентации. */
-const THEME = 'github-dark'
+/** Light code theme matches the source presentation. */
+const THEME = 'github-light'
 const PRELOADED = ['ts', 'tsx', 'js', 'jsx', 'html', 'json', 'bash']
 
 let highlighterPromise: Promise<Highlighter> | undefined

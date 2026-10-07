@@ -1,0 +1,25 @@
+{
+  "id": "brute-force",
+  "title": "Brute Force",
+  "section": "backend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 15,
+      "title": "Brute Force и Credential Stuffing",
+      "section": "backend",
+      "attack": [
+        "Автоматический перебор пар логин/пароль из утечек",
+        "Перебор OTP-кодов и reset-токенов без ограничений",
+        "User enumeration ускоряет точечные атаки"
+      ],
+      "defense": [
+        "Rate limiting + progressive delay + account lockout",
+        "CAPTCHA после подозрительной активности",
+        "MFA и криптостойкие reset-токены с коротким TTL"
+      ],
+      "caseStudy": "Dunkin' Donuts (2015-2019) — $650 тыс. штрафа за повторный credential stuffing",
+      "notes": "Источник: Cybersecurity.pptx, слайд 15. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}
