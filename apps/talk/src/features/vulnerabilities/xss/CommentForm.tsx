@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button, Flex, Input } from 'antd'
 
-/** Форма комментария: POST в API, затем перерисовка серверного списка. */
+/** POST в API, затем перерисовка серверного списка комментариев. */
 export function CommentForm() {
   const router = useRouter()
   const [text, setText] = useState('')

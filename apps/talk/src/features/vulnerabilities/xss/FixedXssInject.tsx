@@ -7,6 +7,6 @@ import { Typography } from 'antd'
  * React экранирует его автоматически — тот же payload просто печатается.
  * Правило: недоверенный ввод никогда не попадает в innerHTML.
  */
-export function CommentBodyFixed({ text }: { text: string }) {
+export function FixedXssInject({ text }: { text: string }) {
   return <Typography.Paragraph>{text}</Typography.Paragraph>
 }
