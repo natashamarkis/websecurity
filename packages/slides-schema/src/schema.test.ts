@@ -62,6 +62,17 @@ describe('SlideSchema', () => {
     expect(slide).toHaveProperty('caption', 'Update the dependency in our application.')
   })
 
+  it('preserves related source files for both code tabs', () => {
+    const relatedCode = {
+      title: 'Inside the package', lang: 'tsx',
+      vulnerable: { file: 'library/ProductDescription.tsx' },
+      fixed: { file: 'library/FixedProductDescription.tsx' },
+    }
+    const slide = SlideSchema.parse({ type: 'code', lang: 'json', vulnerable: { file: 'package.json' }, relatedCode })
+    expect(slide).toHaveProperty('relatedCode', relatedCode)
+    expect(() => SlideSchema.parse({ ...slide, relatedCode: { ...relatedCode, fixed: { file: '' } } })).toThrow()
+  })
+
   it('preserves a pair of frontend request examples on a code slide', () => {
     const requestExamples = {
       title: 'Frontend requests', lang: 'ts', caption: 'Compare the request bodies',
