@@ -172,7 +172,35 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .pollution-inspector dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 0; }
 .pollution-inspector dt { min-height: 48px; font: 13px/1.6 monospace; color: #647084; overflow-wrap: anywhere; }
 .pollution-inspector dd { margin: 12px 0 0; min-height: 28px; font: 20px/1.4 monospace; color: #05358c; overflow-wrap: anywhere; }
+.backend-demo { max-width: 1280px; margin: 0 auto; min-width: 0; }
+.backend-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 28px; }
+.backend-heading h2 { font-size: 26px; color: #05358c; margin: 0; overflow-wrap: anywhere; }
+.backend-demo h3 { font-size: 20px; color: #05358c; margin: 0 0 20px; }
+.backend-demo h4 { font-size: 15px; margin: 24px 0 12px; }
+.backend-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; margin-bottom: 28px; }
+.backend-columns > section { min-width: 0; }
+.backend-columns > section + section { border-left: 1px solid #e8edf5; padding-left: 32px; }
+.backend-demo form { display: grid; gap: 12px; margin: 20px 0; }
+.backend-demo form .ant-btn { justify-self: start; }
+.backend-options { display: flex; flex-direction: column; gap: 12px; }
+.backend-options .ant-radio-wrapper { align-items: flex-start; }
+.backend-demo pre { font: 14px/1.65 monospace; white-space: pre-wrap; overflow-wrap: anywhere; background: #f6f8fb; padding: 16px; border-radius: 4px; }
+.backend-demo .ant-btn { height: auto; min-height: 34px; white-space: normal; text-align: left; max-width: 100%; padding-top: 6px; padding-bottom: 6px; }
+.backend-demo .ant-btn > span { min-width: 0; overflow-wrap: anywhere; }
+.backend-demo .ant-table-wrapper { min-width: 0; margin-top: 20px; }
+.backend-request { border-top: 1px solid #e8edf5; padding-top: 16px; margin-top: 24px; }
+.backend-request summary { cursor: pointer; color: #647084; font-size: 14px; }
+.backend-result { min-width: 0; }
+.backend-trace { padding-left: 24px; overflow-wrap: anywhere; line-height: 1.6; font-size: 14px; }
+.backend-catalog { width: 100%; max-width: 280px; height: auto; display: block; margin-top: 28px; }
+.backend-meta { display: grid; grid-template-columns: minmax(90px, 1fr) minmax(0, 2fr); gap: 16px; margin: 24px 0; font-size: 14px; line-height: 1.6; }
+.backend-meta dt { color: #647084; }
+.backend-meta dd { margin: 0; overflow-wrap: anywhere; }
+.backend-session-start, .backend-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 20px 0 28px; }
+.backend-foreign-row { background: #fff2e8; }
 @media (max-width: 900px) {
+  .backend-columns { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .backend-columns > section + section { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .pollution-layout { grid-template-columns: minmax(0, 1fr); }
   .pollution-catalog { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .pollution-inspector dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }

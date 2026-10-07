@@ -73,6 +73,13 @@ describe('SlideView', () => {
     expect(screen.getByText('<img src=x>')).toBeInTheDocument()
   })
 
+  it('labels backend demos with their actual topic rather than XSS', () => {
+    render(<SlideView slide={{ type: 'demo', route: '/site/backend/ssrf', mode: 'vulnerable', caption: 'Импорт каталога' }} />)
+    expect(screen.getByText('SSRF / Живая демонстрация')).toBeInTheDocument()
+    expect(screen.queryByText(/XSS/)).not.toBeInTheDocument()
+    expect(screen.queryByText('Комментарии')).not.toBeInTheDocument()
+  })
+
   it('renders a fallback for an unknown type without crashing', () => {
     const unknown = { type: 'video', src: 'x' } as unknown as Slide
     render(<SlideView slide={unknown} />)

@@ -22,6 +22,13 @@ export function SiteHeader({ userName, current }: SiteHeaderProps) {
         { key: 'redirect', label: siteLink('/site/redirect', 'Письмо') },
         { key: 'notifications', label: siteLink('/site/notifications', 'Безопасность') },
         { key: 'catalog', label: siteLink('/site/catalog', 'Каталог') },
+        { key: 'backend', label: 'Бэкенд', children: [
+          { key: 'ssrf', label: siteLink('/site/backend/ssrf', 'Импорт каталога') },
+          { key: 'sessions', label: siteLink('/site/backend/sessions', 'Сессии') },
+          { key: 'sql-injection', label: siteLink('/site/backend/sql-injection', 'Мои заказы') },
+          { key: 'brute-force', label: siteLink('/site/backend/brute-force', 'Вход') },
+          { key: 'file-download', label: siteLink('/site/backend/file-download', 'Документы') },
+        ] },
       ]} />
       <div className="site-user"><Avatar>{userName.slice(0, 1)}</Avatar><Typography.Text>{userName}</Typography.Text></div>
     </header>

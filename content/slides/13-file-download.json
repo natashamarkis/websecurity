@@ -1,25 +1,87 @@
 {
   "id": "file-download",
-  "title": "Insecure File Download",
+  "title": "Insecure File Download: IDOR и Path Traversal",
   "section": "backend",
   "slides": [
     {
       "type": "vulnerability",
       "sourceSlide": 16,
-      "title": "Insecure File Download",
+      "title": "Insecure File Download: IDOR и Path Traversal",
       "section": "backend",
       "attack": [
-        "Path Traversal (../../etc/passwd) через параметр пути",
-        "IDOR — последовательные ID дают доступ к чужим документам",
-        "Zip Slip при распаковке архивов на сервере"
+        "IDOR: вошедший пользователь меняет ID документа и получает чужой счёт",
+        "Path Traversal: ../ в имени файла выводит чтение за пределы папки загрузок",
+        "Ответ сервера раскрывает чужие данные или внутренний файл"
       ],
       "defense": [
-        "Резолв пути + проверка, что он внутри разрешённой директории",
-        "Проверка владения файлом (user_id в запросе)",
-        "Content-Disposition: attachment для всех user-uploaded файлов"
+        "Проверять владельца документа по серверной сессии при каждом обращении",
+        "Предпочитать ID файлов с серверным сопоставлением. Если нужен путь, проверять реальный путь внутри разрешённой папки",
+        "Запретить изменение файлов и symlink в хранилище недоверенным пользователям. Выдавать скачивание с безопасными заголовками"
       ],
-      "caseStudy": "Citrix ADC CVE-2019-19781 — path traversal, 80 000+ организаций под угрозой",
-      "notes": "Источник: Cybersecurity.pptx, слайд 16. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+      "caseStudy": "UUID не заменяет проверку владельца. Content-Disposition: attachment не запрещает читать чужой документ.",
+      "sourceUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html",
+      "notes": "Основа: Cybersecurity.pptx, слайд 16. В первой вкладке запросить 1001: свой счёт доступен в обоих режимах. Затем 1002: vulnerable выдаёт счёт Марии, fixed 404. Во второй вкладке запросить manual.txt, затем ../internal.txt. Vulnerable действительно читает файл вне downloads, fixed запрещает. Сервер возвращает текст файла в JSON для обозримого сравнения, кнопка скачивания сохраняет именно полученные байты. Документы IDOR вымышленные в памяти, два файла traversal создаются в отдельной временной директории ОС. Дополнительный lab-reader разрешает только эти два файла даже в vulnerable: читать файлы проекта и компьютера нельзя. Исправление realpath/relative предполагает недоступное для записи атакующему хранилище, иначе возможна гонка между проверкой и чтением. IDOR и traversal требуют разных проверок. Zip Slip из PPTX относится к распаковке архивов, в данном endpoint архивов нет; отдельная демонстрация Zip Slip не реализована. Источник по traversal: https://owasp.org/www-community/attacks/Path_Traversal."
+    },
+    {
+      "type": "code",
+      "title": "IDOR: бэкенд проверяет владельца файла",
+      "caption": "Одного documentId недостаточно. userId берётся из серверной сессии.",
+      "lang": "ts",
+      "vulnerable": {
+        "file": "features/vulnerabilities/file-download/get-document.ts"
+      },
+      "fixed": {
+        "file": "features/vulnerabilities/file-download/fixed-get-document.ts"
+      },
+      "requestExamples": {
+        "title": "Фронтенд: тот же запрос в обоих режимах",
+        "lang": "js",
+        "items": [
+          {
+            "title": "Уязвимо",
+            "code": "fetch('/api/site/backend/file-download', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n  \"action\": \"document\",\n  \"documentId\": \"1002\"\n})\n})"
+          },
+          {
+            "title": "Исправлено",
+            "code": "fetch('/api/site/backend/file-download', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n  \"action\": \"document\",\n  \"documentId\": \"1002\"\n})\n})"
+          }
+        ]
+      },
+      "notes": "Основа: Cybersecurity.pptx, слайд 16. В первой вкладке запросить 1001: свой счёт доступен в обоих режимах. Затем 1002: vulnerable выдаёт счёт Марии, fixed 404. Во второй вкладке запросить manual.txt, затем ../internal.txt. Vulnerable действительно читает файл вне downloads, fixed запрещает. Сервер возвращает текст файла в JSON для обозримого сравнения, кнопка скачивания сохраняет именно полученные байты. Документы IDOR вымышленные в памяти, два файла traversal создаются в отдельной временной директории ОС. Дополнительный lab-reader разрешает только эти два файла даже в vulnerable: читать файлы проекта и компьютера нельзя. Исправление realpath/relative предполагает недоступное для записи атакующему хранилище, иначе возможна гонка между проверкой и чтением. IDOR и traversal требуют разных проверок. Zip Slip из PPTX относится к распаковке архивов, в данном endpoint архивов нет; отдельная демонстрация Zip Slip не реализована. Источник по traversal: https://owasp.org/www-community/attacks/Path_Traversal."
+    },
+    {
+      "type": "code",
+      "title": "Path Traversal: бэкенд проверяет путь",
+      "caption": "resolve нормализует путь. realpath и relative позволяют проверить границу папки.",
+      "lang": "ts",
+      "vulnerable": {
+        "file": "features/vulnerabilities/file-download/read-download.ts"
+      },
+      "fixed": {
+        "file": "features/vulnerabilities/file-download/fixed-read-download.ts"
+      },
+      "requestExamples": {
+        "title": "Фронтенд: путь из запроса",
+        "lang": "js",
+        "items": [
+          {
+            "title": "Уязвимо",
+            "code": "fetch('/api/site/backend/file-download', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ action: 'path', filename: '../internal.txt' })\n})"
+          },
+          {
+            "title": "Исправлено",
+            "code": "fetch('/api/site/backend/file-download', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ action: 'path', filename: '../internal.txt' })\n})"
+          }
+        ]
+      },
+      "notes": "Основа: Cybersecurity.pptx, слайд 16. В первой вкладке запросить 1001: свой счёт доступен в обоих режимах. Затем 1002: vulnerable выдаёт счёт Марии, fixed 404. Во второй вкладке запросить manual.txt, затем ../internal.txt. Vulnerable действительно читает файл вне downloads, fixed запрещает. Сервер возвращает текст файла в JSON для обозримого сравнения, кнопка скачивания сохраняет именно полученные байты. Документы IDOR вымышленные в памяти, два файла traversal создаются в отдельной временной директории ОС. Дополнительный lab-reader разрешает только эти два файла даже в vulnerable: читать файлы проекта и компьютера нельзя. Исправление realpath/relative предполагает недоступное для записи атакующему хранилище, иначе возможна гонка между проверкой и чтением. IDOR и traversal требуют разных проверок. Zip Slip из PPTX относится к распаковке архивов, в данном endpoint архивов нет; отдельная демонстрация Zip Slip не реализована. Источник по traversal: https://owasp.org/www-community/attacks/Path_Traversal."
+    },
+    {
+      "type": "demo",
+      "route": "/site/backend/file-download",
+      "mode": "vulnerable",
+      "caption": "Чужой счёт и внутренний файл через один запрос",
+      "notes": "Основа: Cybersecurity.pptx, слайд 16. В первой вкладке запросить 1001: свой счёт доступен в обоих режимах. Затем 1002: vulnerable выдаёт счёт Марии, fixed 404. Во второй вкладке запросить manual.txt, затем ../internal.txt. Vulnerable действительно читает файл вне downloads, fixed запрещает. Сервер возвращает текст файла в JSON для обозримого сравнения, кнопка скачивания сохраняет именно полученные байты. Документы IDOR вымышленные в памяти, два файла traversal создаются в отдельной временной директории ОС. Дополнительный lab-reader разрешает только эти два файла даже в vulnerable: читать файлы проекта и компьютера нельзя. Исправление realpath/relative предполагает недоступное для записи атакующему хранилище, иначе возможна гонка между проверкой и чтением. IDOR и traversal требуют разных проверок. Zip Slip из PPTX относится к распаковке архивов, в данном endpoint архивов нет; отдельная демонстрация Zip Slip не реализована. Источник по traversal: https://owasp.org/www-community/attacks/Path_Traversal."
     }
   ]
 }

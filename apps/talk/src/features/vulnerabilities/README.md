@@ -1,7 +1,7 @@
 # Модули уязвимостей
 
-Одна папка на каждую тему презентации. Сейчас реализованы XSS, CSRF, зависимости, сторонние скрипты, Open Redirect, Clickjacking и Prototype Pollution;
-остальные папки обозначают место будущих модулей, без запуска атак и кода-заглушек.
+Одна папка на каждую из 12 тем презентации. Все темы содержат живые демонстрации
+и соседние файлы уязвимой и исправленной реализаций.
 
 | Папка | Тема | Статус |
 | --- | --- | --- |
@@ -12,11 +12,11 @@
 | [open-redirects](open-redirects) | Open Redirect | Переход на другой origin из письма и проверка URL перед навигацией |
 | [clickjacking](clickjacking) | Clickjacking | Прозрачный iframe, реальное действие и серверный запрет встраивания |
 | [prototype-pollution](prototype-pollution) | Prototype Pollution | Импорт JSON, влияние на расчёт доставки и строгая схема |
-| [ssrf](ssrf) | SSRF | Только теория |
-| [sessions](sessions) | Session Management | Только теория |
-| [sql-injection](sql-injection) | SQL Injection | Только теория |
-| [brute-force](brute-force) | Brute Force / Credential Stuffing | Только теория |
-| [file-download](file-download) | Insecure File Download | Только теория |
+| [ssrf](ssrf) | SSRF | HTTP-запрос к внутреннему сервису, список разрешённых URL и запрет редиректов |
+| [sessions](sessions) | Session Management | Фиксация сессии, ротация и отзыв ID |
+| [sql-injection](sql-injection) | SQL Injection | Настоящий SQLite, чужие заказы и параметры SQL |
+| [brute-force](brute-force) | Brute Force / Credential Stuffing | Перебор и временный серверный лимит по аккаунту |
+| [file-download](file-download) | Insecure File Download | IDOR, Path Traversal, проверка владельца и реального пути |
 
 ## Пара реализаций
 
