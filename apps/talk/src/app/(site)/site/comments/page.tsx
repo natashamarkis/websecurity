@@ -2,7 +2,7 @@ import { Flex } from 'antd'
 import { demoUser } from '@/entities/demo-user/model'
 import { SiteHeader } from '@/widgets/site-header/SiteHeader'
 import { SlideTitle } from '@/shared/ui/atoms/SlideTitle'
-import { CommentsBoard } from '@/features/vuln-xss/CommentsBoard'
+import { CommentsBoard } from '@/features/vulnerabilities/xss/CommentsBoard'
 
 export const dynamic = 'force-dynamic'
 

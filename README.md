@@ -52,6 +52,7 @@ pnpm --filter @ws/talk exec next dev -H 127.0.0.1 -p 3001
 | Каталог | Назначение |
 | --- | --- |
 | `apps/talk` | Next.js App Router: React-слайды, демо-сайт и серверные API |
+| `apps/talk/src/features/vulnerabilities` | Папки 12 тем; уязвимая и исправленная реализации рядом |
 | `packages/slides-schema` | Zod-схема, типы слайдов и CLI-валидация |
 | `content/slides` | JSON-модули и их порядок в `index.json` |
 | `docs/security-guide` | Дополнительные материалы прежнего доклада |
@@ -61,7 +62,8 @@ pnpm --filter @ws/talk exec next dev -H 127.0.0.1 -p 3001
 `two-columns`, `timeline`, `agenda`, `vulnerability`. Поле `sourceSlide` связывает
 слайд с оригиналом PPTX. Слайды `code` читают реальные файлы относительно
 `apps/talk/src`. Новая тема добавляется JSON-модулем и записью в `index.json`;
-демонстрация получает пару реализаций в `features/vuln-<name>` и страницу `/site/...`.
+демонстрация получает пару реализаций в `features/vulnerabilities/<name>` и страницу `/site/...`.
+Карта папок и соглашения: [модули уязвимостей](apps/talk/src/features/vulnerabilities/README.md).
 
 Стрелки, Space и Page Up/Down перелистывают слайды, F включает полный экран.
 Enter открывает демо, Escape возвращает к слайду. Содержание и заметки доступны

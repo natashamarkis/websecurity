@@ -45,8 +45,8 @@ describe('SlideSchema', () => {
       SlideSchema.parse({
         type: 'code',
         lang: 'tsx',
-        vulnerable: { file: 'features/vuln-xss/render.vulnerable.tsx' },
-        fixed: { file: 'features/vuln-xss/render.fixed.tsx' },
+        vulnerable: { file: 'features/vulnerabilities/xss/XssInject.tsx' },
+        fixed: { file: 'features/vulnerabilities/xss/FixedXssInject.tsx' },
       }),
     ).not.toThrow()
   })

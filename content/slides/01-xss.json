@@ -27,10 +27,10 @@
       "title": "XSS: уязвимый код и исправление",
       "lang": "tsx",
       "vulnerable": {
-        "file": "features/vuln-xss/render.vulnerable.tsx"
+        "file": "features/vulnerabilities/xss/XssInject.tsx"
       },
       "fixed": {
-        "file": "features/vuln-xss/render.fixed.tsx"
+        "file": "features/vulnerabilities/xss/FixedXssInject.tsx"
       },
       "notes": "В уязвимом варианте dangerouslySetInnerHTML превращает пользовательский ввод в HTML. В исправленном React выводит строку как текст. HttpOnly скрывает cookie от JS, но сам по себе не устраняет XSS. CSP здесь совместима с Next dev и допускает inline-скрипты."
     },

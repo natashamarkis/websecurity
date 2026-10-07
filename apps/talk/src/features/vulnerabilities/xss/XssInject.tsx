@@ -4,10 +4,10 @@ import { Typography } from 'antd'
 
 /**
  * УЯЗВИМО: текст пользователя вставляется как HTML.
- * Любой <img onerror=...> или <script> из комментария выполнится у каждого,
- * кто откроет страницу. Это stored XSS.
+ * Обработчик события из комментария (например, img onerror) выполняется
+ * в браузере посетителя. Это stored XSS.
  */
-export function CommentBodyVulnerable({ text }: { text: string }) {
+export function XssInject({ text }: { text: string }) {
   return (
     <Typography.Paragraph>
       <span dangerouslySetInnerHTML={{ __html: text }} />

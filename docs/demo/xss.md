@@ -20,7 +20,7 @@
 7. Escape или «К слайду» возвращает к исходному слайду доклада.
 
 Реализации для разбора находятся в
-`apps/talk/src/features/vuln-xss/render.vulnerable.tsx` и `render.fixed.tsx`.
+`apps/talk/src/features/vulnerabilities/xss/XssInject.tsx` и `FixedXssInject.tsx`.
 Комментарии общие для всех вкладок и не сохраняются после перезапуска сервера.
 
 Перед демонстрацией слайд `/talk/xss/1` показывает эти файлы во вкладках

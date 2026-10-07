@@ -66,7 +66,7 @@ test('shows backend topics, notes and the real XSS fix on mobile', async ({ page
   await page.keyboard.press('Escape')
   await page.goto('/talk/xss/1')
   await page.getByRole('tab', { name: 'Исправлено', exact: true }).click()
-  await expect(page.getByRole('tabpanel')).toContainText('CommentBodyFixed')
+  await expect(page.getByRole('tabpanel')).toContainText('FixedXssInject')
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390)
   await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
   await expect(page).toHaveURL(/\/talk\/xss\/2$/)

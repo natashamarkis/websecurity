@@ -8,7 +8,7 @@ const base = {
 }
 
 const codeRef = z.object({
-  /** Путь к файлу относительно apps/talk/src, например features/vuln-xss/render.vulnerable.tsx */
+  /** Путь к файлу относительно apps/talk/src, например features/vulnerabilities/xss/XssInject.tsx */
   file: z.string().min(1),
 })
 
