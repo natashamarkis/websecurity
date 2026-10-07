@@ -140,7 +140,23 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .checkout-capture { border-top: 1px solid #e8edf5; margin-top: 24px; padding-top: 20px; }
 .checkout-capture h4.ant-typography { font-size: 18px; margin: 0 0 16px; }
 .checkout-capture pre { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; }
+.redirect-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 48px; }
+.redirect-mail, .redirect-parameters { min-width: 0; }
+.redirect-layout h3.ant-typography { font-size: 24px; margin: 20px 0; }
+.redirect-mail img, .redirect-catalog { display: block; width: 100%; max-width: 420px; height: auto; margin: 20px 0; }
+.redirect-received-link { margin-top: 24px; display: grid; gap: 8px; font-size: 14px; }
+.redirect-received-link a { overflow-wrap: anywhere; line-height: 1.6; }
+.redirect-parameters { display: flex; flex-direction: column; align-self: start; gap: 12px; padding-left: 32px; border-left: 1px solid #e8edf5; }
+.redirect-parameters h3.ant-typography { margin-top: 0; }
+.redirect-parameters textarea { font-family: monospace; }
+.redirect-origins { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 12px; font-size: 14px; line-height: 1.6; }
+.redirect-origins dt { color: #647084; }
+.redirect-origins dd { margin: 0; overflow-wrap: anywhere; }
+.redirect-result { max-width: 800px; }
+.redirect-result .ant-btn { margin-top: 20px; }
 @media (max-width: 900px) {
+  .redirect-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .redirect-parameters { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .checkout-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .checkout-monitor { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .dependency-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
