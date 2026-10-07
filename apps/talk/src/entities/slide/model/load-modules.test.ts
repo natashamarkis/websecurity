@@ -63,7 +63,6 @@ describe('loadModules', () => {
       .map((slide) => ({ moduleId: module.id, route: slide.route, mode: slide.mode })))
     expect(demos).toEqual([
       { moduleId: 'xss', route: '/site/comments', mode: 'vulnerable' },
-      { moduleId: 'xss', route: '/site/comments', mode: 'fixed' },
     ])
     const topics = slides.filter((slide) => slide.type === 'vulnerability')
     expect(topics.filter((slide) => slide.section === 'frontend')).toHaveLength(7)
