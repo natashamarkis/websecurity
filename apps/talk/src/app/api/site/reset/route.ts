@@ -1,8 +1,12 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 import { store } from '@/shared/lib/memory-store'
+import { CSRF_SESSION_COOKIE, resetDelivery } from '@/features/vulnerabilities/csrf/session'
+import { isForeignOrigin } from '@/shared/lib/request-origin'
 
 /** POST → вернуть демо-сайт в стартовое состояние. */
-export async function POST() {
+export async function POST(request: NextRequest) {
+  if (isForeignOrigin(request)) return NextResponse.json({ error: 'Forbidden origin' }, { status: 403 })
+  resetDelivery(request.cookies.get(CSRF_SESSION_COOKIE)?.value)
   const state = store.reset()
   return NextResponse.json({ ok: true, comments: state.comments.length })
 }

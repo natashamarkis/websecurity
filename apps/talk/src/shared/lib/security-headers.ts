@@ -3,7 +3,7 @@ import { DEMO_SESSION_COOKIE, DEMO_SESSION_VALUE } from '@/entities/demo-user/mo
 
 /**
  * Заголовки демо-сайта в fixed. CSP совместима с Next dev и antd, но разрешает
- * inline-скрипты: XSS в этом демо предотвращает экранирование в render.fixed.tsx.
+ * inline-скрипты: XSS в этом демо предотвращает экранирование в FixedXssInject.tsx.
  */
 export function buildSecurityHeaders(mode: DemoMode): Record<string, string> {
   if (mode !== 'fixed') return {}

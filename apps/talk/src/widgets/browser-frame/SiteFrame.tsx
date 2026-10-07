@@ -21,20 +21,26 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
   const router = useRouter()
   const [origin, setOrigin] = useState('http://localhost:3000')
   const [ctx, setCtx] = useState<DemoContext>({})
+  const isCsrf = pathname === '/site/delivery'
+  const fallback = isCsrf ? '/talk/csrf/2' : '/talk/xss/2'
+  const [returnSlide, setReturnSlide] = useState(fallback)
 
   useEffect(() => {
     setOrigin(window.location.origin)
     setCtx(readDemoContext())
-  }, [pathname])
+    const saved = sessionStorage.getItem(RETURN_SLIDE_KEY)
+    const module = isCsrf ? 'csrf' : 'xss'
+    setReturnSlide(saved?.startsWith(`/talk/${module}/`) ? saved : fallback)
+  }, [pathname, fallback, isCsrf])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return
-      router.push(sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk/xss/2')
+      router.push(returnSlide)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [router])
+  }, [router, returnSlide])
 
   return (
     <div className="site-frame">
@@ -42,7 +48,8 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
         <BrowserFrame
           url={`${origin}${pathname}`}
           mode={mode}
-          payload={ctx.payload ?? '<img src=x onerror=alert(document.cookie)>'}
+          payload={isCsrf ? undefined : ctx.payload ?? '<img src=x onerror=alert(document.cookie)>'}
+          returnSlide={returnSlide}
         >
           {children}
         </BrowserFrame>

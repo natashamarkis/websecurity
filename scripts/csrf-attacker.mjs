@@ -1,0 +1,41 @@
+import { createServer } from 'node:http'
+import { readFile } from 'node:fs/promises'
+import { URL } from 'node:url'
+import process from 'node:process'
+import console from 'node:console'
+
+const port = Number(process.env.CSRF_ATTACKER_PORT ?? 3001)
+const html = await readFile(new URL('../apps/talk/src/features/vulnerabilities/csrf/attacker.html', import.meta.url), 'utf8')
+const catalog = await readFile(new URL('../apps/talk/public/presentation/catalog.png', import.meta.url))
+
+// Статическая учебная страница: cookie не читаются и не записываются в логи.
+const server = createServer((request, response) => {
+  const url = new URL(request.url ?? '/', `http://127.0.0.1:${port}`)
+  const host = (request.headers.host ?? '').split(':')[0]
+  if (request.method !== 'GET' || !['127.0.0.1', 'localhost'].includes(host)) {
+    response.writeHead(403).end('Forbidden')
+    return
+  }
+  if (url.pathname === '/catalog.png') {
+    response.writeHead(200, { 'Content-Type': 'image/png' }).end(catalog)
+    return
+  }
+  if (!['/', '/offer'].includes(url.pathname)) {
+    response.writeHead(404).end('Not found')
+    return
+  }
+  const victimPort = Number(url.searchParams.get('victimPort') ?? 3000)
+  if (!Number.isInteger(victimPort) || victimPort < 1 || victimPort > 65535 || victimPort === port) {
+    response.writeHead(400).end('Invalid local port')
+    return
+  }
+  const victim = `http://${host}:${victimPort}`
+  response.writeHead(200, {
+    'Content-Type': 'text/html; charset=utf-8',
+    'Cache-Control': 'no-store',
+    'Content-Security-Policy': `default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; form-action ${victim}; frame-ancestors 'none'; base-uri 'none'`,
+  }).end(html.replace('{{VICTIM_ORIGIN}}', victim))
+})
+
+server.on('error', (error) => { console.error(error.message); process.exit(1) })
+server.listen(port, '127.0.0.1', () => console.log(`CSRF offer: http://127.0.0.1:${port}/offer`))

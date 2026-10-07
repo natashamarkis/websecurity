@@ -14,13 +14,14 @@ interface BrowserFrameProps {
   mode: DemoMode
   payload?: string
   children: ReactNode
+  returnSlide?: string
 }
 
 function hostOf(url: string): string {
   try { return new URL(url).host } catch { return url }
 }
 
-export function BrowserFrame({ url, mode, payload, children }: BrowserFrameProps) {
+export function BrowserFrame({ url, mode, payload, children, returnSlide = '/talk/xss/2' }: BrowserFrameProps) {
   const router = useRouter()
   const { message } = App.useApp()
   const copyPayload = async () => {
@@ -37,6 +38,7 @@ export function BrowserFrame({ url, mode, payload, children }: BrowserFrameProps
       const response = await fetch('/api/site/reset', { method: 'POST' })
       if (!response.ok) throw new Error('Reset failed')
       router.refresh()
+      window.dispatchEvent(new Event('demo:reset'))
       message.info('Данные демо-сайта сброшены')
     } catch {
       message.error('Не удалось сбросить данные')
@@ -52,7 +54,7 @@ export function BrowserFrame({ url, mode, payload, children }: BrowserFrameProps
         <div className="browser-actions">
           {payload && <Tooltip title="Скопировать payload"><Button aria-label="Скопировать payload" icon={<CopyOutlined />} onClick={copyPayload} /></Tooltip>}
           <Tooltip title="Сбросить данные"><Button aria-label="Сбросить" icon={<ReloadOutlined />} onClick={reset} /></Tooltip>
-          <Button type="primary" icon={<ArrowLeftOutlined />} onClick={() => router.push(sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk/xss/2')}>К слайду</Button>
+          <Button type="primary" icon={<ArrowLeftOutlined />} onClick={() => router.push(returnSlide)}>К слайду</Button>
         </div>
       </div>
       {children}
