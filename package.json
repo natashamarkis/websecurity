@@ -6,7 +6,8 @@
     "node": ">=20.9.0"
   },
   "scripts": {
-    "dev": "pnpm --filter @ws/talk dev",
+    "dev": "node scripts/dev.mjs",
+    "dev:attacker": "node scripts/csrf-attacker.mjs",
     "build": "pnpm -r build",
     "lint": "eslint .",
     "typecheck": "pnpm -r typecheck",

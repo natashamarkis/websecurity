@@ -13,10 +13,15 @@ export default defineConfig({
   },
   webServer: process.env.PLAYWRIGHT_BASE_URL
     ? undefined
-    : {
+    : [{
         command: 'pnpm dev',
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 60_000,
-      },
+      }, {
+        command: 'node ../../scripts/csrf-attacker.mjs',
+        url: `http://127.0.0.1:${process.env.CSRF_ATTACKER_PORT ?? 3001}/offer`,
+        reuseExistingServer: !process.env.CI,
+        timeout: 15_000,
+      }],
 })

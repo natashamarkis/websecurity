@@ -73,7 +73,19 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .browser-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; padding: 14px 20px; background: #f9fafc; border-bottom: 1px solid #dce3ed; }
 .browser-address.ant-input { flex: 1; min-width: 200px; }
 .browser-actions { display: flex; align-items: center; gap: 8px; }
+.delivery-layout { display: grid; grid-template-columns: minmax(0, 640px) minmax(240px, 1fr); gap: 48px; }
+.delivery-profile { min-width: 0; }
+.delivery-profile h3.ant-typography { margin: 0; font-size: 24px; }
+.delivery-current { margin: 24px 0; padding: 20px 0; border-top: 1px solid #e8edf5; border-bottom: 1px solid #e8edf5; }
+.delivery-current .ant-typography:last-child { font-size: 20px; margin: 8px 0 0; overflow-wrap: anywhere; }
+.delivery-profile form { display: grid; gap: 12px; margin-bottom: 20px; }
+.delivery-profile form .ant-btn { justify-self: start; }
+.delivery-attempt { display: flex; align-items: flex-start; flex-direction: column; gap: 8px; margin-top: 24px; overflow-wrap: anywhere; }
+.delivery-offer { border-left: 1px solid #e8edf5; padding-left: 32px; }
+.delivery-offer img { display: block; width: 100%; max-width: 420px; height: 240px; object-fit: contain; }
 @media (max-width: 900px) {
+  .delivery-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .delivery-offer { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .slide-content { padding: 32px; }
   .talk-header, .talk-footer { padding-left: 24px; padding-right: 24px; }
   .title-slide { gap: 24px; }
