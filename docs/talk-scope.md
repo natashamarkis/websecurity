@@ -41,7 +41,7 @@ CSRF использует отдельный origin: статический се
 ## Замечания к источникам
 
 - Модуль зависимостей демонстрирует ошибку в локальной учебной библиотеке
-  `demo-description`, а не реальный опубликованный npm-пакет или CVE. Исторический
+  `product-description-renderer`, а не реальный опубликованный npm-пакет или CVE. Исторический
   кейс event-stream заменён на этот воспроизводимый пример. Команды audit и update:
   [pnpm audit](https://pnpm.io/cli/audit), [pnpm update](https://pnpm.io/cli/update).
 

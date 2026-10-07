@@ -43,9 +43,9 @@ export function DependencyDemo({ mode }: { mode: DemoMode }) {
       </form>
       <div className="dependency-package">
         <Tag>Учебная библиотека</Tag>
-        <Typography.Text code data-testid="dependency-version">demo-description@{manifest.dependencies['demo-description']}</Typography.Text>
+        <Typography.Text code data-testid="dependency-version">product-description-renderer@{manifest.dependencies['product-description-renderer']}</Typography.Text>
       </div>
-      <pre className="dependency-consumer"><code>{'<ProductDescription text={product.description} />'}</code></pre>
+      <pre className="dependency-consumer"><code>{"import { ProductDescription } from 'product-description-renderer'\n\n<ProductDescription description={product.description} />"}</code></pre>
     </section>
     <section className="dependency-product" aria-label="Карточка товара">
       <img src="/presentation/catalog.png" alt="Каталог электротехнической продукции" width={420} height={227} />

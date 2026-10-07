@@ -18,6 +18,10 @@ export async function CodeSlide({ slide }: { slide: CodeSlideData }) {
     ? await highlight(await readCode(slide.fixed.file), slide.lang)
     : undefined
   const requests: { title: string; html: string }[] = []
+  const relatedHtml = slide.relatedCode ? [
+    await highlight(await readCode(slide.relatedCode.vulnerable.file), slide.relatedCode.lang),
+    await highlight(await readCode(slide.relatedCode.fixed.file), slide.relatedCode.lang),
+  ] : []
   if (slide.requestExamples) {
     for (const example of slide.requestExamples.items) {
       requests.push({ title: example.title, html: await highlight(example.code, slide.requestExamples.lang) })
@@ -26,8 +30,13 @@ export async function CodeSlide({ slide }: { slide: CodeSlideData }) {
 
   const panel = (html: string, requestIndex: 0 | 1) => {
     const request = requests[requestIndex]
+    const related = relatedHtml[requestIndex]
     return <>
       <div className="backend-code"><CodeBlock html={html} /></div>
+      {slide.relatedCode && related && <section className="related-code" aria-label={slide.relatedCode.title}>
+        <SlideTitle level={3}>{slide.relatedCode.title}</SlideTitle>
+        <CodeBlock html={related} />
+      </section>}
       {slide.requestExamples && request && <section className="request-examples" aria-label={slide.requestExamples.title}>
         <SlideTitle level={3}>{slide.requestExamples.title}</SlideTitle>
         <section aria-label={request.title}>
@@ -57,7 +66,7 @@ export async function CodeSlide({ slide }: { slide: CodeSlideData }) {
   ]
 
   return (
-    <div className={slide.requestExamples ? 'code-slide-with-requests' : undefined}>
+    <div className={[slide.requestExamples && 'code-slide-with-requests', slide.relatedCode && 'code-slide-with-related'].filter(Boolean).join(' ') || undefined}>
       {slide.title && <SlideTitle level={2}>{slide.title}</SlideTitle>}
       {slide.caption && <p className="code-caption">{slide.caption}</p>}
       <Tabs items={items} size="large" />

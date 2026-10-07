@@ -49,6 +49,12 @@ export const CodeSlideSchema = z.object({
   lang: z.string().min(1),
   vulnerable: codeRef,
   fixed: codeRef.optional(),
+  relatedCode: z.object({
+    title: z.string().min(1),
+    lang: z.string().min(1),
+    vulnerable: codeRef,
+    fixed: codeRef,
+  }).optional(),
   requestExamples: z.object({
     title: z.string().min(1),
     lang: z.string().min(1),

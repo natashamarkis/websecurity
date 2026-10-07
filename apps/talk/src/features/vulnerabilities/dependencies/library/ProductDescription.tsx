@@ -1,4 +1,4 @@
-// Учебная библиотека: строка из данных товара ошибочно становится HTML.
-export function ProductDescription({ text }: { text: string }) {
-  return <div dangerouslySetInnerHTML={{ __html: text }} />
+// Версия 1.0.0: выводит описание товара, но ошибочно доверяет HTML из каталога.
+export function ProductDescription({ description }: { description: string }) {
+  return <div dangerouslySetInnerHTML={{ __html: description }} />
 }
