@@ -57,7 +57,7 @@
     },
     {
       "type": "code",
-      "title": "CSRF: уязвимый код и исправление",
+      "title": "CSRF: бэкенд-код (Node.js)",
       "lang": "ts",
       "vulnerable": { "file": "features/vulnerabilities/csrf/change-delivery.ts" },
       "fixed": { "file": "features/vulnerabilities/csrf/fixed-change-delivery.ts" },

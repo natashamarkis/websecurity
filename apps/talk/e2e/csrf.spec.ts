@@ -32,7 +32,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await page.screenshot({ path: `test-results/csrf-slide-${index}-${viewport.width}.png`, fullPage: true, animations: 'disabled' })
       await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
     }
-    await expect(page.getByRole('heading', { name: 'CSRF: уязвимый код и исправление' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'CSRF: бэкенд-код (Node.js)' })).toBeVisible()
     await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
     await expect(page).toHaveURL(/\/talk\/csrf\/5$/)
     await expect(page.getByRole('button', { name: 'Открыть демонстрацию' })).toBeVisible()
@@ -48,7 +48,7 @@ test('demonstrates a real cross-origin form and blocks it after switching to fix
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
   await page.goto('/talk/csrf/4')
-  await expect(page.getByRole('heading', { name: 'CSRF: уязвимый код и исправление' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'CSRF: бэкенд-код (Node.js)' })).toBeVisible()
   await page.getByRole('tab', { name: 'Исправлено', exact: true }).click()
   await expect(page.getByRole('tabpanel')).toContainText('fixedChangeDelivery')
   await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
