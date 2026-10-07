@@ -6,6 +6,7 @@ import type { DemoMode } from '@/shared/lib/demoMode'
 import { ViewTransition, DEMO_FRAME_TRANSITION } from '@/shared/lib/viewTransition'
 import { BrowserFrame, RETURN_SLIDE_KEY } from './BrowserFrame'
 import { readDemoContext, type DemoContext } from '@/features/demo-transition/demoContext'
+import { DEPENDENCY_PAYLOAD } from '@/features/vulnerabilities/dependencies/fixtures'
 
 interface SiteFrameProps {
   mode: DemoMode
@@ -22,16 +23,17 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
   const [origin, setOrigin] = useState('http://localhost:3000')
   const [ctx, setCtx] = useState<DemoContext>({})
   const isCsrf = pathname === '/site/delivery'
-  const fallback = isCsrf ? '/talk/csrf/3' : '/talk/xss/2'
+  const isDependency = pathname === '/site/product'
+  const module = isCsrf ? 'csrf' : isDependency ? 'dependencies' : 'xss'
+  const fallback = `/talk/${module}/${module === 'xss' ? 2 : 3}`
   const [returnSlide, setReturnSlide] = useState(fallback)
 
   useEffect(() => {
     setOrigin(window.location.origin)
-    setCtx(readDemoContext())
     const saved = sessionStorage.getItem(RETURN_SLIDE_KEY)
-    const module = isCsrf ? 'csrf' : 'xss'
+    setCtx(saved?.startsWith(`/talk/${module}/`) ? readDemoContext() : {})
     setReturnSlide(saved?.startsWith(`/talk/${module}/`) ? saved : fallback)
-  }, [pathname, fallback, isCsrf])
+  }, [pathname, fallback, module])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -48,7 +50,7 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
         <BrowserFrame
           url={`${origin}${pathname}`}
           mode={mode}
-          payload={isCsrf ? undefined : ctx.payload ?? '<img src=x onerror=alert(document.cookie)>'}
+          payload={isCsrf ? undefined : ctx.payload ?? (isDependency ? DEPENDENCY_PAYLOAD : '<img src=x onerror=alert(document.cookie)>')}
           returnSlide={returnSlide}
         >
           {children}

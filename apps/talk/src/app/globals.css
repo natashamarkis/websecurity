@@ -102,7 +102,20 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .delivery-mail-meta dt { color: #647084; }
 .delivery-mail-meta dd { margin: 0; }
 .delivery-offer img { display: block; width: 100%; max-width: 420px; height: auto; margin: 16px 0 20px; }
+.dependency-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; }
+.dependency-editor, .dependency-product { min-width: 0; }
+.dependency-layout h3.ant-typography { font-size: 24px; margin: 0 0 24px; overflow-wrap: anywhere; }
+.dependency-editor form { display: grid; gap: 12px; }
+.dependency-editor textarea { font-family: monospace; }
+.dependency-editor-actions, .dependency-package { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.dependency-package { margin-top: 28px; }
+.dependency-consumer { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; line-height: 1.6; padding: 16px 0; border-top: 1px solid #e8edf5; }
+.dependency-product { border-left: 1px solid #e8edf5; padding-left: 32px; }
+.dependency-product > img { display: block; width: 100%; max-width: 420px; height: auto; margin-bottom: 24px; }
+.dependency-description { min-height: 96px; margin-top: 20px; line-height: 1.6; overflow-wrap: anywhere; white-space: pre-wrap; }
 @media (max-width: 900px) {
+  .dependency-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .dependency-product { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .delivery-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .delivery-offer { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .slide-content { padding: 32px; }

@@ -52,7 +52,7 @@ describe('loadModules', () => {
     expect(modules[0]?.id).toBe('intro')
   })
 
-  it('covers all source slides and exposes live demos only for XSS and CSRF', async () => {
+  it('covers all source slides and exposes the implemented live demos', async () => {
     const modules = await loadModules(resolveSlidesDir())
     const slides = modules.flatMap((module) => module.slides)
     expect(slides.flatMap((slide) => slide.sourceSlide ? [slide.sourceSlide] : [])).toEqual(
@@ -64,6 +64,7 @@ describe('loadModules', () => {
     expect(demos).toEqual([
       { moduleId: 'xss', route: '/site/comments', mode: 'vulnerable' },
       { moduleId: 'csrf', route: '/site/delivery', mode: 'vulnerable' },
+      { moduleId: 'dependencies', route: '/site/product', mode: 'vulnerable' },
     ])
     const topics = slides.filter((slide) => slide.type === 'vulnerability')
     expect(topics.filter((slide) => slide.section === 'frontend')).toHaveLength(7)
