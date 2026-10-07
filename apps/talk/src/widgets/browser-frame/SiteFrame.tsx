@@ -22,7 +22,7 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
   const [origin, setOrigin] = useState('http://localhost:3000')
   const [ctx, setCtx] = useState<DemoContext>({})
   const isCsrf = pathname === '/site/delivery'
-  const fallback = isCsrf ? '/talk/csrf/5' : '/talk/xss/2'
+  const fallback = isCsrf ? '/talk/csrf/3' : '/talk/xss/2'
   const [returnSlide, setReturnSlide] = useState(fallback)
 
   useEffect(() => {
