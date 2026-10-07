@@ -61,6 +61,21 @@
       "lang": "ts",
       "vulnerable": { "file": "features/vulnerabilities/csrf/change-delivery.ts" },
       "fixed": { "file": "features/vulnerabilities/csrf/fixed-change-delivery.ts" },
+      "requestExamples": {
+        "title": "Фронтенд: что отправляем на сервер",
+        "lang": "ts",
+        "items": [
+          {
+            "title": "Без csrfToken",
+            "code": "fetch('/api/site/delivery', {\n  method: 'POST',\n  body: new URLSearchParams({\n    address: draft,\n  }),\n})"
+          },
+          {
+            "title": "С csrfToken",
+            "code": "fetch('/api/site/delivery', {\n  method: 'POST',\n  body: new URLSearchParams({\n    address: draft,\n    csrfToken: profile.csrfToken,\n  }),\n})"
+          }
+        ],
+        "caption": "Токен получаем из GET /api/site/delivery. Cookie браузер добавляет сам. Исправленный бэкенд: без токена 403, с правильным токеном 200."
+      },
       "notes": "Оба обработчика получают существующую учебную сессию и валидный адрес. Уязвимый доверяет cookie. Исправленный до изменения данных сравнивает токен формы с криптографически случайным секретом сессии. Чужой токен также не подходит. В клиенте нет условной имитации защиты: решение принимает сервер."
     },
     {

@@ -33,6 +33,18 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
     }
     await expect(page.getByRole('heading', { name: 'CSRF: бэкенд-код (Node.js)' })).toBeVisible()
+    const requests = page.getByRole('region', { name: 'Фронтенд: что отправляем на сервер', exact: true })
+    const withoutToken = requests.getByRole('region', { name: 'Без csrfToken', exact: true })
+    const withToken = requests.getByRole('region', { name: 'С csrfToken', exact: true })
+    await expect(withoutToken.locator('pre')).toContainText("method: 'POST'")
+    await expect(withoutToken.locator('pre')).not.toContainText('csrfToken')
+    await expect(withToken.locator('pre')).toContainText('csrfToken: profile.csrfToken')
+    for (const mode of ['Уязвимо', 'Исправлено']) {
+      await page.getByRole('tab', { name: mode, exact: true }).click()
+      await expect(requests).toBeVisible()
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(viewport.width)
+      await page.screenshot({ path: `test-results/csrf-requests-${mode === 'Уязвимо' ? 'vulnerable' : 'fixed'}-${viewport.width}.png`, fullPage: true, animations: 'disabled' })
+    }
     await page.getByRole('button', { name: 'Следующий слайд', exact: true }).click()
     await expect(page).toHaveURL(/\/talk\/csrf\/5$/)
     await expect(page.getByRole('button', { name: 'Открыть демонстрацию' })).toBeVisible()
