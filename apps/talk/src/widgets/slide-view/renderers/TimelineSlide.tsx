@@ -10,7 +10,7 @@ type TimelineSlideData = z.infer<typeof TimelineSlideSchema>
 export function TimelineSlide({ slide }: { slide: TimelineSlideData }) {
   return (
     <>
-      <SlideTitle level={2}>{slide.title}</SlideTitle>
+      <SlideTitle level={1}>{slide.title}</SlideTitle>
       <StepTimeline steps={slide.steps} />
     </>
   )

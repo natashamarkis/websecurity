@@ -20,6 +20,8 @@ export const talkTheme: ThemeConfig = {
     controlHeight: 40,
   },
   components: {
+    Timeline: { dotSize: 28 },
+    Steps: { dotSize: 28, dotCurrentSize: 28 },
     Typography: { titleMarginBottom: '0.65em', titleMarginTop: '0' },
     Button: { primaryShadow: 'none' },
   },
