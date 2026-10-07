@@ -118,7 +118,23 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .dependency-product { border-left: 1px solid #e8edf5; padding-left: 32px; }
 .dependency-product > img { display: block; width: 100%; max-width: 420px; height: auto; margin-bottom: 24px; }
 .dependency-description { min-height: 96px; margin-top: 20px; line-height: 1.6; overflow-wrap: anywhere; white-space: pre-wrap; }
+.checkout-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; }
+.checkout-form, .checkout-monitor { min-width: 0; }
+.checkout-layout h3.ant-typography { margin: 0 0 16px; font-size: 24px; }
+.checkout-catalog { display: block; width: 100%; max-width: 320px; height: auto; margin: 20px 0; }
+.checkout-form form { display: grid; gap: 10px; }
+.checkout-form .ant-btn { justify-self: start; margin-top: 8px; }
+.checkout-monitor { border-left: 1px solid #e8edf5; padding-left: 32px; }
+.checkout-monitor .ant-radio-group { display: flex; flex-wrap: wrap; margin: 20px 0; }
+.checkout-details { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px; font-size: 14px; line-height: 1.5; }
+.checkout-details dt { color: #647084; }
+.checkout-details dd { margin: 0; overflow-wrap: anywhere; }
+.checkout-capture { border-top: 1px solid #e8edf5; margin-top: 24px; padding-top: 20px; }
+.checkout-capture h4.ant-typography { font-size: 18px; margin: 0 0 16px; }
+.checkout-capture pre { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; }
 @media (max-width: 900px) {
+  .checkout-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .checkout-monitor { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .dependency-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .dependency-product { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .delivery-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }

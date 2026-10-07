@@ -24,7 +24,8 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
   const [ctx, setCtx] = useState<DemoContext>({})
   const isCsrf = pathname === '/site/delivery'
   const isDependency = pathname === '/site/product'
-  const module = isCsrf ? 'csrf' : isDependency ? 'dependencies' : 'xss'
+  const isThirdParty = pathname === '/site/checkout'
+  const module = isCsrf ? 'csrf' : isDependency ? 'dependencies' : isThirdParty ? 'third-party-scripts' : 'xss'
   const fallback = `/talk/${module}/${module === 'xss' ? 2 : 3}`
   const [returnSlide, setReturnSlide] = useState(fallback)
 
@@ -50,7 +51,7 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
         <BrowserFrame
           url={`${origin}${pathname}`}
           mode={mode}
-          payload={isCsrf ? undefined : ctx.payload ?? (isDependency ? DEPENDENCY_PAYLOAD : '<img src=x onerror=alert(document.cookie)>')}
+          payload={isCsrf || isThirdParty ? undefined : ctx.payload ?? (isDependency ? DEPENDENCY_PAYLOAD : '<img src=x onerror=alert(document.cookie)>')}
           returnSlide={returnSlide}
         >
           {children}
