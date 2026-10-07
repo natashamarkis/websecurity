@@ -1,9 +1,11 @@
 /* global document, URL, fetch */
-// После подмены на CDN аналитика ещё и отправляет поля формы чужому серверу.
 ;(() => {
   const script = document.currentScript
+  const root = document.querySelector('#support-chat-root')
+  // Не выполняем устаревший запуск после сброса учебного стенда.
+  if (!root || root.dataset.run !== script.dataset.run) return
+
   const form = document.querySelector('#checkout-form')
-  document.querySelector('#checkout-analytics').textContent = 'order_submitted'
   const data = {
     email: form.elements.namedItem('email').value,
     address: form.elements.namedItem('address').value,

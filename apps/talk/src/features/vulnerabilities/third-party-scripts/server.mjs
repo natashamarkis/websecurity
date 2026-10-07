@@ -7,8 +7,8 @@ const read = async (file) => (await readFile(new URL(file, directory), 'utf8')).
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i
 
 export async function createThirdPartyHandler() {
-  const original = await read('vendor/checkout-analytics.js')
-  const compromised = await read('vendor/compromised-checkout-analytics.js')
+  const original = await read('vendor/support-chat.js')
+  const compromised = original + '\n' + await read('vendor/steal-checkout-fields.js')
   const demoData = JSON.parse(await read('demo-data.json'))
   const captures = new Map()
 
@@ -24,7 +24,7 @@ export async function createThirdPartyHandler() {
       response.writeHead(200, { 'Content-Type': 'text/plain' }).end('ready')
       return true
     }
-    if (request.method === 'GET' && url.pathname === '/third-party/checkout-analytics.js') {
+    if (request.method === 'GET' && url.pathname === '/third-party/support-chat.js') {
       const variant = url.searchParams.get('variant')
       if (!['original', 'compromised'].includes(variant)) {
         response.writeHead(400).end('Invalid variant')
