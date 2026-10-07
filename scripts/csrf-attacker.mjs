@@ -8,6 +8,8 @@ import { createThirdPartyHandler } from '../apps/talk/src/features/vulnerabiliti
 const port = Number(process.env.CSRF_ATTACKER_PORT ?? 3001)
 const html = await readFile(new URL('../apps/talk/src/features/vulnerabilities/csrf/attacker.html', import.meta.url), 'utf8')
 const redirectHtml = await readFile(new URL('../apps/talk/src/features/vulnerabilities/open-redirects/attacker.html', import.meta.url), 'utf8')
+const clickjackingHtml = await readFile(new URL('../apps/talk/src/features/vulnerabilities/clickjacking/attacker.html', import.meta.url), 'utf8')
+const attackLayer = await readFile(new URL('../apps/talk/src/features/vulnerabilities/clickjacking/attack-layer.html', import.meta.url), 'utf8')
 const catalog = await readFile(new URL('../apps/talk/public/presentation/catalog.png', import.meta.url))
 const thirdParty = await createThirdPartyHandler()
 
@@ -45,6 +47,21 @@ const server = createServer(async (request, response) => {
       'Referrer-Policy': 'no-referrer',
       'Content-Security-Policy': "default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'",
     }).end(redirectHtml.replace('{{SHOP_ORIGIN}}', `http://${host}:${shopPort}`))
+    return
+  }
+  if (url.pathname === '/clickjacking') {
+    const shopPort = Number(url.searchParams.get('shopPort') ?? 3000)
+    if (!Number.isInteger(shopPort) || shopPort < 1 || shopPort > 65535 || shopPort === port) {
+      response.writeHead(400).end('Invalid local port')
+      return
+    }
+    const shopOrigin = `http://${host}:${shopPort}`
+    response.writeHead(200, {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Cache-Control': 'no-store',
+      'Referrer-Policy': 'no-referrer',
+      'Content-Security-Policy': `default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; frame-src ${shopOrigin}; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`,
+    }).end(clickjackingHtml.replace('{{ATTACK_LAYER}}', attackLayer).replaceAll('{{SHOP_ORIGIN}}', shopOrigin))
     return
   }
   if (!['/', '/offer'].includes(url.pathname)) {

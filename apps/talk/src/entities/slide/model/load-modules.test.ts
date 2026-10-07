@@ -67,6 +67,7 @@ describe('loadModules', () => {
       { moduleId: 'dependencies', route: '/site/product', mode: 'vulnerable' },
       { moduleId: 'third-party-scripts', route: '/site', mode: 'vulnerable' },
       { moduleId: 'open-redirects', route: '/site/redirect', mode: 'vulnerable' },
+      { moduleId: 'clickjacking', route: '/site/notifications', mode: 'vulnerable' },
     ])
     const topics = slides.filter((slide) => slide.type === 'vulnerability')
     expect(topics.filter((slide) => slide.section === 'frontend')).toHaveLength(7)
