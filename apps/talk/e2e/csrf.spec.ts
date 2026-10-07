@@ -36,12 +36,19 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     const requests = page.getByRole('region', { name: 'Фронтенд: что отправляем на сервер', exact: true })
     const withoutToken = requests.getByRole('region', { name: 'Без csrfToken', exact: true })
     const withToken = requests.getByRole('region', { name: 'С csrfToken', exact: true })
-    await expect(withoutToken.locator('pre')).toContainText("method: 'POST'")
-    await expect(withoutToken.locator('pre')).not.toContainText('csrfToken')
-    await expect(withToken.locator('pre')).toContainText('csrfToken: profile.csrfToken')
-    for (const mode of ['Уязвимо', 'Исправлено']) {
+    for (const mode of ['Уязвимо', 'Исправлено', 'Уязвимо']) {
       await page.getByRole('tab', { name: mode, exact: true }).click()
       await expect(requests).toBeVisible()
+      if (mode === 'Уязвимо') {
+        await expect(page.getByRole('tabpanel').locator('.backend-code')).toContainText('function changeDelivery')
+        await expect(withoutToken.locator('pre')).toContainText("method: 'POST'")
+        await expect(withoutToken.locator('pre')).not.toContainText('csrfToken')
+        await expect(withToken).toHaveCount(0)
+      } else {
+        await expect(page.getByRole('tabpanel').locator('.backend-code')).toContainText('fixedChangeDelivery')
+        await expect(withToken.locator('pre')).toContainText('csrfToken: profile.csrfToken')
+        await expect(withoutToken).toHaveCount(0)
+      }
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(viewport.width)
       await page.screenshot({ path: `test-results/csrf-requests-${mode === 'Уязвимо' ? 'vulnerable' : 'fixed'}-${viewport.width}.png`, fullPage: true, animations: 'disabled' })
     }

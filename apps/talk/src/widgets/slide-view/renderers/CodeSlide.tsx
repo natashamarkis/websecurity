@@ -17,25 +17,40 @@ export async function CodeSlide({ slide }: { slide: CodeSlideData }) {
   const fixedHtml = slide.fixed
     ? await highlight(await readCode(slide.fixed.file), slide.lang)
     : undefined
-  const requests = []
+  const requests: { title: string; html: string }[] = []
   if (slide.requestExamples) {
     for (const example of slide.requestExamples.items) {
       requests.push({ title: example.title, html: await highlight(example.code, slide.requestExamples.lang) })
     }
   }
 
+  const panel = (html: string, requestIndex: 0 | 1) => {
+    const request = requests[requestIndex]
+    return <>
+      <div className="backend-code"><CodeBlock html={html} /></div>
+      {slide.requestExamples && request && <section className="request-examples" aria-label={slide.requestExamples.title}>
+        <SlideTitle level={3}>{slide.requestExamples.title}</SlideTitle>
+        <section aria-label={request.title}>
+          <h4>{request.title}</h4>
+          <CodeBlock html={request.html} />
+        </section>
+        {slide.requestExamples.caption && <p className="request-caption">{slide.requestExamples.caption}</p>}
+      </section>}
+    </>
+  }
+
   const items = [
     {
       key: 'vulnerable',
       label: 'Уязвимо',
-      children: <CodeBlock html={vulnerableHtml} />,
+      children: panel(vulnerableHtml, 0),
     },
     ...(fixedHtml && slide.fixed
       ? [
           {
             key: 'fixed',
             label: 'Исправлено',
-            children: <CodeBlock html={fixedHtml} />,
+            children: panel(fixedHtml, 1),
           },
         ]
       : []),
@@ -45,16 +60,6 @@ export async function CodeSlide({ slide }: { slide: CodeSlideData }) {
     <div className={slide.requestExamples ? 'code-slide-with-requests' : undefined}>
       {slide.title && <SlideTitle level={2}>{slide.title}</SlideTitle>}
       <Tabs items={items} size="large" />
-      {slide.requestExamples && <section className="request-examples" aria-label={slide.requestExamples.title}>
-        <SlideTitle level={3}>{slide.requestExamples.title}</SlideTitle>
-        <div className="request-examples-grid">
-          {requests.map((request) => <section key={request.title} aria-label={request.title}>
-            <h4>{request.title}</h4>
-            <CodeBlock html={request.html} />
-          </section>)}
-        </div>
-        {slide.requestExamples.caption && <p className="request-caption">{slide.requestExamples.caption}</p>}
-      </section>}
     </div>
   )
 }
