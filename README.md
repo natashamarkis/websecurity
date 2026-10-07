@@ -22,6 +22,11 @@ pnpm dev
 - Open Redirect: <http://127.0.0.1:3000/site/redirect>
 - Clickjacking: <http://127.0.0.1:3000/site/notifications>
 - Prototype Pollution: <http://127.0.0.1:3000/site/catalog>
+- SSRF: <http://127.0.0.1:3000/site/backend/ssrf>
+- Session Fixation: <http://127.0.0.1:3000/site/backend/sessions>
+- SQL Injection: <http://127.0.0.1:3000/site/backend/sql-injection>
+- Brute Force: <http://127.0.0.1:3000/site/backend/brute-force>
+- IDOR и Path Traversal: <http://127.0.0.1:3000/site/backend/file-download>
 - Страница учебной акции: <http://127.0.0.1:3001/offer>
 
 `pnpm dev` запускает сайт и отдельный локальный сервер акции, CDN и получателя
@@ -51,13 +56,16 @@ pnpm dev
 Open Redirect: суть, фронтенд-код и письмо с реальным переходом между origin.
 Clickjacking: суть, серверные заголовки и настоящий iframe поверх бонуса.
 Prototype Pollution: суть, пара реализаций импорта и влияние на независимый расчёт доставки.
-Итого 34 экрана, 15 модулей. Доступны содержание, кнопки листания,
+Backend: SSRF, фиксация сессии, SQL Injection, перебор пароля, IDOR и Path Traversal.
+Итого 45 экранов, 15 модулей. Доступны содержание, кнопки листания,
 клавиатурная навигация, заметки докладчика и полноэкранный режим.
 Реализованы stored XSS в комментариях, CSRF при изменении адреса доставки и XSS внутри учебной зависимости.
 Пошаговые сценарии: [XSS-демо](docs/demo/xss.md), [CSRF-демо](docs/demo/csrf.md),
 [демо зависимости](docs/demo/dependencies.md), [сторонний чат](docs/demo/third-party-scripts.md),
 [Open Redirect](docs/demo/open-redirects.md), [Clickjacking](docs/demo/clickjacking.md),
-[Prototype Pollution](docs/demo/prototype-pollution.md).
+[Prototype Pollution](docs/demo/prototype-pollution.md), [SSRF](docs/demo/ssrf.md),
+[Session Fixation](docs/demo/sessions.md), [SQL Injection](docs/demo/sql-injection.md),
+[Brute Force](docs/demo/brute-force.md), [доступ к файлам](docs/demo/file-download.md).
 
 Данные живут в памяти одного процесса Next.js и сбрасываются при его перезапуске.
 Все вкладки используют общий список комментариев. Пользователь Алекс и его cookie
@@ -108,7 +116,22 @@ Zod-схему и явное копирование разрешённых по�
 Смена режима повторяет последний применённый JSON в чистом контексте.
 Это изменение предварительной цифры в браузере, не серверной цены заказа.
 
-Остальные 5 тем представлены только теоретическими слайдами без запуска атак.
+Все 12 тем содержат код и живое демо. Backend-реализации выполняются в Next.js Route Handlers,
+режим выбирается на сервере по cookie. Фронт отправляет запрос и показывает реальный ответ.
+SQL работает в отдельной SQLite :memory: с четырьмя вымышленными заказами (node:sqlite,
+Node.js 24; ExperimentalWarning допустим). Внешнюю БД и Docker устанавливать не нужно.
+SSRF использует три подготовленных адреса .test, сопоставленных с локальным HTTP-сервером
+на автоматически выбранном loopback-порту. Произвольные внешние и LAN-запросы запрещены.
+Session Fixation моделирует два клиента на сервере: начальный шаг задаёт уже навязанную
+анонимную сессию, а вход и проверка профиля выполняются серверными функциями.
+Перебор ограничен восемью учебными кандидатами, счётчик fixed общий для копии аккаунта
+зрителя. Это не полноценная система аутентификации. Для production нужны отдельные
+меры, описанные в заметках: MFA, распределённые лимиты, защищённая доставка cookie.
+Path Traversal читает только два файла во временной папке websecurity-files-*.
+В обоих режимах оболочка запрещает чтение остальных файлов компьютера.
+Cookie backend-lab изолирует зрителей; данные живут до часа, максимум 200 копий.
+Кнопки сброса и переключения режима существуют только для доклада.
+
 Оформление повторяет PPTX: белый фон, Arial, синие заголовки, оранжевые и бирюзовые
 акценты. Логотип ЭТМ и изображение каталога извлечены из оригинала и находятся
 в `apps/talk/public/presentation`.

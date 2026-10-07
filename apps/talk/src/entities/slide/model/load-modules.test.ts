@@ -69,6 +69,11 @@ describe('loadModules', () => {
       { moduleId: 'open-redirects', route: '/site/redirect', mode: 'vulnerable' },
       { moduleId: 'clickjacking', route: '/site/notifications', mode: 'vulnerable' },
       { moduleId: 'prototype-pollution', route: '/site/catalog', mode: 'vulnerable' },
+      { moduleId: 'ssrf', route: '/site/backend/ssrf', mode: 'vulnerable' },
+      { moduleId: 'sessions', route: '/site/backend/sessions', mode: 'vulnerable' },
+      { moduleId: 'sql-injection', route: '/site/backend/sql-injection', mode: 'vulnerable' },
+      { moduleId: 'brute-force', route: '/site/backend/brute-force', mode: 'vulnerable' },
+      { moduleId: 'file-download', route: '/site/backend/file-download', mode: 'vulnerable' },
     ])
     const topics = slides.filter((slide) => slide.type === 'vulnerability')
     expect(topics.filter((slide) => slide.section === 'frontend')).toHaveLength(7)

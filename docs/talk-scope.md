@@ -15,17 +15,15 @@ PPTX хранится у автора, его исходный файл в ра�
 | 8 | Frontend | Open Redirect | `/talk/open-redirects/0`: суть, фронтенд-код, демо письма с переходом на другой origin |
 | 9 | Frontend | Clickjacking | `/talk/clickjacking/0`: суть, серверные заголовки и демо прозрачного iframe |
 | 10 | Frontend | Prototype Pollution | `/talk/prototype-pollution/0`: суть, код, импорт JSON и загрязнение прототипа в отдельном Worker |
-| 12 | Backend | SSRF | Демо нет; материалы в `security-guide/module/08-ssrf.md` |
-| 13 | Backend | Session Management | Учебные cookie и отдельная сессия CSRF-профиля; полноценного входа и демо этой темы нет |
-| 14 | Backend | SQL Injection | Демо и отдельного раздела гайда нет |
-| 15 | Backend | Brute Force / Credential Stuffing | Демо и отдельного раздела гайда нет |
-| 16 | Backend | Insecure File Download | Демо и отдельного раздела гайда нет |
+| 12 | Backend | SSRF | `/talk/ssrf/0`: импорт каталога, внутренний ресурс и редирект через реальные локальные HTTP-запросы |
+| 13 | Backend | Session Management | `/talk/sessions/0`: два моделируемых клиента, фиксация сессии и ротация ID после входа |
+| 14 | Backend | SQL Injection | `/talk/sql-injection/0`: поиск своих заказов в SQLite и параметризованный запрос |
+| 15 | Backend | Brute Force / Credential Stuffing | `/talk/brute-force/0`: 8 запросов входа, лимит по копии аккаунта и HTTP 429 |
+| 16 | Backend | Insecure File Download | `/talk/file-download/0`: IDOR счетов и Path Traversal к учебному файлу |
 
 Все темы доступны как теоретические слайды. Веб-презентация содержит 15 модулей,
-34 экрана: 17 исходных слайдов, по два дополнительных экрана XSS, Open Redirect, Clickjacking и Prototype Pollution,
-по три CSRF, зависимостей и сторонних скриптов.
-Все семь фронтенд-тем содержат живые демо;
-у других тем кнопок запуска атак нет.
+45 экранов: 17 исходных слайдов, дополнительные экраны кода и демонстраций.
+Все 12 тем содержат живые демо, включая пять backend-модулей.
 Data Exposure из старого гайда не является отдельной темой нового PPTX.
 
 ## Основа реализации
@@ -45,6 +43,15 @@ Clickjacking использует тот же локальный сервер: �
 в `features/vulnerabilities/third-party-scripts`, сценарий — в `docs/demo/third-party-scripts.md`.
 
 ## Замечания к источникам
+
+- Backend: непроверенные исторические кейсы заменены локальными сценариями.
+  У каждой темы есть источник OWASP, заметки о границах защиты и сценарий в `docs/demo`.
+  Node.js 24 нужен для встроенного SQLite. Произвольные SQL-программы, внешние SSRF-адреса
+  и чтение файлов компьютера запрещены общей оболочкой в обоих режимах.
+  Session Fixation моделирует уже выполненное навязывание ID, а не фишинговый сайт,
+  произвольно записывающий чужую HttpOnly-cookie. Brute Force показывает ограничение
+  повторных попыток, не гарантированную защиту от credential stuffing с верным паролем.
+  Zip Slip не реализован: в демонстрации скачивания нет распаковки архивов.
 
 - Prototype Pollution: непроверенные CVE-цифры заменены примером собственного merge.
   JSON.parse не загрязняет прототип; одноуровневый Object.assign не следует путать

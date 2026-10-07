@@ -1,25 +1,60 @@
 {
   "id": "sessions",
-  "title": "Session Management",
+  "title": "Session Management: фиксация сессии",
   "section": "backend",
   "slides": [
     {
       "type": "vulnerability",
       "sourceSlide": 13,
-      "title": "Session Management Issues",
+      "title": "Session Management: фиксация сессии",
       "section": "backend",
       "attack": [
-        "Токены сессии в localStorage — доступны через XSS",
-        "Нет timeout и regeneration сессии после логина",
-        "Session fixation — атакующий навязывает свой session ID"
+        "Атакующий получает анонимный Session ID и навязывает его браузеру покупателя",
+        "Покупатель входит со своим паролем, но сервер оставляет прежний ID",
+        "Атакующий повторяет известный ID и получает уже авторизованный профиль"
       ],
       "defense": [
-        "HttpOnly + Secure cookies вместо localStorage",
-        "Regeneration session ID после аутентификации",
-        "Авто-timeout и re-auth для чувствительных действий"
+        "После проверки пароля создать новый случайный ID и удалить старую сессию",
+        "Передавать ID через HttpOnly + Secure cookie. Не принимать его из ссылок",
+        "Ограничить срок жизни, отзывать сессию при выходе. Для важных операций повторно проверять пользователя"
       ],
-      "caseStudy": "T-Mobile (2020) — компрометация аккаунтов из-за session management flaw",
-      "notes": "Источник: Cybersecurity.pptx, слайд 13. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+      "caseStudy": "HttpOnly не исправляет уже известный атакующему ID. В демо пароль знает только покупатель, а профиль читает другой клиент.",
+      "sourceUrl": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+      "notes": "Основа: Cybersecurity.pptx, слайд 13. Нажмите 1, затем 2, затем 3. Два клиента в одной панели явно моделируют уже состоявшееся навязывание анонимного ID. Это не две настоящие вкладки с разными cookie: их cookie jars хранит лаборатория на сервере. Возможные предпосылки реального навязывания: приложение принимает ID из URL или cookie planting с поддомена. Шаг 1 не утверждает, что чужой сайт может произвольно записать HttpOnly-cookie. Шаг 2 реально проверяет учебный пароль на бэке. В vulnerable ID совпадают и профиль доступен атакующему. В fixed старый ID удалён, новый виден у покупателя, ответ атакующему 401. После переключения режима сценарий начинается заново. Выход отзывает ID в обоих режимах, TTL 15 минут. Полный login-flow, password storage, доставка письма и HTTPS не входят в этот короткий сценарий. Внешняя cookie backend-lab изолирует зрителей, её нельзя путать с моделируемым Session ID."
+    },
+    {
+      "type": "code",
+      "title": "Session Fixation: бэкенд после проверки пароля",
+      "caption": "Проверка пароля уже прошла. Меняем идентификатор сессии и отзываем старый.",
+      "lang": "ts",
+      "vulnerable": {
+        "file": "features/vulnerabilities/sessions/login.ts"
+      },
+      "fixed": {
+        "file": "features/vulnerabilities/sessions/fixed-login.ts"
+      },
+      "requestExamples": {
+        "title": "Фронтенд: тот же запрос в обоих режимах",
+        "lang": "js",
+        "items": [
+          {
+            "title": "Уязвимо",
+            "code": "fetch('/api/site/backend/sessions', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n  \"action\": \"login\",\n  \"password\": \"Demo-Alex-2026!\"\n})\n})"
+          },
+          {
+            "title": "Исправлено",
+            "code": "fetch('/api/site/backend/sessions', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n  \"action\": \"login\",\n  \"password\": \"Demo-Alex-2026!\"\n})\n})"
+          }
+        ]
+      },
+      "notes": "Основа: Cybersecurity.pptx, слайд 13. Нажмите 1, затем 2, затем 3. Два клиента в одной панели явно моделируют уже состоявшееся навязывание анонимного ID. Это не две настоящие вкладки с разными cookie: их cookie jars хранит лаборатория на сервере. Возможные предпосылки реального навязывания: приложение принимает ID из URL или cookie planting с поддомена. Шаг 1 не утверждает, что чужой сайт может произвольно записать HttpOnly-cookie. Шаг 2 реально проверяет учебный пароль на бэке. В vulnerable ID совпадают и профиль доступен атакующему. В fixed старый ID удалён, новый виден у покупателя, ответ атакующему 401. После переключения режима сценарий начинается заново. Выход отзывает ID в обоих режимах, TTL 15 минут. Полный login-flow, password storage, доставка письма и HTTPS не входят в этот короткий сценарий. Внешняя cookie backend-lab изолирует зрителей, её нельзя путать с моделируемым Session ID."
+    },
+    {
+      "type": "demo",
+      "route": "/site/backend/sessions",
+      "mode": "vulnerable",
+      "caption": "Покупатель входит. Атакующий повторяет старый Session ID.",
+      "notes": "Основа: Cybersecurity.pptx, слайд 13. Нажмите 1, затем 2, затем 3. Два клиента в одной панели явно моделируют уже состоявшееся навязывание анонимного ID. Это не две настоящие вкладки с разными cookie: их cookie jars хранит лаборатория на сервере. Возможные предпосылки реального навязывания: приложение принимает ID из URL или cookie planting с поддомена. Шаг 1 не утверждает, что чужой сайт может произвольно записать HttpOnly-cookie. Шаг 2 реально проверяет учебный пароль на бэке. В vulnerable ID совпадают и профиль доступен атакующему. В fixed старый ID удалён, новый виден у покупателя, ответ атакующему 401. После переключения режима сценарий начинается заново. Выход отзывает ID в обоих режимах, TTL 15 минут. Полный login-flow, password storage, доставка письма и HTTPS не входят в этот короткий сценарий. Внешняя cookie backend-lab изолирует зрителей, её нельзя путать с моделируемым Session ID."
     }
   ]
 }
