@@ -154,7 +154,28 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .redirect-origins dd { margin: 0; overflow-wrap: anywhere; }
 .redirect-result { max-width: 800px; }
 .redirect-result .ant-btn { margin-top: 20px; }
+.pollution-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; }
+.pollution-layout section { min-width: 0; }
+.pollution-layout h3.ant-typography { font-size: 24px; margin: 0 0 20px; overflow-wrap: anywhere; }
+.pollution-import form { display: grid; gap: 10px; }
+.pollution-import textarea { font-family: monospace; }
+.pollution-import .ant-btn { justify-self: start; }
+.pollution-feedback { min-height: 56px; margin-top: 20px; }
+.pollution-catalog { border-left: 1px solid #e8edf5; padding-left: 32px; }
+.pollution-catalog img { display: block; width: 100%; max-width: 280px; height: auto; margin: 0 0 20px; }
+.pollution-view { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 24px; }
+.pollution-delivery { border-top: 1px solid #e8edf5; padding-top: 20px; margin-top: 20px; }
+.pollution-delivery h4.ant-typography { font-size: 18px; margin: 0 0 12px; }
+.pollution-fee { min-height: 36px; color: #00808f; font-size: 28px; line-height: 36px; }
+.pollution-delivery pre { margin: 16px 0 0; font-size: 14px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.pollution-inspector { grid-column: 1 / -1; border-top: 1px solid #dce3ed; padding-top: 24px; }
+.pollution-inspector dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin: 0; }
+.pollution-inspector dt { min-height: 48px; font: 13px/1.6 monospace; color: #647084; overflow-wrap: anywhere; }
+.pollution-inspector dd { margin: 12px 0 0; min-height: 28px; font: 20px/1.4 monospace; color: #05358c; overflow-wrap: anywhere; }
 @media (max-width: 900px) {
+  .pollution-layout { grid-template-columns: minmax(0, 1fr); }
+  .pollution-catalog { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
+  .pollution-inspector dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redirect-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .redirect-parameters { border-left: 0; border-top: 1px solid #e8edf5; padding: 24px 0 0; }
   .checkout-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
@@ -172,6 +193,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
   .section-number { font-size: 120px; }
 }
 @media (max-width: 600px) {
+  .pollution-inspector dl { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .pollution-inspector dt { min-height: 0; }
   .explanation-body.ant-typography { font-size: 18px; }
   .talk-header { padding: 12px 16px; gap: 12px; min-height: 72px; }
   .talk-header-title { display: none; }

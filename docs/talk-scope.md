@@ -14,7 +14,7 @@ PPTX хранится у автора, его исходный файл в ра�
 | 7 | Frontend | Сторонние скрипты / Magecart | `/talk/third-party-scripts/0`: общие риски, защита, код, демо SRI на главной и в заказе |
 | 8 | Frontend | Open Redirect | `/talk/open-redirects/0`: суть, фронтенд-код, демо письма с переходом на другой origin |
 | 9 | Frontend | Clickjacking | `/talk/clickjacking/0`: суть, серверные заголовки и демо прозрачного iframe |
-| 10 | Frontend | Prototype Pollution | Демо нет; материалы в `security-guide/module/07-prototype-pollution.md` |
+| 10 | Frontend | Prototype Pollution | `/talk/prototype-pollution/0`: суть, код, импорт JSON и загрязнение прототипа в отдельном Worker |
 | 12 | Backend | SSRF | Демо нет; материалы в `security-guide/module/08-ssrf.md` |
 | 13 | Backend | Session Management | Учебные cookie и отдельная сессия CSRF-профиля; полноценного входа и демо этой темы нет |
 | 14 | Backend | SQL Injection | Демо и отдельного раздела гайда нет |
@@ -22,9 +22,9 @@ PPTX хранится у автора, его исходный файл в ра�
 | 16 | Backend | Insecure File Download | Демо и отдельного раздела гайда нет |
 
 Все темы доступны как теоретические слайды. Веб-презентация содержит 15 модулей,
-32 экрана: 17 исходных слайдов, по два дополнительных экрана XSS, Open Redirect и Clickjacking,
+34 экрана: 17 исходных слайдов, по два дополнительных экрана XSS, Open Redirect, Clickjacking и Prototype Pollution,
 по три CSRF, зависимостей и сторонних скриптов.
-XSS, CSRF, зависимости, сторонние скрипты, Open Redirect и Clickjacking содержат живые демо;
+Все семь фронтенд-тем содержат живые демо;
 у других тем кнопок запуска атак нет.
 Data Exposure из старого гайда не является отдельной темой нового PPTX.
 
@@ -45,6 +45,13 @@ Clickjacking использует тот же локальный сервер: �
 в `features/vulnerabilities/third-party-scripts`, сценарий — в `docs/demo/third-party-scripts.md`.
 
 ## Замечания к источникам
+
+- Prototype Pollution: непроверенные CVE-цифры заменены примером собственного merge.
+  JSON.parse не загрязняет прототип; одноуровневый Object.assign не следует путать
+  с изменением общего Object.prototype. Демо показывает предварительный расчёт
+  в браузере, не изменение цены заказа на сервере. Дополнительный раздел гайда
+  приведён в соответствие с реализованным сценарием.
+  [MDN](https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/Prototype_pollution).
 
 - Clickjacking: непроверенный исторический кейс заменён локальным сценарием.
   Показываем iframe-based атаку; корректный CSRF-токен не подтверждает смысл клика.
