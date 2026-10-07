@@ -1,3 +1,15 @@
+.ant-flex.slide-deck {
+  box-sizing: border-box;
+  min-height: 100dvh;
+  padding: 32px 64px 24px;
+}
+
+@media (max-width: 600px) {
+  .ant-flex.slide-deck {
+    padding: 24px 16px;
+  }
+}
+
 /* Переход слайд → сайт. React ViewTransition вешает view-transition-name на обёртки. */
 
 ::view-transition-old(root) {

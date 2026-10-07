@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import type { DemoMode } from '@/shared/lib/demoMode'
 import { ViewTransition, DEMO_FRAME_TRANSITION } from '@/shared/lib/viewTransition'
 import { BrowserFrame, RETURN_SLIDE_KEY } from './BrowserFrame'
-import { readDemoContext, evilUrlFor, type DemoContext } from '@/features/demo-transition/demoContext'
+import { readDemoContext, type DemoContext } from '@/features/demo-transition/demoContext'
 
 interface SiteFrameProps {
   mode: DemoMode
@@ -13,7 +13,7 @@ interface SiteFrameProps {
 }
 
 /**
- * Клиентская оболочка демо-сайта: считает URL из location, подтягивает payload/evil
+ * Клиентская оболочка демо-сайта: считает URL из location, подтягивает payload
  * из sessionStorage (их положил demo-слайд) и возвращает на слайд по Esc.
  */
 export function SiteFrame({ mode, children }: SiteFrameProps) {
@@ -43,7 +43,6 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
           url={`${origin}${pathname}`}
           mode={mode}
           payload={ctx.payload}
-          evilUrl={evilUrlFor(ctx.evilPage)}
         >
           {children}
         </BrowserFrame>

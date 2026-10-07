@@ -2,9 +2,8 @@ import type { DemoMode } from './demoMode'
 import { DEMO_SESSION_COOKIE, DEMO_SESSION_VALUE } from '@/entities/demo-user/model'
 
 /**
- * Заголовки защиты демо-сайта. В `vulnerable` их нет — это и есть демо
- * для clickjacking/CSRF. В `fixed` — рабочий минимум, совместимый с Next dev
- * и antd (inline-стили cssinjs).
+ * Заголовки демо-сайта в fixed. CSP совместима с Next dev и antd, но разрешает
+ * inline-скрипты: XSS в этом демо предотвращает экранирование в render.fixed.tsx.
  */
 export function buildSecurityHeaders(mode: DemoMode): Record<string, string> {
   if (mode !== 'fixed') return {}
@@ -42,9 +41,8 @@ export interface VictimCookie {
 }
 
 /**
- * Сессионная cookie жертвы. В `vulnerable` доступна из JS (document.cookie) и
- * без SameSite — её и крадут в XSS/CSRF-демо. В `fixed` — HttpOnly + Lax.
- * secure=false, потому что демо живёт на http://localhost.
+ * Учебная cookie для XSS: в vulnerable доступна из JS, в fixed скрыта HttpOnly.
+ * Для локального HTTP используем Lax: SameSite=None без Secure браузер отвергает.
  */
 export function buildVictimCookie(mode: DemoMode): VictimCookie {
   const fixed = mode === 'fixed'
@@ -54,7 +52,7 @@ export function buildVictimCookie(mode: DemoMode): VictimCookie {
     options: {
       path: '/',
       httpOnly: fixed,
-      sameSite: fixed ? 'lax' : 'none',
+      sameSite: 'lax',
       secure: false,
     },
   }

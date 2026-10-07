@@ -61,8 +61,6 @@ export const DemoSlideSchema = z.object({
   mode: z.enum(['vulnerable', 'fixed']),
   caption: z.string().optional(),
   payload: z.string().optional(),
-  /** имя html-страницы в apps/evil/public, если для демо нужен внешний origin */
-  evilPage: z.string().optional(),
 })
 
 export const ChecklistSlideSchema = z.object({

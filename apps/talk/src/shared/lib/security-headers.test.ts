@@ -21,7 +21,8 @@ describe('buildVictimCookie', () => {
     const c = buildVictimCookie('vulnerable')
     expect(c.name).toBe('session')
     expect(c.options.httpOnly).toBe(false)
-    expect(c.options.sameSite).toBe('none')
+    expect(c.options.sameSite).toBe('lax')
+    expect(c.options.secure).toBe(false)
   })
 
   it('is HttpOnly + SameSite=Lax in fixed mode', () => {

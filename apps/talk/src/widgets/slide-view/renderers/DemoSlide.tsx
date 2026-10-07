@@ -20,11 +20,11 @@ export function DemoSlide({ slide }: { slide: DemoSlideData }) {
       </BadgeTag>
       {slide.caption && <Lead align="center" maxWidth={800}>{slide.caption}</Lead>}
       <ViewTransition name={DEMO_FRAME_TRANSITION}>
-        <Card style={{ minWidth: 560 }}>
+        <Card style={{ width: 560, maxWidth: '100%' }}>
           <Flex vertical gap={12}>
             <Typography.Text type="secondary">{slide.route}</Typography.Text>
             {slide.payload && (
-              <Typography.Text code style={{ fontSize: 18 }}>
+              <Typography.Text code style={{ fontSize: 18, overflowWrap: 'anywhere' }}>
                 {slide.payload}
               </Typography.Text>
             )}
@@ -32,7 +32,6 @@ export function DemoSlide({ slide }: { slide: DemoSlideData }) {
               route={slide.route}
               mode={slide.mode}
               payload={slide.payload}
-              evilPage={slide.evilPage}
             />
           </Flex>
         </Card>

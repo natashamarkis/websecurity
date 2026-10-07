@@ -11,19 +11,3 @@ export function resolveMode(raw: string | undefined | null): DemoMode {
 export function pick<T>(vulnerable: T, fixed: T, mode: DemoMode): T {
   return mode === 'fixed' ? fixed : vulnerable
 }
-
-/** Разбор сырого заголовка Cookie (для proxy.ts и тестов). */
-export function parseModeFromCookieHeader(header: string | undefined | null): DemoMode {
-  if (!header) return 'vulnerable'
-  const pair = header
-    .split(';')
-    .map((s) => s.trim())
-    .find((s) => s.startsWith(`${DEMO_MODE_COOKIE}=`))
-  return resolveMode(pair?.slice(DEMO_MODE_COOKIE.length + 1))
-}
-
-/** Чтение режима на клиенте (document.cookie). */
-export function getClientMode(): DemoMode {
-  if (typeof document === 'undefined') return 'vulnerable'
-  return parseModeFromCookieHeader(document.cookie)
-}

@@ -16,10 +16,9 @@ export default async function TalkCoverPage() {
   return (
     <Flex vertical align="center" gap={32} style={{ minHeight: '100vh', padding: 48 }}>
       <Flex vertical align="center">
-        <SlideTitle align="center">Web Security Tech Talk</SlideTitle>
+        <SlideTitle align="center">Уязвимости SPA</SlideTitle>
         <Lead align="center" maxWidth={640}>
-          Учимся находить и предотвращать frontend-уязвимости: демонстрация в
-          контролируемой среде и разбор защиты.
+          От фронтенда до бэкенда
         </Lead>
       </Flex>
       <ModuleGrid modules={cards} />

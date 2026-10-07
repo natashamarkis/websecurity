@@ -10,8 +10,6 @@ build/
 *.local
 
 # ─── Backend runtime data ───────────────────────────────────
-backend/database.sqlite
-backend/uploads/
 *.sqlite
 *.sqlite3
 *.db

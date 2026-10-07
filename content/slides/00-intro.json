@@ -4,8 +4,8 @@
   "slides": [
     {
       "type": "title",
-      "title": "Frontend Security",
-      "subtitle": "Как одна строка кода превращается в миллионные потери",
+      "title": "Уязвимости SPA",
+      "subtitle": "От фронтенда до бэкенда",
       "notes": "Поздороваться. Сказать, что все демо — в изолированной локальной среде."
     },
     {
@@ -22,9 +22,9 @@
     },
     {
       "type": "demo",
-      "route": "/site",
+      "route": "/site/comments",
       "mode": "vulnerable",
-      "caption": "Так выглядит переход на «живой» сайт",
+      "caption": "XSS в комментариях",
       "payload": "<img src=x onerror=alert(document.cookie)>",
       "notes": "Показать рамку браузера, тумблер режима и возврат по Esc."
     }

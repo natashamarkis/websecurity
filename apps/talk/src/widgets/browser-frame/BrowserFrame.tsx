@@ -12,7 +12,6 @@ interface BrowserFrameProps {
   url: string
   mode: DemoMode
   payload?: string
-  evilUrl?: string
   children: ReactNode
 }
 
@@ -26,10 +25,10 @@ function hostOf(url: string): string {
 
 /**
  * «Окно браузера» вокруг демо-сайта: адресная строка, origin, тумблер режима,
- * кнопки payload / evil / сброс / возврат на слайд. Выглядит как часть браузера,
+ * кнопки payload / сброс / возврат на слайд. Выглядит как часть браузера,
  * а не презентации — так зритель видит границу «слайды ↔ живой сайт».
  */
-export function BrowserFrame({ url, mode, payload, evilUrl, children }: BrowserFrameProps) {
+export function BrowserFrame({ url, mode, payload, children }: BrowserFrameProps) {
   const router = useRouter()
   const { message } = App.useApp()
 
@@ -64,11 +63,6 @@ export function BrowserFrame({ url, mode, payload, evilUrl, children }: BrowserF
             <Tooltip title={payload}>
               <Button onClick={copyPayload}>Payload</Button>
             </Tooltip>
-          )}
-          {evilUrl && (
-            <Button href={evilUrl} target="_blank" rel="noopener">
-              Открыть evil
-            </Button>
           )}
           <Button onClick={reset}>Сбросить</Button>
           <Button type="primary" onClick={backToSlide}>

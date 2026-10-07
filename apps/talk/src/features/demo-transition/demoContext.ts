@@ -4,7 +4,6 @@ export const DEMO_CONTEXT_KEY = 'talk:demo-context'
 
 export interface DemoContext {
   payload?: string
-  evilPage?: string
 }
 
 /** Что demo-слайд передаёт рамке браузера через sessionStorage (сервер об этом знать не должен). */
@@ -19,10 +18,4 @@ export function readDemoContext(): DemoContext {
   } catch {
     return {}
   }
-}
-
-export function evilUrlFor(page: string | undefined): string | undefined {
-  if (!page) return undefined
-  const base = process.env.NEXT_PUBLIC_EVIL_ORIGIN ?? 'http://localhost:3666'
-  return `${base}/${page}`
 }

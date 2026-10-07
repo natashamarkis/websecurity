@@ -15,7 +15,7 @@ interface SlideDeckProps {
 export function SlideDeck({ moduleTitle, index, total, children }: SlideDeckProps) {
   const percent = total > 0 ? Math.round(((index + 1) / total) * 100) : 0
   return (
-    <Flex vertical style={{ height: '100vh', padding: '32px 64px 24px' }} gap={16}>
+    <Flex vertical className="slide-deck" gap={16}>
       <Flex justify="space-between" align="center">
         <Typography.Text type="secondary" style={{ fontSize: 16 }}>
           {moduleTitle}

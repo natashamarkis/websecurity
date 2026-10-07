@@ -4,7 +4,7 @@ import './globals.css'
 
 export const metadata = {
   title: 'Web Security Tech Talk',
-  description: 'Учебная платформа: демонстрация и предотвращение frontend-уязвимостей',
+  description: 'Уязвимости SPA: от фронтенда до бэкенда',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

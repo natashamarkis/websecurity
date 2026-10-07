@@ -7,9 +7,8 @@
   },
   "scripts": {
     "dev": "pnpm --filter @ws/talk dev",
-    "dev:evil": "pnpm --filter @ws/evil dev",
     "build": "pnpm -r build",
-    "lint": "pnpm -r lint",
+    "lint": "eslint .",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
     "validate:slides": "pnpm --filter @ws/slides-schema validate",
