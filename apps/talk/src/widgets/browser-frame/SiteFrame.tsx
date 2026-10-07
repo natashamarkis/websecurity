@@ -26,8 +26,9 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
   const isDependency = pathname === '/site/product'
   const isThirdParty = pathname === '/site' || pathname === '/site/checkout'
   const isRedirect = pathname === '/site/redirect' || pathname.startsWith('/site/redirect/')
-  const module = isCsrf ? 'csrf' : isDependency ? 'dependencies' : isThirdParty ? 'third-party-scripts' : isRedirect ? 'open-redirects' : 'xss'
-  const fallback = `/talk/${module}/${module === 'xss' || isRedirect ? 2 : 3}`
+  const isClickjacking = pathname === '/site/notifications'
+  const module = isCsrf ? 'csrf' : isDependency ? 'dependencies' : isThirdParty ? 'third-party-scripts' : isRedirect ? 'open-redirects' : isClickjacking ? 'clickjacking' : 'xss'
+  const fallback = `/talk/${module}/${module === 'xss' || isRedirect || isClickjacking ? 2 : 3}`
   const [returnSlide, setReturnSlide] = useState(fallback)
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
           url={`${origin}${pathname}`}
           mode={mode}
           reloadOnModeChange={isThirdParty}
-          payload={isCsrf || isThirdParty || isRedirect ? undefined : ctx.payload ?? (isDependency ? DEPENDENCY_PAYLOAD : '<img src=x onerror=alert(document.cookie)>')}
+          payload={isCsrf || isThirdParty || isRedirect || isClickjacking ? undefined : ctx.payload ?? (isDependency ? DEPENDENCY_PAYLOAD : '<img src=x onerror=alert(document.cookie)>')}
           returnSlide={returnSlide}
         >
           {children}

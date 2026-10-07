@@ -20,6 +20,7 @@ export function SiteHeader({ userName, current }: SiteHeaderProps) {
         { key: 'product', label: siteLink('/site/product', 'Товар') },
         { key: 'checkout', label: siteLink('/site/checkout', 'Заказ') },
         { key: 'redirect', label: siteLink('/site/redirect', 'Письмо') },
+        { key: 'notifications', label: siteLink('/site/notifications', 'Безопасность') },
       ]} />
       <div className="site-user"><Avatar>{userName.slice(0, 1)}</Avatar><Typography.Text>{userName}</Typography.Text></div>
     </header>
