@@ -13,6 +13,7 @@ export function SiteHeader({ userName, current }: SiteHeaderProps) {
         { key: 'home', label: <Link href="/site">Главная</Link> },
         { key: 'comments', label: <Link href="/site/comments">Комментарии</Link> },
         { key: 'delivery', label: <Link href="/site/delivery">Доставка</Link> },
+        { key: 'product', label: <Link href="/site/product">Товар</Link> },
       ]} />
       <div className="site-user"><Avatar>{userName.slice(0, 1)}</Avatar><Typography.Text>{userName}</Typography.Text></div>
     </header>
