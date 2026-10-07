@@ -1,14 +1,7 @@
-import { theme, type ThemeConfig } from 'antd'
+import { talkTheme } from './talkTheme'
+import type { ThemeConfig } from 'antd'
 
-/**
- * Тема демо-сайта: светлая «продуктовая», обычные размеры.
- * Визуально контрастирует с презентацией, чтобы зритель понимал:
- * это отдельный «живой» сайт, а не слайд.
- */
 export const siteTheme: ThemeConfig = {
-  algorithm: theme.defaultAlgorithm,
-  token: {
-    colorPrimary: '#1677ff',
-    borderRadius: 8,
-  },
+  ...talkTheme,
+  token: { ...talkTheme.token, fontSize: 14, colorBgLayout: '#f4f6fa' },
 }

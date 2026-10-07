@@ -11,7 +11,7 @@ export default function CommentsPage() {
   return (
     <>
       <SiteHeader userName={demoUser.name} current="comments" />
-      <Flex vertical gap={16} style={{ padding: 32 }}>
+      <Flex vertical gap={16} className="site-content">
         <SlideTitle level={3}>Комментарии</SlideTitle>
         <CommentsBoard />
       </Flex>

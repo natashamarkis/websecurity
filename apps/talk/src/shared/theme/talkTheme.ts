@@ -1,21 +1,26 @@
 import { theme, type ThemeConfig } from 'antd'
 
-/**
- * Тема презентации: тёмный фон, крупная типографика, заметный акцент.
- * Меняем внешний вид только через токены antd — никаких кастомных стилей.
- */
+/** Palette and typography from Cybersecurity.pptx. */
 export const talkTheme: ThemeConfig = {
-  algorithm: theme.darkAlgorithm,
+  algorithm: theme.defaultAlgorithm,
   token: {
-    colorPrimary: '#7c5cff',
-    fontSize: 18,
-    borderRadius: 12,
-    colorBgLayout: '#0b0b12',
+    colorPrimary: '#05358c',
+    colorInfo: '#05358c',
+    colorSuccess: '#008697',
+    colorWarning: '#ed9a29',
+    colorText: '#232b37',
+    colorTextHeading: '#05358c',
+    colorTextSecondary: '#647084',
+    colorBgLayout: '#ffffff',
+    colorBgContainer: '#ffffff',
+    colorBorder: '#dce3ed',
+    fontFamily: 'Arial, Helvetica, sans-serif',
+    fontSize: 16,
+    borderRadius: 4,
+    controlHeight: 40,
   },
   components: {
-    Typography: {
-      titleMarginBottom: '0.4em',
-      titleMarginTop: '0',
-    },
+    Typography: { titleMarginBottom: '0.65em', titleMarginTop: '0' },
+    Button: { primaryShadow: 'none' },
   },
 }

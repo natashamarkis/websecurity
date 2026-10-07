@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useTransition } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { Button } from 'antd'
+import { PlayCircleOutlined } from '@ant-design/icons'
 import type { DemoMode } from '@/shared/lib/demoMode'
 import { setDemoMode } from '@/features/demo-mode-toggle/DemoModeToggle'
 import { saveDemoContext } from './demoContext'
@@ -30,7 +31,8 @@ export function DemoLauncher({ route, mode, payload }: DemoLauncherProps) {
   useEffect(() => {
     router.prefetch(route)
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey) {
+      if (e.target instanceof HTMLElement && e.target.closest('[role="dialog"], input, textarea, button, a, [contenteditable="true"]')) return
+      if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey && !e.altKey) {
         e.preventDefault()
         launch()
       }
@@ -40,8 +42,8 @@ export function DemoLauncher({ route, mode, payload }: DemoLauncherProps) {
   }, [route, router, launch])
 
   return (
-    <Button type="primary" size="large" loading={pending} onClick={launch}>
-      Показать (Enter)
+    <Button type="primary" size="large" icon={<PlayCircleOutlined />} loading={pending} onClick={launch}>
+      Открыть демонстрацию
     </Button>
   )
 }

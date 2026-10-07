@@ -1,0 +1,25 @@
+{
+  "id": "open-redirects",
+  "title": "Open Redirects",
+  "section": "frontend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 8,
+      "title": "Open Redirects",
+      "section": "frontend",
+      "attack": [
+        "Redirect-параметр ведёт на произвольный внешний домен",
+        "Используется для фишинга через доверенный домен в ссылке",
+        "Обход фильтров: //evil.com, @evil.com, encoded URL"
+      ],
+      "defense": [
+        "Whitelist разрешённых доменов для редиректа",
+        "Редирект только на относительные пути",
+        "Промежуточная страница-предупреждение перед переходом"
+      ],
+      "caseStudy": "Shopify (2020) — кража OAuth-токенов через open redirect",
+      "notes": "Источник: Cybersecurity.pptx, слайд 8. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

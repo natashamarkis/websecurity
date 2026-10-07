@@ -12,7 +12,7 @@ export default async function SiteHomePage() {
   return (
     <>
       <SiteHeader userName={demoUser.name} current="home" />
-      <Flex vertical gap={8} align="flex-start" style={{ padding: 32 }}>
+      <Flex vertical gap={8} align="flex-start" className="site-content">
         <SlideTitle level={3}>Привет, {demoUser.name}!</SlideTitle>
         <Lead maxWidth={640}>
           Это обычный сайт с комментариями. Настолько обычный, что в нём есть всё то же,

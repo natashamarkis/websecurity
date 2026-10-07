@@ -1,3 +1,19 @@
 {
-  "modules": ["00-intro.json"]
+  "modules": [
+    "00-intro.json",
+    "01-xss.json",
+    "02-csrf.json",
+    "03-dependencies.json",
+    "04-third-party-scripts.json",
+    "05-open-redirects.json",
+    "06-clickjacking.json",
+    "07-prototype-pollution.json",
+    "08-backend.json",
+    "09-ssrf.json",
+    "10-sessions.json",
+    "11-sql-injection.json",
+    "12-brute-force.json",
+    "13-file-download.json",
+    "14-outro.json"
+  ]
 }

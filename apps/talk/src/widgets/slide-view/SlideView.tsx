@@ -8,6 +8,8 @@ import { ChecklistSlide } from './renderers/ChecklistSlide'
 import { DemoSlide } from './renderers/DemoSlide'
 import { CodeSlide } from './renderers/CodeSlide'
 import { UnknownSlide } from './renderers/UnknownSlide'
+import { VulnerabilitySlide } from './renderers/VulnerabilitySlide'
+import { AgendaSlide } from './renderers/AgendaSlide'
 
 interface SlideViewProps {
   slide: Slide
@@ -19,6 +21,10 @@ interface SlideViewProps {
  */
 export function SlideView({ slide }: SlideViewProps) {
   switch (slide.type) {
+    case 'vulnerability':
+      return <VulnerabilitySlide slide={slide} />
+    case 'agenda':
+      return <AgendaSlide slide={slide} />
     case 'title':
       return <TitleSlide slide={slide} />
     case 'bullets':

@@ -1,0 +1,25 @@
+{
+  "id": "ssrf",
+  "title": "SSRF",
+  "section": "backend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 12,
+      "title": "SSRF через Frontend",
+      "section": "backend",
+      "attack": [
+        "URL из пользовательского ввода уходит напрямую в backend-запрос",
+        "Доступ к cloud metadata (169.254.169.254) и internal-сервисам",
+        "Типичные точки входа: URL preview, webhook, image-proxy"
+      ],
+      "defense": [
+        "Whitelist доменов + блокировка private IP-диапазонов",
+        "Timeout, лимит размера ответа, запрет редиректов",
+        "IMDSv2 на инфраструктуре"
+      ],
+      "caseStudy": "Capital One (2019) — $80 млн штраф, 100 млн записей через SSRF к AWS metadata",
+      "notes": "Источник: Cybersecurity.pptx, слайд 12. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

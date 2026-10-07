@@ -1,0 +1,25 @@
+{
+  "id": "file-download",
+  "title": "Insecure File Download",
+  "section": "backend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 16,
+      "title": "Insecure File Download",
+      "section": "backend",
+      "attack": [
+        "Path Traversal (../../etc/passwd) через параметр пути",
+        "IDOR — последовательные ID дают доступ к чужим документам",
+        "Zip Slip при распаковке архивов на сервере"
+      ],
+      "defense": [
+        "Резолв пути + проверка, что он внутри разрешённой директории",
+        "Проверка владения файлом (user_id в запросе)",
+        "Content-Disposition: attachment для всех user-uploaded файлов"
+      ],
+      "caseStudy": "Citrix ADC CVE-2019-19781 — path traversal, 80 000+ организаций под угрозой",
+      "notes": "Источник: Cybersecurity.pptx, слайд 16. Исторический кейс перенесён из авторской презентации; полный фактчекинг остальных кейсов ещё не выполнен."
+    }
+  ]
+}

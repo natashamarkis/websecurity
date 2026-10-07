@@ -1,0 +1,54 @@
+{
+  "id": "xss",
+  "title": "XSS",
+  "section": "frontend",
+  "slides": [
+    {
+      "type": "vulnerability",
+      "sourceSlide": 4,
+      "title": "XSS: Cross-Site Scripting",
+      "section": "frontend",
+      "attack": [
+        "Payload внедряется в HTML/DOM без экранирования",
+        "Reflected, Stored и DOM-based варианты",
+        "Код выполняется в origin сайта: доступ к DOM, localStorage и cookies без HttpOnly"
+      ],
+      "defense": [
+        "Output encoding, безопасные API (textContent вместо innerHTML)",
+        "Content Security Policy (script-src)",
+        "Санитизация ввода (DOMPurify) для rich-текста"
+      ],
+      "caseStudy": "British Airways, 2018: кража платёжных данных через изменённый JavaScript. Итоговый штраф ICO в 2020 году: £20 млн.",
+      "notes": "Stored XSS в комментариях показывает механизм исполнения недоверенного HTML. British Airways: отдельный пример web-skimming после компрометации сайта, а не история о форме комментариев. В PPTX предварительная сумма £183 млн; итоговый штраф ICO составил £20 млн. После этого слайда открываем локальное демо.",
+      "sourceUrl": "https://ico.org.uk/media2/migrated/2618421/ba-penalty-20201016.pdf"
+    },
+    {
+      "type": "demo",
+      "route": "/site/comments",
+      "mode": "vulnerable",
+      "caption": "Комментарий становится кодом",
+      "payload": "<img src=x onerror=alert(document.cookie)>",
+      "notes": "Открыть демо, скопировать payload, отправить комментарий. Закрыть alert. Перезагрузить страницу: XSS сработает повторно, потому что комментарий хранится на сервере. Вернуться к слайду кнопкой или Escape."
+    },
+    {
+      "type": "code",
+      "title": "XSS: уязвимый код и исправление",
+      "lang": "tsx",
+      "vulnerable": {
+        "file": "features/vuln-xss/render.vulnerable.tsx"
+      },
+      "fixed": {
+        "file": "features/vuln-xss/render.fixed.tsx"
+      },
+      "notes": "В уязвимом варианте dangerouslySetInnerHTML превращает пользовательский ввод в HTML. В исправленном React выводит строку как текст. HttpOnly скрывает cookie от JS, но сам по себе не устраняет XSS. CSP здесь совместима с Next dev и допускает inline-скрипты."
+    },
+    {
+      "type": "demo",
+      "route": "/site/comments",
+      "mode": "fixed",
+      "caption": "Тот же ввод. Без выполнения кода.",
+      "payload": "<img src=x onerror=alert(document.cookie)>",
+      "notes": "Открыть fixed: сохранённый payload виден как текст. При необходимости отправить его снова. Проверить, что alert не возникает. Сбросить данные перед следующим показом."
+    }
+  ]
+}

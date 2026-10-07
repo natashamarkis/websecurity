@@ -2,7 +2,8 @@
 
 import type { ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, Flex, Input, Tag, Button, Tooltip, App } from 'antd'
+import { Input, Tag, Button, Tooltip, App } from 'antd'
+import { ArrowLeftOutlined, CopyOutlined, ReloadOutlined } from '@ant-design/icons'
 import type { DemoMode } from '@/shared/lib/demoMode'
 import { DemoModeToggle } from '@/features/demo-mode-toggle/DemoModeToggle'
 
@@ -16,62 +17,45 @@ interface BrowserFrameProps {
 }
 
 function hostOf(url: string): string {
-  try {
-    return new URL(url).host
-  } catch {
-    return url
-  }
+  try { return new URL(url).host } catch { return url }
 }
 
-/**
- * «Окно браузера» вокруг демо-сайта: адресная строка, origin, тумблер режима,
- * кнопки payload / сброс / возврат на слайд. Выглядит как часть браузера,
- * а не презентации — так зритель видит границу «слайды ↔ живой сайт».
- */
 export function BrowserFrame({ url, mode, payload, children }: BrowserFrameProps) {
   const router = useRouter()
   const { message } = App.useApp()
-
   const copyPayload = async () => {
     if (!payload) return
-    await navigator.clipboard.writeText(payload)
-    message.success('Payload скопирован')
+    try {
+      await navigator.clipboard.writeText(payload)
+      message.success('Payload скопирован')
+    } catch {
+      message.error('Не удалось скопировать payload')
+    }
   }
-
   const reset = async () => {
-    await fetch('/api/site/reset', { method: 'POST' })
-    router.refresh()
-    message.info('Данные демо-сайта сброшены')
-  }
-
-  const backToSlide = () => {
-    const back = sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk'
-    router.push(back)
+    try {
+      const response = await fetch('/api/site/reset', { method: 'POST' })
+      if (!response.ok) throw new Error('Reset failed')
+      router.refresh()
+      message.info('Данные демо-сайта сброшены')
+    } catch {
+      message.error('Не удалось сбросить данные')
+    }
   }
 
   return (
-    <Card
-      styles={{ header: { padding: '8px 16px' }, body: { padding: 0 } }}
-      title={
-        <Flex align="center" gap={12} wrap>
-          <Tag color="blue" style={{ margin: 0 }}>
-            {hostOf(url)}
-          </Tag>
-          <Input value={url} readOnly style={{ flex: 1, minWidth: 220 }} />
-          <DemoModeToggle mode={mode} />
-          {payload && (
-            <Tooltip title={payload}>
-              <Button onClick={copyPayload}>Payload</Button>
-            </Tooltip>
-          )}
-          <Button onClick={reset}>Сбросить</Button>
-          <Button type="primary" onClick={backToSlide}>
-            ← К слайду
-          </Button>
-        </Flex>
-      }
-    >
+    <section className="browser-frame">
+      <div className="browser-toolbar">
+        <Tag color="blue">{hostOf(url)}</Tag>
+        <Input value={url} readOnly aria-label="Адрес демонстрации" className="browser-address" />
+        <DemoModeToggle mode={mode} />
+        <div className="browser-actions">
+          {payload && <Tooltip title="Скопировать payload"><Button aria-label="Скопировать payload" icon={<CopyOutlined />} onClick={copyPayload} /></Tooltip>}
+          <Tooltip title="Сбросить данные"><Button aria-label="Сбросить" icon={<ReloadOutlined />} onClick={reset} /></Tooltip>
+          <Button type="primary" icon={<ArrowLeftOutlined />} onClick={() => router.push(sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk/xss/1')}>К слайду</Button>
+        </div>
+      </div>
       {children}
-    </Card>
+    </section>
   )
 }

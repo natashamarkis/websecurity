@@ -1,0 +1,16 @@
+{
+  "id": "backend",
+  "title": "Блок 2. Backend",
+  "section": "backend",
+  "slides": [
+    {
+      "type": "title",
+      "variant": "section",
+      "sourceSlide": 11,
+      "title": "Backend-уязвимости",
+      "subtitle": "5 тем глазами frontend-разработчика",
+      "moduleNo": 2,
+      "notes": "Клиентский интерфейс может быть точкой входа. Проверки доступа и доверия к данным остаются обязанностью сервера."
+    }
+  ]
+}

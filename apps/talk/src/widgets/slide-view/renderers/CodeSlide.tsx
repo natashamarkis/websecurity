@@ -21,14 +21,14 @@ export async function CodeSlide({ slide }: { slide: CodeSlideData }) {
   const items = [
     {
       key: 'vulnerable',
-      label: `Уязвимо · ${slide.vulnerable.file}`,
+      label: 'Уязвимо',
       children: <CodeBlock html={vulnerableHtml} />,
     },
     ...(fixedHtml && slide.fixed
       ? [
           {
             key: 'fixed',
-            label: `Исправлено · ${slide.fixed.file}`,
+            label: 'Исправлено',
             children: <CodeBlock html={fixedHtml} />,
           },
         ]
