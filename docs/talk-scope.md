@@ -12,7 +12,7 @@ PPTX хранится у автора, его исходный файл в ра�
 | 5 | Frontend | CSRF | `/talk/csrf/0`: суть, другие защиты, код и демо доставки |
 | 6 | Frontend | Уязвимые npm-зависимости | `/talk/dependencies/0`: суть, действия потребителя, package.json и демо двух версий |
 | 7 | Frontend | Сторонние скрипты / Magecart | `/talk/third-party-scripts/0`: общие риски, защита, код, демо SRI на главной и в заказе |
-| 8 | Frontend | Open Redirects | Демо нет; материалы в `security-guide/module/06-open-redirects.md` |
+| 8 | Frontend | Open Redirect | `/talk/open-redirects/0`: суть, фронтенд-код, демо письма с переходом на другой origin |
 | 9 | Frontend | Clickjacking | Есть заголовки в fixed; сценария с внешним iframe нет |
 | 10 | Frontend | Prototype Pollution | Демо нет; материалы в `security-guide/module/07-prototype-pollution.md` |
 | 12 | Backend | SSRF | Демо нет; материалы в `security-guide/module/08-ssrf.md` |
@@ -22,8 +22,10 @@ PPTX хранится у автора, его исходный файл в ра�
 | 16 | Backend | Insecure File Download | Демо и отдельного раздела гайда нет |
 
 Все темы доступны как теоретические слайды. Веб-презентация содержит 15 модулей,
-28 экранов: 17 исходных слайдов, два дополнительных экрана XSS и по три CSRF, зависимостей и сторонних скриптов.
-XSS, CSRF, зависимости и сторонние скрипты содержат живые демо; у других тем кнопок запуска атак нет.
+30 экранов: 17 исходных слайдов, по два дополнительных экрана XSS и Open Redirect,
+по три CSRF, зависимостей и сторонних скриптов.
+XSS, CSRF, зависимости, сторонние скрипты и Open Redirect содержат живые демо;
+у других тем кнопок запуска атак нет.
 Data Exposure из старого гайда не является отдельной темой нового PPTX.
 
 ## Основа реализации
@@ -41,6 +43,11 @@ CSRF использует отдельный origin: локальный серв
 в `features/vulnerabilities/third-party-scripts`, сценарий — в `docs/demo/third-party-scripts.md`.
 
 ## Замечания к источникам
+
+- Open Redirect: непроверенный исторический кейс Shopify заменён локальным сценарием
+  письма. Уязвимость помогает фишингу, но сама по себе не крадёт пароль или cookie.
+  Проверка origin находится на фронтенде; серверный редирект требует проверки на сервере.
+  [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html).
 
 - Сторонние скрипты: сценарий вдохновлён Ticketmaster / Inbenta (2018), но не является
   точной реконструкцией. Чат продолжает работать, а добавленный код читает форму.

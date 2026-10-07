@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Личный кабинет — внешний сайт</title>
+  <style>
+    * { box-sizing: border-box; letter-spacing: 0; }
+    body { margin: 0; font: 18px/1.6 Arial, sans-serif; color: #232b37; border-top: 5px solid #ffab40; }
+    header { padding: 20px 32px; border-bottom: 1px solid #e8edf5; font-weight: 700; color: #05358c; }
+    main { max-width: 760px; margin: 32px auto; padding: 24px; }
+    img { display: block; width: 100%; max-width: 420px; height: auto; }
+    h1 { font-size: 32px; line-height: 1.2; color: #05358c; }
+    .notice { border-left: 3px solid #ed9a29; padding: 12px 20px; margin: 24px 0; }
+    .notice p { margin: 8px 0 0; }
+    a { display: inline-block; color: #05358c; overflow-wrap: anywhere; }
+    a:focus-visible { outline: 3px solid #0097a7; outline-offset: 4px; }
+    @media(max-width:600px) { main { margin: 0 auto; } h1 { font-size: 28px; } }
+  </style>
+</head>
+<body>
+  <header>Личный кабинет</header>
+  <main>
+    <img src="/catalog.png" alt="Каталог электротехнической продукции" width="420" height="227">
+    <h1>Войдите, чтобы посмотреть заказ</h1>
+    <p>Сеанс завершён. Для просмотра заказа требуется повторный вход.</p>
+    <aside class="notice">
+      <strong>Вы на внешнем сайте</strong>
+      <p>Учебная страница. Пароли и другие данные здесь не запрашиваются.</p>
+    </aside>
+    <a href="{{SHOP_ORIGIN}}/site/redirect">Вернуться к письму</a>
+  </main>
+</body>
+</html>

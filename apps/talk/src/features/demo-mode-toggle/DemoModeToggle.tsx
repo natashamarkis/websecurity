@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Segmented } from 'antd'
 import type { DemoMode } from '@/shared/lib/demoMode'
@@ -23,6 +23,8 @@ export function DemoModeToggle({ mode, reloadOnChange = false }: DemoModeToggleP
   const router = useRouter()
   const [value, setValue] = useState<DemoMode>(mode)
   const [pending, startTransition] = useTransition()
+  const [ready, setReady] = useState(false)
+  useEffect(() => { setReady(true) }, [])
 
   const onChange = (next: DemoMode) => {
     setValue(next)
@@ -37,7 +39,7 @@ export function DemoModeToggle({ mode, reloadOnChange = false }: DemoModeToggleP
   return (
     <Segmented<DemoMode>
       value={value}
-      disabled={pending}
+      disabled={pending || !ready}
       onChange={onChange}
       options={[
         { label: 'Уязвимо', value: 'vulnerable' },

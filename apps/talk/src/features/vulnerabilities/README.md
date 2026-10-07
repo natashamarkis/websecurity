@@ -1,6 +1,6 @@
 # Модули уязвимостей
 
-Одна папка на каждую тему презентации. Сейчас реализованы XSS, CSRF, зависимости и сторонние скрипты;
+Одна папка на каждую тему презентации. Сейчас реализованы XSS, CSRF, зависимости, сторонние скрипты и Open Redirect;
 остальные папки обозначают место будущих модулей, без запуска атак и кода-заглушек.
 
 | Папка | Тема | Статус |
@@ -9,7 +9,7 @@
 | [csrf](csrf) | CSRF | Демо и серверная защита токеном |
 | [dependencies](dependencies) | Уязвимые npm-зависимости | Две версии учебной библиотеки и демо товара |
 | [third-party-scripts](third-party-scripts) | Сторонние скрипты / Magecart | Подмена чата, локальный получатель и SRI на главной и в заказе |
-| [open-redirects](open-redirects) | Open Redirects | Только теория |
+| [open-redirects](open-redirects) | Open Redirect | Переход на другой origin из письма и проверка URL перед навигацией |
 | [clickjacking](clickjacking) | Clickjacking | Только теория |
 | [prototype-pollution](prototype-pollution) | Prototype Pollution | Только теория |
 | [ssrf](ssrf) | SSRF | Только теория |
