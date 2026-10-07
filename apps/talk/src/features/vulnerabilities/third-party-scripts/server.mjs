@@ -8,7 +8,7 @@ const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i
 
 export async function createThirdPartyHandler() {
   const original = await read('vendor/support-chat.js')
-  const compromised = original + '\n' + await read('vendor/steal-checkout-fields.js')
+  const compromised = original + '\n' + await read('vendor/steal-customer-data.js')
   const demoData = JSON.parse(await read('demo-data.json'))
   const captures = new Map()
 

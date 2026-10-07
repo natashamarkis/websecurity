@@ -9,9 +9,9 @@ import { createSupportChatScript } from './create-support-chat-script'
 import { fixedCreateSupportChatScript } from './fixed-create-support-chat-script'
 
 type Variant = 'original' | 'compromised'
-type Status = 'loading' | 'loaded' | 'failed' | 'omitted'
+type Status = 'loading' | 'loaded' | 'failed'
 
-export function CheckoutDemo({ mode, thirdPartyPort }: { mode: DemoMode; thirdPartyPort: number }) {
+export function ThirdPartyScriptsDemo({ mode, thirdPartyPort, page }: { mode: DemoMode; thirdPartyPort: number; page: 'home' | 'checkout' }) {
   const [origin, setOrigin] = useState('')
   const [variant, setVariant] = useState<Variant>('compromised')
   const [revision, setRevision] = useState(0)
@@ -45,7 +45,7 @@ export function CheckoutDemo({ mode, thirdPartyPort }: { mode: DemoMode; thirdPa
     const src = `${origin}/third-party/support-chat.js?variant=${variant}`
     const script = mode === 'vulnerable'
       ? createSupportChatScript(src)
-      : fixedCreateSupportChatScript(src, window.location.pathname)
+      : fixedCreateSupportChatScript(src)
 
     const finish = async (nextStatus: Status) => {
       if (controller.signal.aborted) return
@@ -68,37 +68,33 @@ export function CheckoutDemo({ mode, thirdPartyPort }: { mode: DemoMode; thirdPa
         if (!controller.signal.aborted) setPending(false)
       }
     }
-    if (script) {
-      script.dataset.run = run
-      script.onload = () => { void finish('loaded') }
-      script.onerror = () => { void finish('failed') }
-      document.body.append(script)
-    } else {
-      void finish('omitted')
-    }
+    script.dataset.run = run
+    script.onload = () => { void finish('loaded') }
+    script.onerror = () => { void finish('failed') }
+    document.body.append(script)
     return () => {
       controller.abort()
       delete root.dataset.run
       root.replaceChildren()
-      if (script) {
-        script.onload = null
-        script.onerror = null
-        script.remove()
-      }
+      script.onload = null
+      script.onerror = null
+      script.remove()
     }
   }, [origin, mode, thirdPartyPort, variant, revision])
 
   return <div className="checkout-layout">
-    <section className="checkout-form" aria-label="Оформление заказа">
-      <Typography.Title level={3}>Оформление заказа</Typography.Title>
+    <section className="checkout-form" aria-label={page === 'home' ? 'Профиль покупателя' : 'Оформление заказа'}>
+      <Typography.Title level={3}>{page === 'home' ? 'Привет, Алекс!' : 'Оформление заказа'}</Typography.Title>
       <Tag>Учебные данные · без оплаты</Tag>
       <img className="checkout-catalog" src="/presentation/catalog.png" alt="Каталог электротехнической продукции" width={420} height={227} />
-      <form id="checkout-form" onSubmit={(event) => { event.preventDefault(); setOrdered(true) }}>
+      <form id="customer-profile" onSubmit={(event) => { event.preventDefault(); if (page === 'checkout') setOrdered(true) }}>
         <label htmlFor="checkout-email">Email покупателя</label>
         <Input id="checkout-email" name="email" value={demoData.email} readOnly />
         <label htmlFor="checkout-address">Адрес доставки</label>
         <Input id="checkout-address" name="address" value={demoData.address} readOnly />
-        <Button type="primary" htmlType="submit" icon={<ShoppingCartOutlined />}>Оформить заказ</Button>
+        {page === 'checkout'
+          ? <Button type="primary" htmlType="submit" icon={<ShoppingCartOutlined />}>Оформить заказ</Button>
+          : <Button type="primary" href="/site/checkout" icon={<ShoppingCartOutlined />}>К оформлению заказа</Button>}
       </form>
       {ordered && <Alert type="success" showIcon title="Учебный заказ оформлен" />}
     </section>
@@ -107,17 +103,17 @@ export function CheckoutDemo({ mode, thirdPartyPort }: { mode: DemoMode; thirdPa
       <Typography.Text code>support-chat.js</Typography.Text>
       <Radio.Group aria-label="Файл поставщика" value={variant} disabled={pending} onChange={(event) => setVariant(event.target.value as Variant)} options={[{ label: 'Подменённый', value: 'compromised' }, { label: 'Исходный', value: 'original' }]} optionType="button" />
       <div id="support-chat-root" ref={chatRoot} />
-      {mode === 'fixed' && <div className="checkout-contact"><strong>Нужна помощь с заказом?</strong><a href="mailto:support@example.test">support@example.test</a></div>}
       <dl className="checkout-details">
         <dt>Сервер поставщика</dt><dd>{origin || '...'}</dd>
-        <dt>Скрипт</dt><dd data-testid="script-status">{{ loading: 'Загрузка', loaded: 'Чат загружен', failed: 'Не удалось загрузить чат', omitted: 'Не подключён на checkout' }[status]}</dd>
+        <dt>Проверка SRI</dt><dd><Tag color={mode === 'fixed' ? 'green' : 'orange'}>{mode === 'fixed' ? 'Включена' : 'Отсутствует'}</Tag></dd>
+        <dt>Скрипт</dt><dd data-testid="script-status">{{ loading: 'Загрузка', loaded: 'Чат загружен', failed: 'Скрипт не выполнен' }[status]}</dd>
       </dl>
-      {status === 'failed' && <Alert type="warning" showIcon title="Сервер чата недоступен" />}
+      {status === 'failed' && <Alert type="warning" showIcon title="Загрузка скрипта отклонена" description="Файл не прошёл проверку или недоступен. Точная причина указана в консоли браузера." />}
       {error && <Alert type="error" showIcon title={error} role="alert" />}
       <div className="checkout-capture" aria-live="polite">
         <Typography.Title level={4}>Что получил атакующий</Typography.Title>
         {captured ? <>
-          <Tag color="red">Получены поля заказа</Tag>
+          <Tag color="red">Получены данные покупателя</Tag>
           <pre data-testid="captured-data">{JSON.stringify(captured, null, 2)}</pre>
         </> : <Typography.Paragraph data-testid="capture-empty">{pending ? 'Проверяем запросы...' : 'Данных этого запуска нет'}</Typography.Paragraph>}
       </div>

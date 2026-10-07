@@ -11,7 +11,7 @@ PPTX хранится у автора, его исходный файл в ра�
 | 4 | Frontend | XSS | Модуль `/talk/xss/0`: теория, stored XSS в комментариях, код и исправленный рендер |
 | 5 | Frontend | CSRF | `/talk/csrf/0`: суть, другие защиты, код и демо доставки |
 | 6 | Frontend | Уязвимые npm-зависимости | `/talk/dependencies/0`: суть, действия потребителя, package.json и демо двух версий |
-| 7 | Frontend | Сторонние скрипты / Magecart | `/talk/third-party-scripts/0`: чат поставщика, защита, код, живое демо checkout |
+| 7 | Frontend | Сторонние скрипты / Magecart | `/talk/third-party-scripts/0`: общие риски, защита, код, демо SRI на главной и в заказе |
 | 8 | Frontend | Open Redirects | Демо нет; материалы в `security-guide/module/06-open-redirects.md` |
 | 9 | Frontend | Clickjacking | Есть заголовки в fixed; сценария с внешним iframe нет |
 | 10 | Frontend | Prototype Pollution | Демо нет; материалы в `security-guide/module/07-prototype-pollution.md` |
@@ -37,14 +37,15 @@ CSRF использует отдельный origin: локальный серв
 Защита проверяется на сервере, реализации находятся рядом в `features/vulnerabilities/csrf`.
 Для clickjacking отдельного сценария пока нет. Старые заготовки `apps/evil`
 не возвращались. Тот же локальный сервер отдаёт сторонний чат и принимает
-только предопределённые данные checkout-демо. Реализация модуля находится
+только предопределённые данные покупателя. Реализация модуля находится
 в `features/vulnerabilities/third-party-scripts`, сценарий — в `docs/demo/third-party-scripts.md`.
 
 ## Замечания к источникам
 
 - Сторонние скрипты: сценарий вдохновлён Ticketmaster / Inbenta (2018), но не является
   точной реконструкцией. Чат продолжает работать, а добавленный код читает форму.
-  Исправление: не загружать сторонний скрипт на checkout. SRI остаётся дополнительной темой.
+  Исправление подмены: SRI с заранее проверенным хешем при каждом подключении,
+  в том числе на главной. Это не защита от любого вредоносного поведения одобренного кода.
   [Решение ICO](https://ico.org.uk/media/action-weve-taken/mpns/2618599/ticketmaster-uk-limited-mpn.pdf),
   [SRI](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Subresource_Integrity),
   [CSP script-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/script-src).

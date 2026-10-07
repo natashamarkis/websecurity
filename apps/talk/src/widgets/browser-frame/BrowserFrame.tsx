@@ -12,6 +12,7 @@ export const RETURN_SLIDE_KEY = 'talk:return-slide'
 interface BrowserFrameProps {
   url: string
   mode: DemoMode
+  reloadOnModeChange?: boolean
   payload?: string
   children: ReactNode
   returnSlide?: string
@@ -21,7 +22,7 @@ function hostOf(url: string): string {
   try { return new URL(url).host } catch { return url }
 }
 
-export function BrowserFrame({ url, mode, payload, children, returnSlide = '/talk/xss/2' }: BrowserFrameProps) {
+export function BrowserFrame({ url, mode, reloadOnModeChange = false, payload, children, returnSlide = '/talk/xss/2' }: BrowserFrameProps) {
   const router = useRouter()
   const { message } = App.useApp()
   const copyPayload = async () => {
@@ -50,7 +51,7 @@ export function BrowserFrame({ url, mode, payload, children, returnSlide = '/tal
       <div className="browser-toolbar">
         <Tag color="blue">{hostOf(url)}</Tag>
         <Input value={url} readOnly aria-label="Адрес демонстрации" className="browser-address" />
-        <DemoModeToggle mode={mode} />
+        <DemoModeToggle mode={mode} reloadOnChange={reloadOnModeChange} />
         <div className="browser-actions">
           {payload && <Tooltip title="Скопировать payload"><Button aria-label="Скопировать payload" icon={<CopyOutlined />} onClick={copyPayload} /></Tooltip>}
           <Tooltip title="Сбросить данные"><Button aria-label="Сбросить" icon={<ReloadOutlined />} onClick={reset} /></Tooltip>

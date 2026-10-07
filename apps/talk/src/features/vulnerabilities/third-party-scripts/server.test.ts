@@ -1,9 +1,10 @@
 // @vitest-environment node
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { createServer, type Server } from 'node:http'
-import { randomUUID } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
 import { createThirdPartyHandler } from './server.mjs'
 import demoData from './demo-data.json'
+import { TRUSTED_CHAT_INTEGRITY } from './integrity'
 
 describe('local third-party CDN and collector', () => {
   let server: Server
@@ -28,6 +29,8 @@ describe('local third-party CDN and collector', () => {
       const source = await response.text()
       expect(source).toContain('Когда доставят заказ?')
       expect(source.includes('/third-party/collect')).toBe(variant === 'compromised')
+      const integrity = 'sha384-' + createHash('sha384').update(source).digest('base64')
+      expect(integrity === TRUSTED_CHAT_INTEGRITY).toBe(variant === 'original')
     }
   })
 
