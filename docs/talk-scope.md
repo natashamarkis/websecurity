@@ -11,7 +11,7 @@ PPTX хранится у автора, его исходный файл в ра�
 | 4 | Frontend | XSS | Модуль `/talk/xss/0`: теория, stored XSS в комментариях, код и исправленный рендер |
 | 5 | Frontend | CSRF | `/talk/csrf/0`: суть, другие защиты, код и демо доставки |
 | 6 | Frontend | Уязвимые npm-зависимости | `/talk/dependencies/0`: суть, действия потребителя, package.json и демо двух версий |
-| 7 | Frontend | Сторонние скрипты / Magecart | Отдельного демо и раздела гайда нет |
+| 7 | Frontend | Сторонние скрипты / Magecart | `/talk/third-party-scripts/0`: механизм, SRI, код, живое демо checkout |
 | 8 | Frontend | Open Redirects | Демо нет; материалы в `security-guide/module/06-open-redirects.md` |
 | 9 | Frontend | Clickjacking | Есть заголовки в fixed; сценария с внешним iframe нет |
 | 10 | Frontend | Prototype Pollution | Демо нет; материалы в `security-guide/module/07-prototype-pollution.md` |
@@ -22,8 +22,8 @@ PPTX хранится у автора, его исходный файл в ра�
 | 16 | Backend | Insecure File Download | Демо и отдельного раздела гайда нет |
 
 Все темы доступны как теоретические слайды. Веб-презентация содержит 15 модулей,
-25 экранов: 17 исходных слайдов, два дополнительных экрана XSS, три CSRF и три зависимостей.
-XSS, CSRF и зависимости содержат переходы на живое демо; у других тем кнопок запуска атак нет.
+28 экранов: 17 исходных слайдов, два дополнительных экрана XSS и по три CSRF, зависимостей и сторонних скриптов.
+XSS, CSRF, зависимости и сторонние скрипты содержат живые демо; у других тем кнопок запуска атак нет.
 Data Exposure из старого гайда не является отдельной темой нового PPTX.
 
 ## Основа реализации
@@ -32,13 +32,20 @@ XSS связывает демонстрацию, механизм атаки, у
 и переключение на режим `fixed` прямо в том же демо. Серверная часть сейчас находится
 в Route Handlers приложения Next.js. Отдельного Express-приложения нет.
 
-CSRF использует отдельный origin: статический сервер `scripts/csrf-attacker.mjs`
+CSRF использует отдельный origin: локальный сервер `scripts/csrf-attacker.mjs`
 на порту 3001. Форма меняет адрес доставки на основном сайте (3000).
 Защита проверяется на сервере, реализации находятся рядом в `features/vulnerabilities/csrf`.
 Для clickjacking отдельного сценария пока нет. Старые заготовки `apps/evil`
-не возвращались: сервер акции обслуживает только текущий CSRF-сценарий.
+не возвращались. Тот же локальный сервер отдаёт стороннюю аналитику и принимает
+только предопределённые данные checkout-демо. Реализация SRI-модуля находится
+в `features/vulnerabilities/third-party-scripts`, сценарий — в `docs/demo/third-party-scripts.md`.
 
 ## Замечания к источникам
+
+- Сторонние скрипты: исторические примеры заменены воспроизводимым учебным сценарием,
+  не реконструкцией British Airways или Ticketmaster. Блокировку SRI проверяет настоящий браузер.
+  [SRI](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Subresource_Integrity),
+  [CSP script-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/script-src).
 
 - Модуль зависимостей демонстрирует ошибку в локальной учебной библиотеке
   `product-description-renderer`, а не реальный опубликованный npm-пакет или CVE. Исторический

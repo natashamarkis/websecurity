@@ -3,16 +3,28 @@ import { readFile } from 'node:fs/promises'
 import { URL } from 'node:url'
 import process from 'node:process'
 import console from 'node:console'
+import { createThirdPartyHandler } from '../apps/talk/src/features/vulnerabilities/third-party-scripts/server.mjs'
 
 const port = Number(process.env.CSRF_ATTACKER_PORT ?? 3001)
 const html = await readFile(new URL('../apps/talk/src/features/vulnerabilities/csrf/attacker.html', import.meta.url), 'utf8')
 const catalog = await readFile(new URL('../apps/talk/public/presentation/catalog.png', import.meta.url))
+const thirdParty = await createThirdPartyHandler()
 
-// Статическая учебная страница: cookie не читаются и не записываются в логи.
-const server = createServer((request, response) => {
+// Локальный учебный сервер: cookie не читаются и не записываются в логи.
+const server = createServer(async (request, response) => {
   const url = new URL(request.url ?? '/', `http://127.0.0.1:${port}`)
   const host = (request.headers.host ?? '').split(':')[0]
-  if (request.method !== 'GET' || !['127.0.0.1', 'localhost'].includes(host)) {
+  if (!['127.0.0.1', 'localhost'].includes(host)) {
+    response.writeHead(403).end('Forbidden')
+    return
+  }
+  try {
+    if (await thirdParty(request, response, url)) return
+  } catch {
+    response.writeHead(500).end('Local demo server error')
+    return
+  }
+  if (request.method !== 'GET') {
     response.writeHead(403).end('Forbidden')
     return
   }

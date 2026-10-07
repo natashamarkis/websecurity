@@ -10,7 +10,8 @@ export function proxy(request: NextRequest) {
   const mode = resolveMode(request.cookies.get(DEMO_MODE_COOKIE)?.value)
   const res = NextResponse.next()
 
-  for (const [name, value] of Object.entries(buildSecurityHeaders(mode))) {
+  const thirdPartyPort = request.nextUrl.pathname === '/site/checkout' ? Number(process.env.CSRF_ATTACKER_PORT ?? 3001) : undefined
+  for (const [name, value] of Object.entries(buildSecurityHeaders(mode, thirdPartyPort))) {
     res.headers.set(name, value)
   }
 
