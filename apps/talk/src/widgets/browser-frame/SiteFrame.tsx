@@ -30,7 +30,7 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return
-      router.push(sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk/xss/1')
+      router.push(sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk/xss/2')
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
