@@ -52,7 +52,7 @@ export function BrowserFrame({ url, mode, payload, children }: BrowserFrameProps
         <div className="browser-actions">
           {payload && <Tooltip title="Скопировать payload"><Button aria-label="Скопировать payload" icon={<CopyOutlined />} onClick={copyPayload} /></Tooltip>}
           <Tooltip title="Сбросить данные"><Button aria-label="Сбросить" icon={<ReloadOutlined />} onClick={reset} /></Tooltip>
-          <Button type="primary" icon={<ArrowLeftOutlined />} onClick={() => router.push(sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk/xss/1')}>К слайду</Button>
+          <Button type="primary" icon={<ArrowLeftOutlined />} onClick={() => router.push(sessionStorage.getItem(RETURN_SLIDE_KEY) ?? '/talk/xss/2')}>К слайду</Button>
         </div>
       </div>
       {children}
