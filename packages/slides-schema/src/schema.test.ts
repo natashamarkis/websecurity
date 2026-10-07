@@ -57,6 +57,22 @@ describe('SlideSchema', () => {
     ).not.toThrow()
   })
 
+  it('preserves a pair of frontend request examples on a code slide', () => {
+    const requestExamples = {
+      title: 'Frontend requests', lang: 'ts', caption: 'Compare the request bodies',
+      items: [{ title: 'Without token', code: 'fetch(url)' }, { title: 'With token', code: 'fetch(url, options)' }],
+    }
+    const slide = SlideSchema.parse({ type: 'code', lang: 'ts', vulnerable: { file: 'server.ts' }, requestExamples })
+    expect(slide).toHaveProperty('requestExamples', requestExamples)
+  })
+
+  it('rejects incomplete request comparisons', () => {
+    expect(() => SlideSchema.parse({
+      type: 'code', lang: 'ts', vulnerable: { file: 'server.ts' },
+      requestExamples: { title: 'Requests', lang: 'ts', items: [{ title: 'Missing code', code: '' }] },
+    })).toThrow()
+  })
+
   it('accepts two-columns and timeline', () => {
     expect(() =>
       SlideSchema.parse({
