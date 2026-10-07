@@ -1,6 +1,6 @@
 # Модули уязвимостей
 
-Одна папка на каждую тему презентации. Сейчас реализованы XSS, CSRF, зависимости, сторонние скрипты, Open Redirect и Clickjacking;
+Одна папка на каждую тему презентации. Сейчас реализованы XSS, CSRF, зависимости, сторонние скрипты, Open Redirect, Clickjacking и Prototype Pollution;
 остальные папки обозначают место будущих модулей, без запуска атак и кода-заглушек.
 
 | Папка | Тема | Статус |
@@ -11,7 +11,7 @@
 | [third-party-scripts](third-party-scripts) | Сторонние скрипты / Magecart | Подмена чата, локальный получатель и SRI на главной и в заказе |
 | [open-redirects](open-redirects) | Open Redirect | Переход на другой origin из письма и проверка URL перед навигацией |
 | [clickjacking](clickjacking) | Clickjacking | Прозрачный iframe, реальное действие и серверный запрет встраивания |
-| [prototype-pollution](prototype-pollution) | Prototype Pollution | Только теория |
+| [prototype-pollution](prototype-pollution) | Prototype Pollution | Импорт JSON, влияние на расчёт доставки и строгая схема |
 | [ssrf](ssrf) | SSRF | Только теория |
 | [sessions](sessions) | Session Management | Только теория |
 | [sql-injection](sql-injection) | SQL Injection | Только теория |
