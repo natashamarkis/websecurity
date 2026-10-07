@@ -51,6 +51,7 @@ export const CodeSlideSchema = z.object({
   requestExamples: z.object({
     title: z.string().min(1),
     lang: z.string().min(1),
+    /** Примеры для вкладок: сначала vulnerable, затем fixed. */
     items: z.array(z.object({ title: z.string().min(1), code: z.string().min(1) })).length(2),
     caption: z.string().min(1).optional(),
   }).optional(),
