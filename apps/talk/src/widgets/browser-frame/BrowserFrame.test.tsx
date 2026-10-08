@@ -7,14 +7,15 @@ vi.mock('next/navigation', () => ({
 }))
 
 describe('BrowserFrame', () => {
-  it('shows url, origin badge, toolbar buttons and children', () => {
+  it('shows toolbar controls and children without an address bar or host badge', () => {
     render(
-      <BrowserFrame url="http://localhost:3000/site/comments" mode="vulnerable">
+      <BrowserFrame mode="vulnerable">
         <div>site body</div>
       </BrowserFrame>,
     )
-    expect(screen.getByDisplayValue('http://localhost:3000/site/comments')).toBeInTheDocument()
-    expect(screen.getByText('localhost:3000')).toBeInTheDocument()
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText('Адрес демонстрации')).not.toBeInTheDocument()
+    expect(screen.queryByText(/localhost|127\.0\.0\.1/)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /к слайду/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /сбросить/i })).toBeInTheDocument()
     expect(screen.getByText('site body')).toBeInTheDocument()
@@ -22,13 +23,13 @@ describe('BrowserFrame', () => {
 
   it('shows the payload button only when a payload is given', () => {
     const { rerender } = render(
-      <BrowserFrame url="http://localhost:3000/site" mode="vulnerable">
+      <BrowserFrame mode="vulnerable">
         <div />
       </BrowserFrame>,
     )
     expect(screen.queryByRole('button', { name: /payload/i })).toBeNull()
     rerender(
-      <BrowserFrame url="http://localhost:3000/site" mode="vulnerable" payload="<img src=x>">
+      <BrowserFrame mode="vulnerable" payload="<img src=x>">
         <div />
       </BrowserFrame>,
     )
@@ -37,7 +38,7 @@ describe('BrowserFrame', () => {
 
   it('renders the mode toggle with the current mode selected', () => {
     render(
-      <BrowserFrame url="http://localhost:3000/site" mode="fixed">
+      <BrowserFrame mode="fixed">
         <div />
       </BrowserFrame>,
     )

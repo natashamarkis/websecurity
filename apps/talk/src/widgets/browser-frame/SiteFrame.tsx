@@ -14,13 +14,12 @@ interface SiteFrameProps {
 }
 
 /**
- * Клиентская оболочка демо-сайта: считает URL из location, подтягивает payload
+ * Клиентская оболочка демо-сайта: определяет модуль по маршруту, подтягивает payload
  * из sessionStorage (их положил demo-слайд) и возвращает на слайд по Esc.
  */
 export function SiteFrame({ mode, children }: SiteFrameProps) {
   const pathname = usePathname()
   const router = useRouter()
-  const [origin, setOrigin] = useState('http://localhost:3000')
   const [ctx, setCtx] = useState<DemoContext>({})
   const isCsrf = pathname === '/site/delivery'
   const isDependency = pathname === '/site/product'
@@ -34,7 +33,6 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
   const [returnSlide, setReturnSlide] = useState(fallback)
 
   useEffect(() => {
-    setOrigin(window.location.origin)
     const saved = sessionStorage.getItem(RETURN_SLIDE_KEY)
     setCtx(saved?.startsWith(`/talk/${module}/`) ? readDemoContext() : {})
     setReturnSlide(saved?.startsWith(`/talk/${module}/`) ? saved : fallback)
@@ -53,7 +51,6 @@ export function SiteFrame({ mode, children }: SiteFrameProps) {
     <div className="site-frame">
       <ViewTransition name={DEMO_FRAME_TRANSITION}>
         <BrowserFrame
-          url={`${origin}${pathname}`}
           mode={mode}
           reloadOnModeChange={isThirdParty}
           payload={backendModule || isCsrf || isThirdParty || isRedirect || isClickjacking || isPrototype ? undefined : ctx.payload ?? (isDependency ? DEPENDENCY_PAYLOAD : '<img src=x onerror=alert(document.cookie)>')}
