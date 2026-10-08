@@ -6,6 +6,7 @@ for (const width of [1440, 390]) {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     for (const [route, module] of [['/site/comments', 'xss'], ['/site/backend/ssrf', 'ssrf']]) {
       await page.goto(route!)
+      await expect(page.locator('.site-content')).toHaveCSS('padding-left', width === 390 ? '16px' : '36px')
       const toolbar = page.locator('.browser-toolbar')
       await expect(toolbar.getByRole('textbox')).toHaveCount(0)
       await expect(toolbar.locator('.ant-tag')).toHaveCount(0)

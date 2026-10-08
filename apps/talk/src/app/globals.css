@@ -86,7 +86,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
 .site-header .ant-menu { flex: 1; min-width: 0; border-bottom: 0; }
 .site-user { display: flex; align-items: center; gap: 8px; }
 .site-user .ant-avatar { background: #05358c; }
-.site-content { padding: 36px; }
+.site-content, .site-content.ant-flex { padding: 36px; }
 .browser-frame { background: #fff; border: 1px solid #dce3ed; border-radius: 6px; overflow: hidden; min-height: calc(100dvh - 56px); }
 .browser-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 14px 20px; background: #f9fafc; border-bottom: 1px solid #dce3ed; }
 .browser-actions { display: flex; align-items: center; gap: 8px; }
@@ -246,7 +246,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid #0097a7; outline-offs
   .site-header { padding: 12px 16px; gap: 12px; flex-wrap: wrap; }
   .site-header .ant-menu { order: 3; flex-basis: 100%; }
   .site-user { margin-left: auto; }
-  .site-content { padding: 24px 16px; }
+  .site-content, .site-content.ant-flex { padding: 24px 16px; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .slide-content { animation: slide-appear 180ms ease-out; }
