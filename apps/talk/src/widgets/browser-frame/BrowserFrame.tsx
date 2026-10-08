@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
-import { Input, Tag, Button, Tooltip, App } from 'antd'
+import { Button, Tooltip, App } from 'antd'
 import { ArrowLeftOutlined, CopyOutlined, ReloadOutlined } from '@ant-design/icons'
 import type { DemoMode } from '@/shared/lib/demoMode'
 import { DemoModeToggle } from '@/features/demo-mode-toggle/DemoModeToggle'
@@ -10,7 +10,6 @@ import { DemoModeToggle } from '@/features/demo-mode-toggle/DemoModeToggle'
 export const RETURN_SLIDE_KEY = 'talk:return-slide'
 
 interface BrowserFrameProps {
-  url: string
   mode: DemoMode
   reloadOnModeChange?: boolean
   payload?: string
@@ -18,11 +17,7 @@ interface BrowserFrameProps {
   returnSlide?: string
 }
 
-function hostOf(url: string): string {
-  try { return new URL(url).host } catch { return url }
-}
-
-export function BrowserFrame({ url, mode, reloadOnModeChange = false, payload, children, returnSlide = '/talk/xss/2' }: BrowserFrameProps) {
+export function BrowserFrame({ mode, reloadOnModeChange = false, payload, children, returnSlide = '/talk/xss/2' }: BrowserFrameProps) {
   const router = useRouter()
   const { message } = App.useApp()
   const copyPayload = async () => {
@@ -49,8 +44,6 @@ export function BrowserFrame({ url, mode, reloadOnModeChange = false, payload, c
   return (
     <section className="browser-frame">
       <div className="browser-toolbar">
-        <Tag color="blue">{hostOf(url)}</Tag>
-        <Input value={url} readOnly aria-label="Адрес демонстрации" className="browser-address" />
         <DemoModeToggle mode={mode} reloadOnChange={reloadOnModeChange} />
         <div className="browser-actions">
           {payload && <Tooltip title="Скопировать payload"><Button aria-label="Скопировать payload" icon={<CopyOutlined />} onClick={copyPayload} /></Tooltip>}
